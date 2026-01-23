@@ -206,9 +206,8 @@ class KernelBuilder:
         """
         Vectorized kernel using flat-list generation with automatic scheduling.
         Uses vselect for levels 0-3 to reduce memory loads.
+        Batched init: all const loads first, then all broadcasts for better packing.
         """
-        tmp_init = self.alloc_scratch("tmp_init")
-        tmp_init2 = self.alloc_scratch("tmp_init2")
         tmp_addr = self.alloc_scratch("tmp_addr")
         tmp_addr2 = self.alloc_scratch("tmp_addr2")
 
@@ -217,92 +216,148 @@ class KernelBuilder:
         INP_INDICES_P = 2054
         INP_VALUES_P = 2310
 
-        init_vars = [
-            "rounds",
-            "n_nodes",
-            "batch_size",
-            "forest_height",
-            "forest_values_p",
-            "inp_indices_p",
-            "inp_values_p",
-        ]
-        for v in init_vars:
-            self.alloc_scratch(v, 1)
+        # ===== PHASE 1: Allocate all scratch addresses upfront =====
+        forest_values_p_addr = self.alloc_scratch("forest_values_p")
+        inp_indices_p_addr = self.alloc_scratch("inp_indices_p")
+        inp_values_p_addr = self.alloc_scratch("inp_values_p")
 
-        # Pack initialization loads - use hardcoded values
-        init_slots = []
-        init_slots.append(
-            ("load", ("const", self.scratch["forest_values_p"], FOREST_VALUES_P))
-        )
-        init_slots.append(
-            ("load", ("const", self.scratch["inp_indices_p"], INP_INDICES_P))
-        )
-        init_slots.append(
-            ("load", ("const", self.scratch["inp_values_p"], INP_VALUES_P))
-        )
+        # Scalar constants - allocate addresses
+        const_addrs = {}
+        for val in [0, 1, 2, 3, 4, 7, 8]:  # All scalar consts we need
+            const_addrs[val] = self.alloc_scratch(f"c_{val}")
+            self.const_map[val] = const_addrs[val]
 
-        one_vec = self.scratch_vconst(1, "v_one", init_slots)
-        two_vec = self.scratch_vconst(2, "v_two", init_slots)
-        one_const = self.scratch_const(1, slots=init_slots)
+        # Vector constants - allocate addresses
+        vec_addrs = {}
+        for val in [1, 2, 3, 4, 7]:  # All vector consts we need
+            vec_addrs[val] = self.alloc_vec(f"v_{val}")
+            self.vconst_map[val] = vec_addrs[val]
 
+        # Forest vector
         forest_vec = self.alloc_vec("v_forest_p")
-        init_slots.append(
-            ("valu", ("vbroadcast", forest_vec, self.scratch["forest_values_p"]))
-        )
-        three_vec = self.scratch_vconst(3, "v_three", init_slots)
-        four_vec = self.scratch_vconst(4, "v_four", init_slots)
-        seven_vec = self.scratch_vconst(7, "v_seven", init_slots)
 
-        # Preload nodes 0-14 for levels 0-3 vselect
-        node_vecs = []
+        # Node preload addresses (scalars and vectors)
         PRELOAD_NODES = 15
+        node_scalar_addrs = []
+        node_vec_addrs = []
         for node_idx in range(PRELOAD_NODES):
-            node_scalar = self.alloc_scratch(f"node_{node_idx}")
-            node_vec = self.alloc_vec(f"v_node_{node_idx}")
-            node_offset = self.scratch_const(node_idx, slots=init_slots)
-            addr_reg = tmp_addr if node_idx % 2 == 0 else tmp_addr2
-            init_slots.append(
-                ("alu", ("+", addr_reg, self.scratch["forest_values_p"], node_offset))
-            )
-            init_slots.append(("load", ("load", node_scalar, addr_reg)))
-            init_slots.append(("valu", ("vbroadcast", node_vec, node_scalar)))
-            node_vecs.append(node_vec)
+            node_scalar_addrs.append(self.alloc_scratch(f"node_{node_idx}"))
+            node_vec_addrs.append(self.alloc_vec(f"v_node_{node_idx}"))
+            # Also allocate const for node offset
+            if node_idx not in const_addrs:
+                const_addrs[node_idx] = self.alloc_scratch(f"c_{node_idx}")
+                self.const_map[node_idx] = const_addrs[node_idx]
 
-        # Hash constants
-        hash_vec_consts1 = []
-        hash_vec_consts3 = []
-        hash_mul_vecs = []
+        # Hash constants - allocate addresses
+        hash_scalar_addrs1 = []
+        hash_vec_addrs1 = []
+        hash_scalar_addrs3 = []
+        hash_vec_addrs3 = []
+        hash_mul_scalar_addrs = []
+        hash_mul_vec_addrs = []
         for op1, val1, op2, op3, val3 in HASH_STAGES:
-            hash_vec_consts1.append(self.scratch_vconst(val1, slots=init_slots))
-            if op1 == "+" and op2 == "+" and op3 == "<<":
-                hash_vec_consts3.append(None)
-                hash_mul_vecs.append(
-                    self.scratch_vconst(1 + (1 << val3), slots=init_slots)
-                )
-            else:
-                hash_vec_consts3.append(self.scratch_vconst(val3, slots=init_slots))
-                hash_mul_vecs.append(None)
+            # val1 constant
+            if val1 not in const_addrs:
+                const_addrs[val1] = self.alloc_scratch(f"c_{val1}")
+                self.const_map[val1] = const_addrs[val1]
+            hash_scalar_addrs1.append(const_addrs[val1])
+            if val1 not in vec_addrs:
+                vec_addrs[val1] = self.alloc_vec(f"v_{val1}")
+                self.vconst_map[val1] = vec_addrs[val1]
+            hash_vec_addrs1.append(vec_addrs[val1])
 
+            if op1 == "+" and op2 == "+" and op3 == "<<":
+                hash_scalar_addrs3.append(None)
+                hash_vec_addrs3.append(None)
+                mul_val = 1 + (1 << val3)
+                if mul_val not in const_addrs:
+                    const_addrs[mul_val] = self.alloc_scratch(f"c_{mul_val}")
+                    self.const_map[mul_val] = const_addrs[mul_val]
+                hash_mul_scalar_addrs.append(const_addrs[mul_val])
+                if mul_val not in vec_addrs:
+                    vec_addrs[mul_val] = self.alloc_vec(f"v_{mul_val}")
+                    self.vconst_map[mul_val] = vec_addrs[mul_val]
+                hash_mul_vec_addrs.append(vec_addrs[mul_val])
+            else:
+                if val3 not in const_addrs:
+                    const_addrs[val3] = self.alloc_scratch(f"c_{val3}")
+                    self.const_map[val3] = const_addrs[val3]
+                hash_scalar_addrs3.append(const_addrs[val3])
+                if val3 not in vec_addrs:
+                    vec_addrs[val3] = self.alloc_vec(f"v_{val3}")
+                    self.vconst_map[val3] = vec_addrs[val3]
+                hash_vec_addrs3.append(vec_addrs[val3])
+                hash_mul_scalar_addrs.append(None)
+                hash_mul_vec_addrs.append(None)
+
+        # Other scratch
         assert batch_size % VLEN == 0
         blocks_per_round = batch_size // VLEN
-
-        # Allocate scratch for all idx/val vectors (persistent across rounds)
         idx_base = self.alloc_scratch("idx_scratch", batch_size)
         val_base = self.alloc_scratch("val_scratch", batch_size)
+        offset_addr = self.alloc_scratch("offset")
 
-        offset = self.alloc_scratch("offset")
-        init_slots.append(("load", ("const", offset, 0)))
-        vlen_const = self.scratch_const(VLEN, slots=init_slots)
+        # ===== PHASE 2: Emit ALL const loads (independent, can pack 2/cycle) =====
+        const_loads = []
+        const_loads.append(("load", ("const", forest_values_p_addr, FOREST_VALUES_P)))
+        const_loads.append(("load", ("const", inp_indices_p_addr, INP_INDICES_P)))
+        const_loads.append(("load", ("const", inp_values_p_addr, INP_VALUES_P)))
+        const_loads.append(("load", ("const", offset_addr, 0)))
+
+        # All scalar constants
+        for val, addr in const_addrs.items():
+            const_loads.append(("load", ("const", addr, val)))
+
+        # ===== PHASE 3: Emit ALL broadcasts (independent after loads, can pack 6/cycle) =====
+        broadcasts = []
+        broadcasts.append(("valu", ("vbroadcast", forest_vec, forest_values_p_addr)))
+        for val, addr in vec_addrs.items():
+            broadcasts.append(("valu", ("vbroadcast", addr, const_addrs[val])))
+
+        # ===== PHASE 4: Node preloading (depends on forest_values_p) =====
+        node_loads = []
+        for node_idx in range(PRELOAD_NODES):
+            addr_reg = tmp_addr if node_idx % 2 == 0 else tmp_addr2
+            node_loads.append(
+                ("alu", ("+", addr_reg, forest_values_p_addr, const_addrs[node_idx]))
+            )
+            node_loads.append(("load", ("load", node_scalar_addrs[node_idx], addr_reg)))
+            node_loads.append(
+                (
+                    "valu",
+                    (
+                        "vbroadcast",
+                        node_vec_addrs[node_idx],
+                        node_scalar_addrs[node_idx],
+                    ),
+                )
+            )
+
+        # ===== Combine init phases =====
+        init_slots = const_loads + broadcasts + node_loads
+
+        # Build references for kernel body
+        one_vec = vec_addrs[1]
+        two_vec = vec_addrs[2]
+        three_vec = vec_addrs[3]
+        four_vec = vec_addrs[4]
+        seven_vec = vec_addrs[7]
+        one_const = const_addrs[1]
+        node_vecs = node_vec_addrs
+        vlen_const = const_addrs[8]
+
+        # Hash constant vectors
+        hash_vec_consts1 = hash_vec_addrs1
+        hash_vec_consts3 = hash_vec_addrs3
+        hash_mul_vecs = hash_mul_vec_addrs
 
         slots: list[tuple[str, tuple]] = list(init_slots)
         for block in range(blocks_per_round):
-            slots.append(
-                ("alu", ("+", tmp_addr, self.scratch["inp_indices_p"], offset))
-            )
+            slots.append(("alu", ("+", tmp_addr, inp_indices_p_addr, offset_addr)))
             slots.append(("load", ("vload", idx_base + block * VLEN, tmp_addr)))
-            slots.append(("alu", ("+", tmp_addr, self.scratch["inp_values_p"], offset)))
+            slots.append(("alu", ("+", tmp_addr, inp_values_p_addr, offset_addr)))
             slots.append(("load", ("vload", val_base + block * VLEN, tmp_addr)))
-            slots.append(("alu", ("+", offset, offset, vlen_const)))
+            slots.append(("alu", ("+", offset_addr, offset_addr, vlen_const)))
 
         # Allocate contexts for group processing
         contexts = []

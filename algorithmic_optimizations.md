@@ -5,8 +5,8 @@
 README states: **"Best human performance ever is substantially better than [1,363 cycles]"**
 
 My previous analysis calculated:
-- **VALU-bound minimum**: 1,212 cycles
-- **Current achievement**: 1,305 cycles (92.9% efficiency)
+- **VALU-bound minimum**: 1,201 cycles
+- **Current achievement**: 1,303 cycles (92.2% efficiency)
 
 But if humans can go **substantially below 1,363**, the question is: **How do you beat the VALU bound?**
 
@@ -184,7 +184,7 @@ So current approach (ALU for XOR) is correct.
 
 **Total potential**: **76-145 cycles**
 
-**New target**: 1,305 - 76 to 145 = **1,160 to 1,229 cycles**
+**New target**: 1,303 - 76 to 145 = **1,158 to 1,227 cycles**
 
 This would be **95-96% efficiency**, closer to the "substantially better" claim.
 
@@ -225,6 +225,6 @@ This aligns with "substantially better than 1,363"!
 3. **Init phase batching** (refinement)
 4. **Hardcode more constants** (polish)
 
-Expected final result: **~1,000-1,100 cycles** (vs current 1,305)
+Expected final result: **~1,000-1,100 cycles** (vs current 1,303)
 
 This would be **phenomenal** and possibly approach the "best human performance" benchmark.

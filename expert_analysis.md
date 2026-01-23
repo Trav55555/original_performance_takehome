@@ -4,7 +4,7 @@
 
 Your performance take-home project is an **excellent analog** to real-world CPU optimization problems. I'll analyze your current solution through the lens of modern CPU optimization techniques and identify which optimizations you've already applied and which remain untapped.
 
-**Current Achievement**: 1,305 cycles (113.2× speedup, 92.9% of theoretical minimum)
+**Current Achievement**: 1,303 cycles (113.4× speedup, 92.2% of theoretical minimum)
 
 ## Mapping: VLIW → Real CPU Architectures
 

@@ -170,14 +170,15 @@ AFTER (1 cycle):
 |--------|--------|---------|-------|
 | Automatic list scheduler | 1,307 | 113.0× | Greedy VLIW bundle packing |
 | vselect for levels 0-3 | 1,307 | 113.0× | Preload nodes 0-14, use flow ops |
-| Init phase merge | 1,305 | 113.2× | Let scheduler interleave init with main |
+| Init phase merge | 1,304 | 113.3× | Let scheduler interleave init with main |
 
 ### Session 7 (Value Reuse Analysis)
 | Change | Cycles | Speedup | Notes |
 |--------|--------|---------|-------|
 | Level 3 bit extraction | 1,304 | 113.3× | Extract all bits before vselects clobber temps |
+| Batched init phases | 1,303 | 113.4× | All const loads first, then all broadcasts |
 
-**Final: 1,304 cycles (113.3× speedup)**
+**Final: 1,303 cycles (113.4× speedup)**
 
 ## Final Solution Architecture
 
@@ -211,7 +212,7 @@ The final solution uses a fundamentally different approach: **automatic list sch
 |--------|-------|
 | Total VALU ops | 7,267 |
 | Theoretical minimum | 1,212 cycles |
-| Achieved | 1,305 cycles |
+| Achieved | 1,303 cycles |
 | Efficiency | 92.9% |
 | VALU utilization | 5.57/6 (92.8%) |
 | ALU utilization | 10.68/12 (89%) |
@@ -311,11 +312,11 @@ For rounds 1,2,12,13,14,15: preload unique tree values, use arithmetic selection
 | Opus 4.5 2hr | <1,579 | 94× | ✓ |
 | Opus 4.5 11hr | <1,487 | 99× | ✓ |
 | Opus 4.5 improved | <1,363 | 108× | ✓ |
-| **ACHIEVED** | **1,304** | **113.3×** | **✓** |
+| **ACHIEVED** | **1,303** | **113.4×** | **✓** |
 | Theoretical minimum | 1,201 | 123.0× | (92.1% achieved) |
 
 ## Current Performance
-- Cycle count: 1,304
+- Cycle count: 1,303
 - Speedup: 113.3×
 - Status: **COMPLETE** - Exceeds all target thresholds
 
@@ -332,7 +333,7 @@ The final solution is **VALU-bound**, not memory-bound:
 
 ### Why 103 Cycles Above Minimum?
 
-The 1,304 - 1,201 = 103 cycle gap is structural overhead:
+The 1,303 - 1,201 = 102 cycle gap is structural overhead:
 
 1. **Startup ramp** (~33 cycles): Init broadcasts, constant loading
 2. **Drain phase** (~50 cycles): Final stores, pipeline emptying  

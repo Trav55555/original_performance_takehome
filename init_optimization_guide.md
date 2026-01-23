@@ -2,7 +2,9 @@
 
 ## Background
 
-Current performance: **1,305 cycles (92.9% efficient)**
+Current performance: **1,303 cycles (92.2% efficient)**
+
+**Update**: Batched init optimization was implemented and achieved 1 cycle improvement (1304 → 1303).
 Remaining headroom: **93 cycles**
 - Init phase: ~33 cycles (can improve 5-10 cycles)
 - Drain phase: ~25 cycles (optimal)
@@ -180,8 +182,8 @@ def build_vconst_ops(self):
 python tests/submission_tests.py
 
 # Expected results:
-# Before: 1,305 cycles
-# After:  1,295-1,300 cycles (5-10 cycle improvement)
+# Before: 1,304 cycles
+# After:  1,303 cycles (1 cycle improvement - scheduler was already efficient)
 ```
 
 ## Expected Impact
@@ -193,9 +195,9 @@ python tests/submission_tests.py
 | Node loads | ~15 cycles | ~13 cycles | 2 cycles |
 | **Total init** | **~33 cycles** | **~24 cycles** | **9 cycles** |
 
-**Final cycle count**: 1,305 - 9 = **1,296 cycles**
+**Actual result**: 1,304 - 1 = **1,303 cycles** (scheduler was already efficient)
 
-**New efficiency**: 1,212 / 1,296 = **93.5%** (vs current 92.9%)
+**New efficiency**: 1,201 / 1,303 = **92.2%** (marginal improvement)
 
 ## Alternative: Hardcode Benchmark Constants
 
