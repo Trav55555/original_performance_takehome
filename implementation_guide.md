@@ -158,12 +158,107 @@ AFTER (1 cycle):
 | Start | 4,030 | 36.7× | From commit 9b66c24 |
 | Remainder index batching | 3,946 | 37.4× | Batch all remainder index ops |
 
-### Session 5 (Current)
+### Session 5
 | Change | Cycles | Speedup | Notes |
 |--------|--------|---------|-------|
 | Hash fusion + select rounds | 3,765 | 39.2× | Fuse stages 0,2,4; round 1/12 select | 
 | BATCH=6 for all rounds | 3,241 | 45.6× | Fill VALU slots across rounds |
 | Wider prefetch window | 2,905 | 50.9× | Pack gathers into index-update bundles |
+
+### Session 6 (Zolotukhin Algorithm)
+| Change | Cycles | Speedup | Notes |
+|--------|--------|---------|-------|
+| Automatic list scheduler | 1,307 | 113.0× | Greedy VLIW bundle packing |
+| vselect for levels 0-3 | 1,307 | 113.0× | Preload nodes 0-14, use flow ops |
+| Init phase merge | 1,305 | 113.2× | Let scheduler interleave init with main |
+
+### Session 7 (Value Reuse Analysis)
+| Change | Cycles | Speedup | Notes |
+|--------|--------|---------|-------|
+| Level 3 bit extraction | 1,304 | 113.3× | Extract all bits before vselects clobber temps |
+
+**Final: 1,304 cycles (113.3× speedup)**
+
+## Final Solution Architecture
+
+The final solution uses a fundamentally different approach: **automatic list scheduling**.
+
+### Key Innovations
+
+1. **Flat Operation List + Greedy Scheduler**
+   - Generate all operations as `(engine, slot)` tuples
+   - Greedy algorithm packs into VLIW bundles respecting dependencies
+   - Handles RAW, WAW, WAR hazards automatically
+
+2. **vselect for Tree Levels 0-3**
+   - Preload tree nodes 0-14 as broadcast vectors during init
+   - Use `vselect` (flow ops) instead of memory gathers for levels 0-3
+   - Trades 15 broadcasts for eliminating ~1200 gather operations
+
+3. **Tiled Processing**
+   - `group_size=17`: Process 17 blocks concurrently
+   - `round_tile=13`: Process 13 rounds per tile
+   - Optimal values found empirically
+
+4. **Hash Stage Fusion**
+   - Fusable pattern: `op1=='+' and op2=='+' and op3=='<<'`
+   - `multiply_add(val, (1 + (1 << shift)), const)` replaces 3 ops with 1
+   - Stages 0, 2, 4 are fusable; stages 1, 3, 5 require 3 ops each
+
+### Performance Breakdown
+
+| Metric | Value |
+|--------|-------|
+| Total VALU ops | 7,267 |
+| Theoretical minimum | 1,212 cycles |
+| Achieved | 1,305 cycles |
+| Efficiency | 92.9% |
+| VALU utilization | 5.57/6 (92.8%) |
+| ALU utilization | 10.68/12 (89%) |
+
+### Cycle Distribution
+
+| Utilization | Cycles | Percentage |
+|-------------|--------|------------|
+| 6 VALU (max) | 1,123 | 86.1% |
+| 5 VALU | 40 | 3.1% |
+| 4 VALU | 32 | 2.5% |
+| 3 VALU | 32 | 2.5% |
+| 2 VALU | 36 | 2.8% |
+| 1 VALU | 33 | 2.5% |
+| 0 VALU | 9 | 0.7% |
+
+### What Didn't Work
+
+1. **Inline store emission**: Emitting stores immediately after each block's final round made things 12 cycles WORSE (fragmented stores created scheduling conflicts)
+
+2. **Aggressive tiling**: Larger group_size/round_tile caused scratch overflow
+
+3. **Different tile parameters**: Sweep of gs={14-20}, rt={10-16} confirmed gs=17, rt=13 is optimal
+
+4. **Skip last-round index update**: Result was 1323 cycles (+18 regression) - disrupted scheduler packing
+
+5. **Arithmetic selection replacing vselect**: +15 cycles - added VALU ops to already-bottlenecked engine
+
+6. **Moving work VALU↔ALU**: Makes respective bottleneck worse
+
+### Session 7: Value Reuse Analysis
+
+Used `scripts/value_reuse_profiler.py` to systematically find recomputation patterns.
+
+**Optimization Found**: Level 3 selection was computing `(idx-7)` twice:
+- First to extract bits 0,1 for vselects
+- Again after vselects (which clobbered tmp1) to extract bit 2
+
+**Fix**: Add `tmp4` register, extract all 3 bits upfront before vselects clobber temps.
+- Savings: 64 VALU ops (1 per level-3 block-round)
+- Result: 7267 → 7203 VALU ops, 1305 → 1304 cycles
+
+**Patterns Analyzed (No Further Optimization)**:
+1. Hash XOR operations - same addresses but different values each round
+2. idx=0 wraparound - 32 distinct destinations (one per block)
+3. Selection masks - computed fresh each round (idx changes)
+4. Address calculations - offset changes each iteration
 
 ## Detailed Analysis (Session 4)
 
@@ -207,66 +302,127 @@ For rounds 1,2,12,13,14,15: preload unique tree values, use arithmetic selection
 - **Net savings estimate: ~540-654 cycles**
 
 ## Target Thresholds
-| Target | Cycles | Speedup |
-|--------|--------|---------|
-| Baseline | 147,734 | 1× |
-| **Current** | **2,905** | **50.9×** |
-| Opus 4 many hours | <2,164 | 68× |
-| Opus 4.5 casual | <1,790 | 83× |
-| Sonnet 4.5 many hours | <1,548 | 95× |
-| Opus 4.5 2hr | <1,579 | 94× |
-| Opus 4.5 11hr | <1,487 | 99× |
-| Opus 4.5 improved | <1,363 | 108× |
+| Target | Cycles | Speedup | Status |
+|--------|--------|---------|--------|
+| Baseline | 147,734 | 1× | |
+| Opus 4 many hours | <2,164 | 68× | ✓ |
+| Opus 4.5 casual | <1,790 | 83× | ✓ |
+| Sonnet 4.5 many hours | <1,548 | 95× | ✓ |
+| Opus 4.5 2hr | <1,579 | 94× | ✓ |
+| Opus 4.5 11hr | <1,487 | 99× | ✓ |
+| Opus 4.5 improved | <1,363 | 108× | ✓ |
+| **ACHIEVED** | **1,304** | **113.3×** | **✓** |
+| Theoretical minimum | 1,201 | 123.0× | (92.1% achieved) |
 
 ## Current Performance
-- Cycle count: 2,905
-- Speedup: 50.9×
-- Status: Correctness OK; need ~1.6× more improvement for Opus 4
+- Cycle count: 1,304
+- Speedup: 113.3×
+- Status: **COMPLETE** - Exceeds all target thresholds
 
-## Remaining Optimizations
+## Theoretical Limits Analysis
 
-### Approaches Explored (Not Viable)
+The final solution is **VALU-bound**, not memory-bound:
 
-**Speculative Child Prefetch**: Load both children during hash, select correct one.
-- Issue: Need 48 loads (3 batches × 8 elements × 2 children) but only 24 slots available in hash
-- Would require reducing batch size (2 instead of 3), losing more cycles than saved
+| Resource | Total Ops | Slots/Cycle | Minimum Cycles |
+|----------|-----------|-------------|----------------|
+| VALU | 7,203 | 6 | **1,201** ← bottleneck |
+| ALU | 13,935 | 12 | 1,162 |
+| Load | 2,188 | 2 | 1,094 |
+| Store | 32 | 2 | 16 |
 
-**Greedy cross-round prefetch in Scheduler**: Preload next-round nodes into a staging buffer.
-- Issue: Scratch pressure spikes (BATCH>6 overflows), and BATCH=8/12 regresses cycles.
-- Note: Wider prefetch window inside index-update bundles is the only variant that helped.
+### Why 103 Cycles Above Minimum?
 
-**Index Deduplication**: Use broadcast for rounds with few unique indices.
-- Issue: Unique indices depend on hash values (data-dependent), not tree structure
-- Only rounds 0 and 11 are guaranteed all-zero (already optimized as broadcast)
+The 1,304 - 1,201 = 103 cycle gap is structural overhead:
 
-**Early-round preloading (tree[1..14])**: Preload tree values for rounds 1-3, 12-14 where indices are constrained.
-- Issue: Setup cost (~70 cycles) exceeds per-round savings
-- Explored: `node = tree[2] + (tree[1]-tree[2]) * (idx&1)` for round 1
+1. **Startup ramp** (~33 cycles): Init broadcasts, constant loading
+2. **Drain phase** (~50 cycles): Final stores, pipeline emptying  
+3. **Scheduling gaps** (~20 cycles): Dependencies forcing serialization
 
-### Remaining Opportunities
+### Further Optimization Possibilities
 
-1. **Cross-round pipelining**: After round N finishes, start loading round N+1's nodes
-   - Challenge: Indices aren't known until index update completes
-   - Potential: Use idle load slots in index update phase (5 VALU bundles with no loads)
+To reduce further would require:
+1. **Algorithmic changes**: Reduce total VALU ops (hash is fixed by problem)
+2. **Globally optimal scheduler**: Current greedy scheduler is local-optimal
+3. **Speculative execution**: Risk incorrect results for speed
 
-2. **Idle load slot utilization**: ~55% of load slots are idle
-   - Current: 3,248 used / 7,118 potential slots = 45.6% utilization
-   - Post-hash index update has 5 VALU-only cycles with 2 idle load slots each
+At 92.1% of theoretical minimum, additional gains are marginal.
 
-3. **VALU bundle merging**: 1,244 pairs of adjacent VALU bundles could merge
-   - Most have data dependencies, but some might be safe
+## Analysis Tools
 
-4. **Different batch size**: Try 4-batch or 5-batch processing
-   - Challenge: Remainder handling complexity, scratch space usage
+Three tools in `scripts/` for understanding and optimizing VLIW kernels:
 
-### Bottleneck Analysis
+### 1. Bottleneck Detector (`scripts/bottleneck_detector.py`)
 
-The fundamental limit is the gather operations (random memory access):
-- 14 gather rounds × 32 vectors × 8 elements = 3,584 gathers
-- At 2 loads/cycle minimum: 1,792 cycles just for gathers
-- Current: 3,940 cycles → ~54% spent on non-gather operations
-- Hash computation is fully overlapped with prefetch within triples
-- VALU is not the bottleneck (6 slots available, typically using 3-6)
+Determines whether kernel is VALU-bound, memory-bound, etc. and provides actionable recommendations.
+
+```bash
+python scripts/bottleneck_detector.py
+```
+
+Output:
+- Operation counts per engine
+- Theoretical minimum cycles per engine
+- Identifies bottleneck (highest minimum)
+- Efficiency percentage
+- Specific recommendations based on bottleneck type
+
+### 2. Profiler (`scripts/profiler.py`)
+
+Per-cycle utilization breakdown with histograms and phase analysis.
+
+```bash
+python scripts/profiler.py                    # Summary + init/drain phases
+python scripts/profiler.py --histogram        # Add utilization histograms
+python scripts/profiler.py --bubbles          # Find low-utilization cycles
+python scripts/profiler.py --phase steady     # Analyze middle section
+```
+
+Output:
+- Average utilization per engine
+- Utilization distribution histogram
+- Init phase breakdown (first 50 cycles)
+- Drain phase breakdown (last 50 cycles)
+- Scheduling bubbles (cycles with VALU <= 3)
+
+### 3. Schedule Visualizer (`scripts/visualize_schedule.py`)
+
+ASCII visualization of VLIW bundles showing gaps and patterns.
+
+```bash
+python scripts/visualize_schedule.py --gaps           # Find contiguous low-util regions
+python scripts/visualize_schedule.py --start 0 --end 100  # Visualize cycle range
+python scripts/visualize_schedule.py --compact --all  # Full schedule, compact view
+```
+
+Output:
+- ASCII bars showing per-cycle utilization
+- Gap analysis (contiguous regions of low VALU)
+- Position breakdown (init vs steady vs drain)
+
+### Recommended Workflow
+
+1. **Start with bottleneck detector** - Know what you're optimizing for
+2. **Run profiler with --histogram** - Understand utilization distribution
+3. **Run visualizer with --gaps** - Find where cycles are wasted
+4. **Focus on largest gaps** - Init/drain phases often have most waste
+
+### Example Session
+
+```bash
+$ python scripts/bottleneck_detector.py
+DIAGNOSIS: VALU-BOUND
+Theoretical minimum: 1212 cycles
+Actual: 1305 cycles
+Efficiency: 92.9%
+
+$ python scripts/visualize_schedule.py --gaps
+Total gap cycles: 110
+  Init phase (first 50): 30 cycles
+  Drain phase (last 50): 46 cycles
+  Steady state: 0 gaps
+```
+
+This tells us: 76 of 93 wasted cycles are in init/drain phases. Steady state is optimal.
 
 ## External References
 - Designing a SIMD Algorithm from Scratch: https://mcyoung.xyz/2023/11/27/simd-base64/
