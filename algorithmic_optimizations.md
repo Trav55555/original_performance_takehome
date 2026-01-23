@@ -68,21 +68,16 @@ for op1, val1, op2, op3, val3 in HASH_STAGES:
 > | 2 | 4 | speculative ({3-6}) |
 > | 3 | 8-14 | speculative ({7-14}) |
 
-**Current**: Preload nodes 0-14, use `vselect` for rounds 0-3
+**Current**: Preload nodes 0-14, use `vselect` for levels 0-3
 
-**Missing**: What about **rounds 11-15**? Implementation guide mentions:
-> | Round | Unique Indices | Type |
-> |-------|----------------|------|
-> | 11 | 1 | broadcast (all wrap to 0) |
-> | 12 | 2 | speculative ({1,2}) |
-> | 13-15 | 4-16 | speculative |
+**UPDATE**: Rounds 11-14 ALREADY use vselect! The code uses `level = _round % (forest_height + 1)`:
+- Round 11 → level 0 (vselect, node[0])
+- Round 12 → level 1 (vselect, nodes 1-2)
+- Round 13 → level 2 (vselect, nodes 3-6)
+- Round 14 → level 3 (vselect, nodes 7-14)
+- Round 15 → level 4 (gather from memory)
 
-**Opportunity**: Apply same vselect optimization to **final rounds**! 
-
-**Estimated savings**:
-- Rounds 11-15: Similar pattern to rounds 0-3
-- Could save another ~100-200 gather operations
-- **Potential**: 50-100 cycles
+**This optimization is already implemented.** No additional savings available here.
 
 ### 5. Eliminate Index Updates (Read-Only Optimization)
 
@@ -172,59 +167,45 @@ With VALU: 1 VALU op × 32 blocks × 16 rounds = 512 VALU ops
 
 So current approach (ALU for XOR) is correct.
 
-## Realistic Optimization Targets
+## Realistic Optimization Targets (Updated)
 
-| Optimization | Estimated Cycle Savings | Effort |
+| Optimization | Estimated Cycle Savings | Status |
 |--------------|------------------------|--------|
-| **Eliminate round-15 index update** | 6-10 cycles | Low |
-| **Apply vselect to rounds 11-15** | 50-100 cycles | Medium |
-| **Aggressive const hardcoding** | 10-15 cycles | Low |
-| **Better scratch allocation** | 5-10 cycles | High |
-| **Init phase batching** | 5-10 cycles | Low |
+| **Apply vselect to rounds 11-15** | N/A | **Already implemented** via level-based logic |
+| **Eliminate round-15 index update** | 6-10 cycles | Tried, caused +18 cycle regression |
+| **Init phase batching** | 5-10 cycles | **Done** - got 1 cycle (1304→1303) |
+| **Better scratch allocation** | 5-10 cycles | High effort, marginal gain |
 
-**Total potential**: **76-145 cycles**
+## Current State Analysis
 
-**New target**: 1,303 - 76 to 145 = **1,158 to 1,227 cycles**
+**Profiler results** (1303 cycles):
+- Init phase: 29 cycles of low utilization (structural)
+- Steady state: 0 gaps, 84.4% of cycles have full 6 VALU
+- Drain phase: 40 cycles (storing 256 values)
 
-This would be **95-96% efficiency**, closer to the "substantially better" claim.
+**Theoretical minimum**: 1200 cycles (7200 VALU ops / 6 per cycle)
+**Current**: 1303 cycles (92.1% efficiency)
+**Gap**: 103 cycles = ~29 init + ~40 drain + ~34 scattered
 
-## Priority #1: Apply vselect to Rounds 11-15
+## Why Further Optimization is Hard
 
-This mirrors the rounds 0-3 optimization. Let me check the pattern:
+1. **VALU-bound**: We're at 92.1% VALU efficiency. To improve, must reduce VALU ops.
+2. **Hash is fixed**: 6 hash stages per round, can't change algorithm.
+3. **vselect already applied**: Levels 0-3 (rounds 0-3 AND 11-14) use preloaded nodes.
+4. **Init/drain overhead**: Structural, ~70 cycles unavoidable.
 
-At round 11, all indices wrap to 0 (leaf level).
-At round 12, indices diverge to {1, 2}.
-At round 13-15, indices diverge further.
+## What Would Break Through?
 
-**Implementation**:
-- After round 10 (last normal traversal), all indices wrap to 0
-- Round 11: All read node[0] (broadcast)
-- Round 12: vselect between node[1] and node[2]
-- Round 13: vselect among node[3-6]
-- Round 14: vselect among node[7-14]
-- Round 15: vselect among node[7-14] (or compute normally, since it's the last)
+To reach ~1000 cycles would require **algorithmic changes**:
+1. Different hash computation (not allowed)
+2. Reduce rounds (not allowed)
+3. Smarter tree traversal patterns
 
-**Benefit**: Eliminate ~800-1000 gather operations in final rounds
+The "substantially better" human performance likely uses techniques outside current approach.
 
-## Revised Theoretical Minimum
+## Conclusion
 
-If we apply vselect to rounds 11-15:
-- Eliminate ~1000 load ops → saves ~500 cycles (at 2 loads/cycle)
-- Add ~200 flow ops → costs ~200 cycles (at 1 flow/cycle)
-- Net: ~300 cycles saved
-- But we reduce VALU pressure, allowing better packing
+At 1303 cycles (92.1% efficiency), we're close to the theoretical VALU minimum of 1200 cycles.
+The remaining 103 cycle gap is mostly structural overhead (init/drain phases).
 
-**New estimate**: ~**1,000 cycles achievable**
-
-This aligns with "substantially better than 1,363"!
-
-## Action Plan
-
-1. **Implement vselect for rounds 11-15** (highest impact)
-2. **Eliminate round-15 index updates** (easy win)
-3. **Init phase batching** (refinement)
-4. **Hardcode more constants** (polish)
-
-Expected final result: **~1,000-1,100 cycles** (vs current 1,303)
-
-This would be **phenomenal** and possibly approach the "best human performance" benchmark.
+Further optimization would require fundamentally different approaches that reduce total VALU operations.
