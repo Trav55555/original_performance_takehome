@@ -41,6 +41,32 @@ git diff --exit-code 5452f74 -- tests/ problem.py
 
 `tests/` and `problem.py` remain unchanged. The kernel assumes root-starting traversals and writes final values only, not indices. The verification does not establish support for non-root starts or arbitrary dimensions.
 
+## Prototype results, not yet integrated
+
+A rebuilt generator reached **1,076 cycles using 1,253 scratch words** on the same benchmark. Prototype code remains outside this repository, so a fresh checkout still produces the retained 1,082-cycle kernel.
+
+The rebuilt generator schedules logical values before assigning scratch addresses and can choose between scalar and vector arithmetic. Its latest improvement moves 27 constant instructions from the load engine to flow-engine `add_imm` instructions using an existing base. This saves six cycles against the preceding rebuilt candidate. All initialization, instructions, scratch lifetimes, stores, and the final pause count toward the result.
+
+The selected 1,076-cycle program passed all nine frozen submission tests and the supplementary verifier through a test adapter. It also passed 100 full-width random cases, five bit patterns, physical scratch-lane checks, and dependency and corrupted-constant controls. These checks validate the selected program, not a finished production integration or an automatic cache-selection interface. A compact port of constant selection to the retained generator only tied 1,082 cycles.
+
+Other experiments did not improve the 1,076-cycle result. Tested arithmetic lookup selectors, progressive depth-5 selection, and equivalence-checked hash rewrites lost to their controls. Startup and tail scheduling changes did not beat the winner. Exact solving found no one-cycle reduction in its tested 16-, 32-, or 64-cycle suffixes with the prefix, physical registers, and instruction choices fixed. These suffix results are local. The retained graph's 1,074-cycle lower bound does not transfer to the rebuilt graph.
+
+### Retaining versus recomputing output pointers
+
+Twelve policies tested whether regenerating output pointers could reduce scratch lifetimes enough to pay for the extra instructions.
+
+| Policy | Cycles | Scratch words |
+|---|---:|---:|
+| Retain pointers, rebuilt control | 1,076 | 1,253 |
+| Best freely scheduled regeneration | 1,076 | 1,241 |
+| Regenerate near stores | 1,081 to 1,093 | 1,241 |
+
+Simply placing regeneration near stores in source order did not keep it late in the schedule. The scheduler moved many constants early. Explicitly delaying regeneration shortened pointer lifetimes but made execution slower. Even the best tie saved only twelve words, so pointer regeneration is not selected for integration.
+
+Each policy passed three full-width frozen executions with identical cycle counts across runs, plus physical scratch-lane checks. The best tie also passed twenty additional full-width cases, five patterns, and a corrupted-pointer control. The measurements include every added instruction and retained base-pointer lifetime.
+
+The next integration task is to make the rebuilt generator and deterministic cache selection self-contained, measure compilation cost, and rerun verification through the repository's normal entry point. No prototype has replaced the retained kernel.
+
 ## Warning: LLMs can cheat
 
 None of the solutions we received on the first day post-release below 1300 cycles were valid solutions. In each case, a language model modified the tests to make the problem easier.
