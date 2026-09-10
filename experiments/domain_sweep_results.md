@@ -1,5 +1,7 @@
 # Domain sweep after 1,088 cycles
 
+Follow-up: [benchmark-tuned instruction selection](algorithmica_results.md) moved two positional hash groups to the ALU engine and reached 1,082 cycles. It is scoped to the measured benchmark configuration, not a general selection policy. This record documents the preceding 1,084-cycle result.
+
 ## Result
 
 A bounded sweep across scheduling, algebra, instruction selection, caching, register pressure, and output conversion produced a compact retained kernel at **1,084 cycles**. The previous committed result was 1,088.

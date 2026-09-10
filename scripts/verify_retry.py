@@ -92,7 +92,7 @@ def check_scheduler():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seeds", type=int, default=100)
-    parser.add_argument("--max-cycles", type=int, default=1084)
+    parser.add_argument("--max-cycles", type=int, default=1082)
     args = parser.parse_args()
     assert args.seeds > 0
 
@@ -129,16 +129,27 @@ def main():
         (3, 9, 64),
         (4, 5, 32),
         (4, 12, 128),
+        (8, 18, 128),
         (10, 11, 256),
         (10, 22, 256),
     ]
+    # The unscoped scalarization regressed these shapes. Preserve their pre-change
+    # cycle ceilings; the 1,082-cycle tuning applies only to the benchmark.
+    shape_cycle_limits = {(4, 12, 128): 637, (8, 18, 128): 1017, (10, 11, 256): 1028}
     for height, rounds, batch in shapes:
         random.seed(1000 + height + rounds + batch)
         tree = Tree.generate(height)
         inp = Input.generate(tree, batch, rounds)
         other = KernelBuilder()
         other.build_kernel(height, len(tree.values), batch, rounds)
-        check_output(other, tree, inp)
+        other_cycles = check_output(other, tree, inp)
+        shape = (height, rounds, batch)
+        if shape in shape_cycle_limits:
+            assert other_cycles <= shape_cycle_limits[shape], (
+                shape,
+                other_cycles,
+                shape_cycle_limits[shape],
+            )
 
     check_scheduler()
 
@@ -175,6 +186,7 @@ def main():
     print(
         f"PASS: {args.seeds} random inputs, {len(patterns)} bit patterns, {len(shapes)} other shapes"
     )
+    print(f"PASS: {len(shape_cycle_limits)} non-benchmark performance gates")
     print("PASS: scheduler hazards; co-issued pause/store; corrupted kernel rejected")
     print(f"Cycles: {cycles}; scratch: {kernel.scratch_ptr}/{SCRATCH_SIZE}")
     print(f"Engine operations: {dict(counts)}")

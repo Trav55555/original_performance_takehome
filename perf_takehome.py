@@ -722,6 +722,7 @@ class KernelBuilder:
                             emit_xor(ctx["node"])
 
                         # Hash computation
+                        hash_start = len(slots)
                         for hi, (op1, _val1, op2, op3, _val3) in enumerate(HASH_STAGES):
                             mul_vec = hash_mul_vecs[hi]
                             if hi == len(HASH_STAGES) - 1:
@@ -780,6 +781,30 @@ class KernelBuilder:
                                 slots.append(
                                     ("valu", (op2, val_vec, ctx["tmp1"], ctx["node"]))
                                 )
+
+                        # Benchmark-tuned positions, not a dynamic pressure policy.
+                        # Other shapes/settings keep their original instruction mix.
+                        if (
+                            (forest_height, n_nodes, batch_size, rounds)
+                            == (10, 2047, 256, 16)
+                            and (group_size, round_tile, selection_banks) == (32, 12, 4)
+                            and block == 0
+                            and _round in (4, 8)
+                        ):
+                            lowered = []
+                            for engine, slot in slots[hash_start:]:
+                                if slot[0] == "multiply_add":
+                                    lowered.append((engine, slot))
+                                    continue
+                                op, dest, lhs, rhs = slot
+                                for lane in range(VLEN):
+                                    lowered.append(
+                                        (
+                                            "alu",
+                                            (op, dest + lane, lhs + lane, rhs + lane),
+                                        )
+                                    )
+                            slots[hash_start:] = lowered
 
                         # Only final values are output; no traversal follows the last round.
                         if _round == rounds - 1:
