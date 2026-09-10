@@ -245,7 +245,8 @@ class KernelBuilder:
         3*2**d + 5 - q. XORing v with (node XOR C) restores the exact hash
         input. The last hash stage omits XOR C; stores decode values again.
 
-        Levels 0-3 select preloaded, encoded nodes. Deeper levels gather.
+        Levels 0-3 select preloaded, encoded nodes. A few repeated level-4
+        visits also select cached nodes; other deeper visits gather.
         Two private vectors per block hold hash temporaries; shallow selection
         uses shared banks, leaving enough scratch for all 32 benchmark blocks.
         """
@@ -268,7 +269,7 @@ class KernelBuilder:
 
         # Vector constants - allocate addresses
         vec_addrs = {}
-        for val in [1, 2, 4]:
+        for val in [2, 4]:
             vec_addrs[val] = self.alloc_vec(f"v_{val}")
             self.vconst_map[val] = vec_addrs[val]
 
@@ -278,7 +279,12 @@ class KernelBuilder:
         node_scalar_addrs = list(
             range(node_scalar_base, node_scalar_base + PRELOAD_NODES)
         )
-        node_vec_addrs = [self.alloc_vec(f"v_node_{i}") for i in range(PRELOAD_NODES)]
+        cached_blocks = 6
+        cache_level4 = forest_height >= 4 and rounds > forest_height + 5
+        extra_nodes = 16 if cache_level4 else 0
+        node_vec_addrs = [
+            self.alloc_vec(f"v_node_{i}") for i in range(PRELOAD_NODES + extra_nodes)
+        ]
 
         # Hash constants - allocate addresses
         hash_scalar_addrs1 = []
@@ -370,18 +376,36 @@ class KernelBuilder:
                 )
             )
 
+        if extra_nodes:
+            # Reuse scalar staging after the shallow broadcasts have consumed it.
+            node_loads.extend(
+                [
+                    ("flow", ("add_imm", tmp_addr2, forest_values_p_addr, 15)),
+                    ("load", ("vload", node_scalar_base, tmp_addr2)),
+                    ("alu", ("+", tmp_addr2, tmp_addr2, const_addrs[8])),
+                    ("load", ("vload", node_scalar_base + 8, tmp_addr2)),
+                ]
+            )
+            for i in range(16):
+                scalar = node_scalar_base + i
+                node_loads.append(
+                    ("alu", ("^", scalar, scalar, hash_scalar_addrs1[-1]))
+                )
+                node_loads.append(
+                    ("valu", ("vbroadcast", node_vec_addrs[15 + i], scalar))
+                )
+
         # ===== Combine init phases =====
         init_slots = const_loads + broadcasts + node_loads
 
         # Build references for kernel body
-        one_vec = vec_addrs[1]
         two_vec = vec_addrs[2]
         four_vec = vec_addrs[4]
         one_const = const_addrs[1]
         # Encoded values invert branch parity. Mirror the path bits instead
         # of spending an instruction to invert parity on every index update.
         node_vecs = []
-        for level in range(4):
+        for level in range(5 if extra_nodes else 4):
             node_vecs.extend(
                 reversed(node_vec_addrs[(1 << level) - 1 : (1 << (level + 1)) - 1])
             )
@@ -454,8 +478,8 @@ class KernelBuilder:
                             # Level 0: XOR with preloaded node[0]
                             emit_xor(node_vecs[0])
                         elif level == 1:
-                            # Level 1: vselect between node[1] and node[2]
-                            slots.append(("valu", ("&", ctx["tmp1"], idx_vec, one_vec)))
+                            # The previous index update left q's low bit in tmp1.
+                            # It is private to this block, including across tiles.
                             slots.append(
                                 (
                                     "flow",
@@ -471,15 +495,14 @@ class KernelBuilder:
                             emit_xor(ctx["node"])
                         elif level == 2:
                             # Level 2: 3 vselects for nodes 3-6
-                            slots.append(("valu", ("&", ctx["tmp2"], idx_vec, one_vec)))
                             slots.append(("valu", ("&", ctx["node"], idx_vec, two_vec)))
                             slots.append(
                                 (
                                     "flow",
                                     (
                                         "vselect",
-                                        ctx["tmp1"],
                                         ctx["tmp2"],
+                                        ctx["tmp1"],
                                         node_vecs[4],
                                         node_vecs[3],
                                     ),
@@ -490,8 +513,8 @@ class KernelBuilder:
                                     "flow",
                                     (
                                         "vselect",
-                                        ctx["tmp2"],
-                                        ctx["tmp2"],
+                                        ctx["tmp1"],
+                                        ctx["tmp1"],
                                         node_vecs[6],
                                         node_vecs[5],
                                     ),
@@ -504,16 +527,15 @@ class KernelBuilder:
                                         "vselect",
                                         ctx["node"],
                                         ctx["node"],
-                                        ctx["tmp2"],
                                         ctx["tmp1"],
+                                        ctx["tmp2"],
                                     ),
                                 )
                             )
                             emit_xor(ctx["node"])
                         elif level == 3:
                             # Level 3: 7 vselects for the mirrored nodes 7-14
-                            # Extract all 3 selection bits upfront to avoid recomputation
-                            slots.append(("valu", ("&", ctx["tmp2"], idx_vec, one_vec)))
+                            # Reuse parity in tmp1; extract only the upper two bits.
                             slots.append(("valu", ("&", ctx["tmp3"], idx_vec, two_vec)))
                             slots.append(
                                 ("valu", ("&", ctx["tmp4"], idx_vec, four_vec))
@@ -525,7 +547,7 @@ class KernelBuilder:
                                     (
                                         "vselect",
                                         ctx["node"],
-                                        ctx["tmp2"],
+                                        ctx["tmp1"],
                                         node_vecs[8],
                                         node_vecs[7],
                                     ),
@@ -536,8 +558,8 @@ class KernelBuilder:
                                     "flow",
                                     (
                                         "vselect",
-                                        ctx["tmp1"],
                                         ctx["tmp2"],
+                                        ctx["tmp1"],
                                         node_vecs[10],
                                         node_vecs[9],
                                     ),
@@ -548,9 +570,9 @@ class KernelBuilder:
                                     "flow",
                                     (
                                         "vselect",
-                                        ctx["tmp1"],
+                                        ctx["tmp2"],
                                         ctx["tmp3"],
-                                        ctx["tmp1"],
+                                        ctx["tmp2"],
                                         ctx["node"],
                                     ),
                                 )
@@ -562,7 +584,7 @@ class KernelBuilder:
                                     (
                                         "vselect",
                                         ctx["node"],
-                                        ctx["tmp2"],
+                                        ctx["tmp1"],
                                         node_vecs[12],
                                         node_vecs[11],
                                     ),
@@ -573,8 +595,8 @@ class KernelBuilder:
                                     "flow",
                                     (
                                         "vselect",
-                                        ctx["tmp2"],
-                                        ctx["tmp2"],
+                                        ctx["tmp1"],
+                                        ctx["tmp1"],
                                         node_vecs[14],
                                         node_vecs[13],
                                     ),
@@ -587,7 +609,7 @@ class KernelBuilder:
                                         "vselect",
                                         ctx["node"],
                                         ctx["tmp3"],
-                                        ctx["tmp2"],
+                                        ctx["tmp1"],
                                         ctx["node"],
                                     ),
                                 )
@@ -601,11 +623,61 @@ class KernelBuilder:
                                         ctx["node"],
                                         ctx["tmp4"],
                                         ctx["node"],
-                                        ctx["tmp1"],
+                                        ctx["tmp2"],
                                     ),
                                 )
                             )
                             emit_xor(ctx["node"])
+                        elif level == 4 and _round > 4 and block < cached_blocks:
+                            # Cache a few repeated lookups, not the startup frontier:
+                            # replacing every gather would overload the flow engine.
+                            node, partial = ctx["node"], ctx["tmp2"]
+                            bit, saved, parity = ctx["tmp3"], ctx["tmp4"], ctx["tmp1"]
+
+                            def choose(dest, cond, yes, no):
+                                slots.append(("flow", ("vselect", dest, cond, yes, no)))
+
+                            def pair(dest, offset):
+                                choose(
+                                    dest,
+                                    parity,
+                                    node_vecs[16 + offset],
+                                    node_vecs[15 + offset],
+                                )
+
+                            pair(node, 0)
+                            pair(partial, 2)
+                            slots.append(("valu", ("&", bit, idx_vec, two_vec)))
+                            choose(partial, bit, partial, node)
+                            pair(node, 4)
+                            pair(saved, 6)
+                            choose(node, bit, saved, node)
+                            slots.append(("valu", ("&", saved, idx_vec, four_vec)))
+                            choose(saved, saved, node, partial)
+                            # Keep the first eight-node result in saved.
+                            pair(node, 8)
+                            pair(partial, 10)
+                            choose(partial, bit, partial, node)
+                            pair(node, 12)
+                            pair(parity, 14)  # Last use of the carried low bit.
+                            choose(node, bit, parity, node)
+                            slots.append(("valu", ("&", parity, idx_vec, four_vec)))
+                            choose(node, parity, node, partial)
+                            # Scalar masking avoids reserving another constant vector.
+                            for lane in range(VLEN):
+                                slots.append(
+                                    (
+                                        "alu",
+                                        (
+                                            "&",
+                                            bit + lane,
+                                            idx_vec + lane,
+                                            const_addrs[8],
+                                        ),
+                                    )
+                                )
+                            choose(node, bit, node, saved)
+                            emit_xor(node)
                         else:
                             # Level 4+: gather from memory
                             for lane in range(VLEN):
@@ -703,7 +775,8 @@ class KernelBuilder:
                         # Only final values are output; no traversal follows the last round.
                         if _round == rounds - 1:
                             continue
-                        # Index update
+                        # Index update. Preserve tmp1's parity for the next lookup,
+                        # including across round tiles; selection consumes it first.
                         if level == forest_height:
                             slots.append(("valu", ("vbroadcast", idx_vec, one_const)))
                         else:

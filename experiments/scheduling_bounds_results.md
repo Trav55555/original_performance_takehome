@@ -1,5 +1,7 @@
 # Resource-aware scheduling bounds
 
+Follow-up: [predicate reuse and selective caching](cross_domain_results.md) changed the graph and reached 1,088 cycles, with a new interval of 1,074 through 1,088. This record documents the preceding 1,113-cycle kernel and its bounds.
+
 ## Result
 
 The current kernel runs in **1,113 cycles**, one cycle below the previous 1,114. The final pause now shares the last store bundle. Arithmetic, body scheduling, instruction operands, and scratch allocation are unchanged.
