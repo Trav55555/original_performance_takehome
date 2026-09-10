@@ -102,7 +102,7 @@ def _slot_rw(engine: str, slot: tuple) -> tuple[list[int], list[int]]:
 
 
 def _schedule_slots(
-    slots: list[tuple[str, tuple]], priority_weight: int = 80
+    slots: list[tuple[str, tuple]], priority_weight: int = 100
 ) -> list[dict[str, list[tuple]]]:
     """Schedule using source order, critical paths, and near-term load demand.
 
@@ -151,7 +151,7 @@ def _schedule_slots(
         # Favor prerequisites of imminent loads before the load engine goes idle.
         # This is a scheduling hint, not a relaxation of any dependency.
         load_urgency = max(0, load_horizon - load_distance[i])
-        return i - priority_weight * critical_path[i] - 200 * load_urgency, i
+        return i - priority_weight * critical_path[i] - 300 * load_urgency, i
 
     ready = [priority(i) for i, count in enumerate(pending) if count == 0]
     heapq.heapify(ready)
@@ -376,6 +376,13 @@ class KernelBuilder:
                 )
             )
 
+        # Stage zero's scalar constant is dead after its vector broadcast.
+        # Reuse it to preserve the actual root without another scratch word.
+        root_raw = hash_scalar_addrs1[0]
+        node_loads.append(
+            ("alu", ("^", root_raw, node_scalar_addrs[0], hash_scalar_addrs1[-1]))
+        )
+
         if extra_nodes:
             # Reuse scalar staging after the shallow broadcasts have consumed it.
             node_loads.extend(
@@ -427,7 +434,8 @@ class KernelBuilder:
             )
             for lane in range(VLEN):
                 addr = val_base + block * VLEN + lane
-                slots.append(("alu", ("^", addr, addr, hash_scalar_addrs1[-1])))
+                initial_xor = root_raw if rounds else hash_scalar_addrs1[-1]
+                slots.append(("alu", ("^", addr, addr, initial_xor)))
 
         # Allocate contexts for group processing
         contexts = []
@@ -475,8 +483,9 @@ class KernelBuilder:
                                 )
 
                         if level == 0:
-                            # Level 0: XOR with preloaded node[0]
-                            emit_xor(node_vecs[0])
+                            # Round zero's root was folded into input initialization.
+                            if _round != 0:
+                                emit_xor(node_vecs[0])
                         elif level == 1:
                             # The previous index update left q's low bit in tmp1.
                             # It is private to this block, including across tiles.

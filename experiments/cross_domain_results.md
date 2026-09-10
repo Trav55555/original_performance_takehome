@@ -1,5 +1,7 @@
 # Cross-domain optimization experiments
 
+Follow-up: [the broader domain sweep](domain_sweep_results.md) folded the first root mix and retuned scheduling to reach 1,084 cycles. This record documents the preceding 1,088-cycle graph change.
+
 ## Result
 
 The retained kernel now runs in **1,088 cycles**, down 25 cycles from commit `b09d2a6` at 1,113. It also beats the old dependency graph's 1,104-cycle lower bound because it changes the computation graph.
