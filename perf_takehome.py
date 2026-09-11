@@ -236,6 +236,51 @@ class KernelBuilder:
         round_tile: int = 12,
         selection_banks: int = 4,
     ):
+        """Use the SSA compiler for the default benchmark; retain other paths.
+
+        Cache-site selection depends only on the public shape and instruction
+        schedule. Its immutable compilation is memoized; each builder receives
+        fresh bundles so callers cannot corrupt later builds through mutation.
+        """
+        shape = (forest_height, n_nodes, batch_size, rounds)
+        if (
+            shape == (10, 2047, 256, 16)
+            and (group_size, round_tile, selection_banks) == (32, 12, 4)
+            and VLEN == 8
+            and N_CORES == 1
+        ):
+            from kernel_compiler import compile_benchmark
+
+            compiled = compile_benchmark()
+            self.instrs = compiled.materialize()
+            self.scratch_ptr = compiled.scratch_size
+            self.compile_info = {
+                "path": "ssa",
+                "cache_sites": compiled.cache_sites,
+                "evaluations": compiled.evaluations,
+            }
+            return
+        self.compile_info = {"path": "legacy"}
+        return self._build_legacy_kernel(
+            forest_height,
+            n_nodes,
+            batch_size,
+            rounds,
+            group_size,
+            round_tile,
+            selection_banks,
+        )
+
+    def _build_legacy_kernel(
+        self,
+        forest_height: int,
+        n_nodes: int,
+        batch_size: int,
+        rounds: int,
+        group_size: int = 32,
+        round_tile: int = 12,
+        selection_banks: int = 4,
+    ):
         """
         Compile the root-starting traversal to a straight-line SIMD program.
 

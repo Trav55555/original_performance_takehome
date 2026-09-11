@@ -16,7 +16,7 @@ Measured in clock cycles from the simulated machine. All of these numbers are fo
 - **1548 cycles**: Claude Sonnet 4.5 after many more than 2 hours of test-time compute
 - **1487 cycles**: Claude Opus 4.5 after 11.5 hours in the harness
 - **1363 cycles**: Claude Opus 4.5 in an improved test time compute harness
-- **1082 cycles**: This repo (encoded values, benchmark-tuned instruction selection, folded root initialization, mirrored indices, predicate reuse, selective depth-4 caching, and dependency scheduling with load lookahead; previously 1303 cycles)
+- **1076 cycles**: This repo (self-contained SSA compiler, automatic depth-4 cache selection, lane-ready instruction selection, load/flow constant choices, and post-schedule scratch allocation; previously 1082 cycles)
 - **??? cycles**: Best human performance ever is substantially better than the above, but we won't say how much.
 
 While it's no longer a good time-limited test, you can still use this test to get us excited about hiring you! If you optimize below 1487 cycles, beating Claude Opus 4.5's best performance at launch, email us at performance-recruiting@anthropic.com with your code (and ideally a resume) so we can be appropriately impressed, especially if you get near the best solution we've seen. New model releases may change what threshold impresses us though, and no guarantees that we keep this readme updated with the latest on that.
@@ -25,31 +25,36 @@ Run `python tests/submission_tests.py` to see which thresholds you pass.
 
 ## Current implementation and verification
 
-The retained kernel takes **1,082 cycles** for height 10, 2,047 tree nodes, batch size 256, and 16 rounds. This saves 221 cycles from the previous 1,303-cycle baseline, a 17.0% reduction. Scratch usage is **1,536 of 1,536 words**, on one core with eight SIMD lanes.
+The default kernel takes **1,076 cycles** for height 10, 2,047 tree nodes, batch size 256, and 16 rounds. Scratch usage is **1,236 of 1,536 words**, on one core with eight SIMD lanes. This saves six cycles from the preceding implementation and 227 cycles from the 1,303-cycle baseline, a 17.4% reduction.
 
-Resource-aware bounds put the optimum for the current dependency graph between 1,074 and 1,082 cycles. This is not a bound on every legal implementation. See [the Algorithmica-inspired instruction-selection experiment](experiments/algorithmica_results.md) for the latest change and bound, [the domain sweep](experiments/domain_sweep_results.md) for the preceding result, and [the optimization history](experiments/retry_results.md) for the representation changes.
+`kernel_compiler.py` selects caches from an empty plan, schedules logical values with lane readiness, chooses execution engines, then allocates physical scratch. It uses no saved configurations, prototype imports, or runtime input inspection. Selection currently evaluates 222 plans. Cold builds took 23 to 25 seconds on this host; memoized builds in the same process took about 5 ms. Only the immutable compiled result is cached, with fresh mutable bundles for each builder.
 
-The last two-cycle gain is a benchmark-tuned positional exception, not a general instruction-selection policy. It scalarizes two hashes only for the benchmark shape with the default generator settings. Other shapes and settings keep the previous instruction mix.
+The rebuilt path applies only to the benchmark with default tuning parameters. Other shapes and explicit overrides retain the legacy generator. Its original 1,082-cycle benchmark implementation remains available as `KernelBuilder._build_legacy_kernel`.
 
-Verification covers all nine frozen submission tests, 100 random inputs, five full-width/asymmetric bit patterns, and nine additional root-starting shapes. Three non-benchmark performance gates protect shapes that regressed under the original unscoped exception. Supplementary checks exercise register hazards, co-issued pause/store completion, and rejection of a deliberately corrupted kernel. The benchmark performance gate rejects results above 1,082 cycles.
+The current instruction stream has a capacity-only lower bound of 1,047 cycles. The earlier 1,074-to-1,082 graph bound belongs to the legacy implementation and does not transfer here. Neither establishes a challenge-wide optimum. See [the promotion receipt](experiments/rebuilt_promotion_results.md), [the preceding instruction-selection experiment](experiments/algorithmica_results.md), and [the optimization history](experiments/retry_results.md).
+
+Verification through the normal entry point covers all nine frozen submission tests, 100 generated inputs, 100 additional full-width inputs, five asymmetric bit patterns, and nine additional root-starting shapes. Three non-benchmark performance gates remain in place. Compiler checks cover lane identities, constant/dependency mutations, explicit-override fallback, cached-program isolation, and deterministic source-only builds. Supplementary checks cover register hazards and co-issued pause/store completion. The benchmark performance gate rejects results above 1,076 cycles.
 
 ```sh
 python tests/submission_tests.py
 python scripts/verify_retry.py
+python scripts/verify_compiler.py
 git diff --exit-code 5452f74 -- tests/ problem.py
 ```
 
 `tests/` and `problem.py` remain unchanged. The kernel assumes root-starting traversals and writes final values only, not indices. The verification does not establish support for non-root starts or arbitrary dimensions.
 
-## Prototype results, not yet integrated
+## Prototype history and rejected experiments
 
-A rebuilt generator reached **1,076 cycles using 1,253 scratch words** on the same benchmark. Prototype code remains outside this repository, so a fresh checkout still produces the retained 1,082-cycle kernel.
+See [the Algorithmica follow-up lessons](experiments/algorithmica_followup_results.md) for measured tradeoffs, graph-bound limits, and source references.
+
+The original rebuilt prototype reached **1,076 cycles using 1,253 scratch words** on the same benchmark. Its approach is now integrated. The production compiler independently reselects cache sites and reaches the same cycle count with 1,236 words, without importing the old configuration.
 
 The rebuilt generator schedules logical values before assigning scratch addresses and can choose between scalar and vector arithmetic. Its latest improvement moves 27 constant instructions from the load engine to flow-engine `add_imm` instructions using an existing base. This saves six cycles against the preceding rebuilt candidate. All initialization, instructions, scratch lifetimes, stores, and the final pause count toward the result.
 
-The selected 1,076-cycle program passed all nine frozen submission tests and the supplementary verifier through a test adapter. It also passed 100 full-width random cases, five bit patterns, physical scratch-lane checks, and dependency and corrupted-constant controls. These checks validate the selected program, not a finished production integration or an automatic cache-selection interface. A compact port of constant selection to the retained generator only tied 1,082 cycles.
+The selected 1,076-cycle program passed all nine frozen submission tests and the supplementary verifier through a test adapter. It also passed 100 full-width random cases, five bit patterns, physical scratch-lane checks, and dependency and corrupted-constant controls. Those historical checks validated a selected program. The promotion receipt above adds normal-entry-point and automatic-selection verification. A compact port of constant selection to the retained generator only tied 1,082 cycles.
 
-Other experiments did not improve the 1,076-cycle result. Tested arithmetic lookup selectors, progressive depth-5 selection, and equivalence-checked hash rewrites lost to their controls. Startup and tail scheduling changes did not beat the winner. Exact solving found no one-cycle reduction in its tested 16-, 32-, or 64-cycle suffixes with the prefix, physical registers, and instruction choices fixed. These suffix results are local. The retained graph's 1,074-cycle lower bound does not transfer to the rebuilt graph.
+Other experiments did not improve the 1,076-cycle result. Tested arithmetic lookup selectors, progressive depth-5 selection, and equivalence-checked hash rewrites lost to their controls. Startup and tail scheduling changes did not beat the winner. Exact solving found no one-cycle reduction in its tested 16-, 32-, or 64-cycle suffixes with the prefix, physical registers, and instruction choices fixed. These suffix results are local. The legacy graph's 1,074-cycle lower bound does not transfer to the rebuilt graph.
 
 ### Retaining versus recomputing output pointers
 
@@ -65,7 +70,7 @@ Simply placing regeneration near stores in source order did not keep it late in 
 
 Each policy passed three full-width frozen executions with identical cycle counts across runs, plus physical scratch-lane checks. The best tie also passed twenty additional full-width cases, five patterns, and a corrupted-pointer control. The measurements include every added instruction and retained base-pointer lifetime.
 
-The next integration task is to make the rebuilt generator and deterministic cache selection self-contained, measure compilation cost, and rerun verification through the repository's normal entry point. No prototype has replaced the retained kernel.
+Self-contained integration and normal-entry-point verification are now complete. The [bounded research follow-up](experiments/research_followup_results.md) records the preceding cache and regional-scheduling experiments. Further runtime improvements remain unproven; the current tradeoff is slower cold compilation in exchange for six fewer simulated cycles.
 
 ## Warning: LLMs can cheat
 

@@ -92,7 +92,7 @@ def check_scheduler():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seeds", type=int, default=100)
-    parser.add_argument("--max-cycles", type=int, default=1082)
+    parser.add_argument("--max-cycles", type=int, default=1076)
     args = parser.parse_args()
     assert args.seeds > 0
 
@@ -134,7 +134,7 @@ def main():
         (10, 22, 256),
     ]
     # The unscoped scalarization regressed these shapes. Preserve their pre-change
-    # cycle ceilings; the 1,082-cycle tuning applies only to the benchmark.
+    # cycle ceilings; the rebuilt compiler applies only to the benchmark.
     shape_cycle_limits = {(4, 12, 128): 637, (8, 18, 128): 1017, (10, 11, 256): 1028}
     for height, rounds, batch in shapes:
         random.seed(1000 + height + rounds + batch)
