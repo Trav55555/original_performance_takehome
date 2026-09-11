@@ -16,7 +16,7 @@ Measured in clock cycles from the simulated machine. All of these numbers are fo
 - **1548 cycles**: Claude Sonnet 4.5 after many more than 2 hours of test-time compute
 - **1487 cycles**: Claude Opus 4.5 after 11.5 hours in the harness
 - **1363 cycles**: Claude Opus 4.5 in an improved test time compute harness
-- **1052 cycles**: This repo (self-contained SSA compiler, fused hash stages, mixed lookup selectors, stored branch bits, bounded engine lookahead, and automatic depth-4 cache selection; previously 1076 cycles)
+- **1041 cycles**: This repo (self-contained SSA compiler, fused hash stages, mixed lookup selectors, stored branch bits, bounded engine lookahead, startup dependency priority, and automatic depth-4 cache selection; previously 1052 cycles)
 - **??? cycles**: Best human performance ever is substantially better than the above, but we won't say how much.
 
 While it's no longer a good time-limited test, you can still use this test to get us excited about hiring you! If you optimize below 1487 cycles, beating Claude Opus 4.5's best performance at launch, email us at performance-recruiting@anthropic.com with your code (and ideally a resume) so we can be appropriately impressed, especially if you get near the best solution we've seen. New model releases may change what threshold impresses us though, and no guarantees that we keep this readme updated with the latest on that.
@@ -25,17 +25,17 @@ Run `python tests/submission_tests.py` to see which thresholds you pass.
 
 ## Current implementation and verification
 
-The default kernel takes **1,052 cycles** for height 10, 2,047 tree nodes, batch size 256, and 16 rounds. Scratch usage is **1,457 of 1,536 words**, on one core with eight SIMD lanes. This saves 24 cycles from the preceding production implementation.
+The default kernel takes **1,041 cycles** for height 10, 2,047 tree nodes, batch size 256, and 16 rounds. Scratch usage is **1,458 of 1,536 words**, on one core with eight SIMD lanes. This saves eleven cycles from the preceding production implementation.
 
-`kernel_compiler.py` first selects caches from an empty plan using the previous cost model, then refines that plan with the new hash/selector rules and bounded engine lookahead from `kernel_lookahead.py`. It evaluates 350 plans in total, with full scheduling and scratch allocation. No saved configurations, prototype imports, or runtime input inspection are used.
+`kernel_compiler.py` first selects caches from an empty plan using the previous cost model, then refines that plan with the hash/selector rules, bounded engine lookahead from `kernel_lookahead.py`, and startup priority for the first four walkers' gather dependencies. It evaluates 350 plans in total, with full scheduling and scratch allocation. No saved configurations, prototype imports, or runtime input inspection are used.
 
-Cold builds took 73 to 75 seconds on this host, up from 23 to 25 seconds. Memoized builds in the same process took about 3 ms. The baseline and final programs are cached as immutable tuples, with fresh mutable bundles for each builder. There is no disk cache.
+Cold builds took roughly 72 to 76 seconds on this host. Memoized builds in the same process took about 3 ms. Compiled programs are cached as immutable tuples, with fresh mutable bundles for each builder. There is no disk cache.
 
 The rebuilt path applies only to the benchmark with default tuning parameters. Other shapes and explicit overrides retain the legacy generator. Its original 1,082-cycle benchmark implementation remains available as `KernelBuilder._build_legacy_kernel`.
 
-The current instruction stream has a capacity-only lower bound of 1,002 cycles. The earlier 1,074-to-1,082 graph bound belongs to the legacy implementation and does not transfer here. Neither establishes a challenge-wide optimum. See [the current promotion receipt](experiments/technique_promotion_results.md), [the 1,076-cycle promotion](experiments/rebuilt_promotion_results.md), and [the optimization history](experiments/retry_results.md).
+The current instruction stream has a capacity-only lower bound of 1,004 cycles. The earlier 1,074-to-1,082 graph bound belongs to the legacy implementation and does not transfer here. Neither establishes a challenge-wide optimum. See [the startup integration receipt](experiments/startup_promotion_results.md), [the 1,052-cycle promotion](experiments/technique_promotion_results.md), and [the optimization history](experiments/retry_results.md).
 
-Verification through the normal entry point covers all nine frozen submission tests, 100 generated inputs, 100 additional full-width inputs, five asymmetric bit patterns, and nine additional root-starting shapes. Three non-benchmark performance gates remain in place. Compiler checks cover lane identities, constant/dependency/selector mutations, explicit-override fallback, cached-program isolation, and deterministic source-only builds. Supplementary checks cover register hazards and co-issued pause/store completion. The benchmark performance gate rejects results above 1,052 cycles, including the executed 1,076 and 1,082 controls.
+Verification through the normal entry point covers all nine frozen submission tests, 100 generated inputs, 100 additional full-width inputs, five asymmetric bit patterns, and nine additional root-starting shapes. Three non-benchmark performance gates remain in place. Compiler checks cover lane identities, constant/dependency/selector mutations, explicit-override fallback, cached-program isolation, and deterministic source-only builds. Supplementary checks cover register hazards and co-issued pause/store completion. The benchmark performance gate rejects results above 1,041 cycles, including the executed 1,042 prototype and the 1,052, 1,076, and 1,082 controls.
 
 ```sh
 python tests/submission_tests.py
@@ -72,7 +72,7 @@ Simply placing regeneration near stores in source order did not keep it late in 
 
 Each policy passed three full-width frozen executions with identical cycle counts across runs, plus physical scratch-lane checks. The best tie also passed twenty additional full-width cases, five patterns, and a corrupted-pointer control. The measurements include every added instruction and retained base-pointer lifetime.
 
-The [bounded research follow-up](experiments/research_followup_results.md) records the preceding cache and regional-scheduling experiments. Later [frontier experiments](experiments/four_frontiers_results.md) reached 1,074 cycles. An [independent audit](experiments/github_1063_audit.md) reproduced a public fork at 1,063, and [isolated technique ports](experiments/technique_port_results.md) reached 1,052. That final candidate is now integrated and verified through the normal entry point. The current tradeoff is slower cold compilation in exchange for 24 fewer simulated cycles.
+The [bounded research follow-up](experiments/research_followup_results.md) records the preceding cache and regional-scheduling experiments. Later [frontier experiments](experiments/four_frontiers_results.md) reached 1,074 cycles. An [independent audit](experiments/github_1063_audit.md) reproduced a public fork at 1,063, and [isolated technique ports](experiments/technique_port_results.md) reached 1,052. Those techniques were integrated at 1,052 cycles. [Load-gap profiling](experiments/load_gap_results.md) then led to a 1,042-cycle startup policy. Its integration reselected caches and reached the current 1,041 cycles through the normal entry point.
 
 ## Warning: LLMs can cheat
 

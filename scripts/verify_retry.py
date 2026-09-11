@@ -45,7 +45,11 @@ def check_output(kernel, tree, inp, *, pause=False):
     assert machine.mem[output : output + count] == expected[output : output + count], (
         "Incorrect output values"
     )
-    assert machine.mem[:output] == memory[:output], "Modified non-output memory"
+    assert (
+        machine.mem[:output] == memory[:output]
+        and machine.mem[output + count :] == memory[output + count :]
+        and len(machine.mem) == len(memory)
+    ), "Modified non-output memory"
     return machine.cycle
 
 
@@ -92,7 +96,7 @@ def check_scheduler():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seeds", type=int, default=100)
-    parser.add_argument("--max-cycles", type=int, default=1052)
+    parser.add_argument("--max-cycles", type=int, default=1041)
     args = parser.parse_args()
     assert args.seeds > 0
 

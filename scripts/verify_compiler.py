@@ -21,12 +21,18 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "tests"), str(ROOT / "scripts")]
 
-from frozen_problem import Input, SCRATCH_SIZE, SLOT_LIMITS, Tree  # noqa: E402
-from kernel_compiler import _analyze_sites, _compile_baseline, _lower  # noqa: E402
+from frozen_problem import HASH_STAGES, Input, SCRATCH_SIZE, SLOT_LIMITS, Tree  # noqa: E402
+from kernel_compiler import (  # noqa: E402
+    _analyze_sites,
+    _compile_baseline,
+    _compile_sites,
+    _lower,
+    compile_benchmark,
+)
 from perf_takehome import KernelBuilder  # noqa: E402
 from verify_retry import check_output  # noqa: E402
 
-MAX_CYCLES = 1052
+MAX_CYCLES = 1041
 MAX_EVALUATIONS = 1049
 
 
@@ -179,7 +185,30 @@ def main():
         digest(prior.instrs)
         == "a1cedda0acceb4eada28ae1b14aad2898e768370e2028ca5febe9f3ea377ddbe"
     )
-    for control, expected_cycles in ((legacy, 1082), (prior, 1076)):
+    previous = compile_benchmark(startup=False)
+    previous_kernel = KernelBuilder()
+    previous_kernel.instrs = previous.materialize()
+    previous_kernel.scratch_ptr = previous.scratch_size
+    assert (previous.cycles, previous.scratch_size) == (1052, 1457)
+    assert (
+        digest(previous_kernel.instrs)
+        == "ca588b18f9790385cc509caf5bc5c57b85bff1ab01029766195a48cdd07b4a76"
+    )
+    prototype = _compile_sites(previous.cache_sites)
+    prototype_kernel = KernelBuilder()
+    prototype_kernel.instrs = prototype.materialize()
+    prototype_kernel.scratch_ptr = prototype.scratch_size
+    assert (prototype.cycles, prototype.scratch_size) == (1042, 1459)
+    assert (
+        digest(prototype_kernel.instrs)
+        == "af7f9144e670c98df1f23356683481145199dddaf2bc2f3ee2db8353eca88993"
+    )
+    for control, expected_cycles in (
+        (legacy, 1082),
+        (prior, 1076),
+        (previous_kernel, 1052),
+        (prototype_kernel, 1042),
+    ):
         try:
             performance_gate(control, tree, inp)
         except AssertionError as error:
@@ -210,13 +239,13 @@ def main():
         for i, e, _, _ in b
         if ir.ops[i].kind == "const_choice"
         and e == "flow"
-        and ir.ops[i].code == 0xFFFFFFFE
+        and ir.ops[i].code in {stage[1] for stage in HASH_STAGES}
     )
     slot = mutant.instrs[slot_cycle]["flow"][0]
     assert slot[0] == "add_imm"
-    # Change the early-address multiplier from -2 to 0. Unlike a random bit
-    # flip, this keeps the address in memory and must fail the value oracle.
-    mutant.instrs[slot_cycle]["flow"][0] = slot[:-1] + (slot[-1] + 2,)
+    # Select a hash constant actually assigned to flow, not an address constant
+    # whose engine can change when caches or startup priorities change.
+    mutant.instrs[slot_cycle]["flow"][0] = slot[:-1] + (slot[-1] ^ 2,)
     try:
         check_output(mutant, tree, inp)
     except AssertionError as error:
@@ -264,8 +293,9 @@ def main():
                 "full_width_inputs": 100,
                 "explicit_override_fallbacks": 3,
                 "legacy_cycles": 1082,
-                "previous_production_cycles": baseline.cycles,
-                "executed_controls_rejected": [1082, 1076],
+                "previous_production_cycles": previous.cycles,
+                "startup_prototype_cycles": prototype.cycles,
+                "executed_controls_rejected": [1082, 1076, 1052, 1042],
                 "digest": expected,
                 "lane_identity": True,
                 "dependency_mutation_rejected": True,

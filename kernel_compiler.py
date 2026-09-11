@@ -36,6 +36,7 @@ class _IR:
         self.producer: list[int] = []
         self.constants: dict[int, Ref] = {}
         self.vconstants: dict[int, Ref] = {}
+        self.first_gathers: dict[int, int] = {}  # Block -> logical result value.
 
     def emit(self, kind, code="", args=(), width=VLEN, imm=None, preferred="valu"):
         dst = None
@@ -169,6 +170,7 @@ def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
                             "-", ir.vc(3 * (1 << depth) + 5), q, preferred="alu"
                         )
                     node = ir.emit("gather", args=(addr,))
+                    ir.first_gathers.setdefault(b, node[0])
                     v = ir.binary("^", v, ir.vc(_C), preferred="alu")
                 v = ir.binary("^", v, node, preferred="alu")
                 for h, (op1, c1, op2, op3, c3) in enumerate(HASH_STAGES):
@@ -256,7 +258,27 @@ def _engine_cost(op, widths, selected=None):
     }[op.kind]
 
 
-def _schedule(ir: _IR, lookahead=False):
+def _startup_ancestry(ir: _IR):
+    """First four walkers' first uncached gathers and their dependencies.
+
+    These are logical values so dead-code removal and cache reselection can
+    change operation positions without invalidating the startup targets.
+    """
+    targets = {
+        ir.producer[value] for block, value in ir.first_gathers.items() if block < 4
+    }
+    ancestors = set(targets)
+    todo = list(targets)
+    while todo:
+        for value, _ in ir.ops[todo.pop()].args:
+            parent = ir.producer[value]
+            if parent not in ancestors:
+                ancestors.add(parent)
+                todo.append(parent)
+    return targets, ancestors
+
+
+def _schedule(ir: _IR, lookahead=False, startup=False):
     """Lane-ready issue with greedy engine choices and lifetime-pressure hints.
 
     Reads see the cycle's old scratch. Results become ready next cycle. An ALU
@@ -287,6 +309,8 @@ def _schedule(ir: _IR, lookahead=False):
         position[i] - 50 * critical[i] - 600 * max(0, 4 - distance[i])
         for i in range(len(ops))
     ]
+    targets, ancestors = _startup_ancestry(ir) if startup else (set(), set())
+    bias_applied = False
     available = [0] * len(ir.widths)
     masks = [(1 << width) - 1 for width in ir.widths]
     progress = [0] * len(ops)
@@ -333,6 +357,13 @@ def _schedule(ir: _IR, lookahead=False):
     starts, ends, program = {}, {}, []
     while len(complete) < len(ops):
         cycle = len(program)
+        # Benchmark-tuned startup policy. Restore ordinary priorities before
+        # cycle 48, or after any target starts. Forecasts share this same list.
+        active = bool(targets) and cycle < 48 and not any(i in modes for i in targets)
+        if active != bias_applied:
+            for i in ancestors:
+                priority[i] += -2560 if active else 2560
+            bias_applied = active
         capacity, bundle, done, updates = dict(SLOT_LIMITS), [], [], []
 
         def key(i):
@@ -535,15 +566,21 @@ class CompiledKernel:
         ]
 
 
-def _analyze_sites(sites: tuple[Site, ...], advanced=True):
+def _analyze_sites(sites: tuple[Site, ...], advanced=True, startup=True):
     ir = _build_ir(sites, advanced=advanced)
-    logical, starts, ends = _schedule(ir, lookahead=advanced)
+    logical, starts, ends = _schedule(
+        ir, lookahead=advanced, startup=advanced and startup
+    )
     addresses, scratch = _allocate(ir, starts, ends)
     return ir, logical, addresses, scratch
 
 
-def _compile_sites(sites: tuple[Site, ...], advanced=True) -> CompiledKernel:
-    ir, logical, addresses, scratch = _analyze_sites(sites, advanced=advanced)
+def _compile_sites(
+    sites: tuple[Site, ...], advanced=True, startup=True
+) -> CompiledKernel:
+    ir, logical, addresses, scratch = _analyze_sites(
+        sites, advanced=advanced, startup=startup
+    )
     if scratch > SCRATCH_SIZE:
         raise ValueError(("Scratch limit exceeded", scratch, SCRATCH_SIZE))
     program = _lower(ir, logical, addresses)
@@ -632,8 +669,8 @@ def _compile_baseline() -> CompiledKernel:
     )
 
 
-@lru_cache(maxsize=1)
-def compile_benchmark() -> CompiledKernel:
+@lru_cache(maxsize=2)
+def compile_benchmark(*, startup=True) -> CompiledKernel:
     """Refine an automatically generated seed under the advanced cost model.
 
     The cheaper baseline planner starts empty. Score all one-site toggles under
@@ -641,6 +678,8 @@ def compile_benchmark() -> CompiledKernel:
     plans (1,049 total) are scored; no saved sites, input data, or programs are
     read. Keeping the two cost models avoids running full lookahead throughout
     the larger seed search. This is a bounded heuristic, not global selection.
+    Disable startup only to regenerate the previous production control. The
+    default evaluates every advanced candidate with the startup policy active.
     """
     baseline = _compile_baseline()
     seen = {}
@@ -648,7 +687,7 @@ def compile_benchmark() -> CompiledKernel:
     def evaluate(sites):
         selected = tuple(sorted(sites))
         if selected not in seen:
-            _, logical, _, scratch = _analyze_sites(selected)
+            _, logical, _, scratch = _analyze_sites(selected, startup=startup)
             cycles = len(logical) + any(e == "flow" for _, e, _, _ in logical[-1])
             seen[selected] = _Cost(cycles, scratch, selected)
         return seen[selected]
@@ -663,7 +702,7 @@ def compile_benchmark() -> CompiledKernel:
         best = candidate
     if best.scratch_size > SCRATCH_SIZE:
         raise ValueError("No scratch-feasible advanced compilation")
-    program = _compile_sites(best.cache_sites)
+    program = _compile_sites(best.cache_sites, startup=startup)
     assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch_size)
     return CompiledKernel(
         program.bundles,
