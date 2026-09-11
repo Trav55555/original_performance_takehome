@@ -22,9 +22,18 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "tests"), str(ROOT / "scripts")]
 
 from frozen_problem import Input, SCRATCH_SIZE, SLOT_LIMITS, Tree  # noqa: E402
-from kernel_compiler import _analyze_sites, _lower  # noqa: E402
+from kernel_compiler import _analyze_sites, _compile_baseline, _lower  # noqa: E402
 from perf_takehome import KernelBuilder  # noqa: E402
 from verify_retry import check_output  # noqa: E402
+
+MAX_CYCLES = 1052
+MAX_EVALUATIONS = 1049
+
+
+def performance_gate(kernel, tree, inp, *, pause=False):
+    cycles = check_output(kernel, tree, inp, pause=pause)
+    assert cycles <= MAX_CYCLES, (cycles, MAX_CYCLES)
+    return cycles
 
 
 def lane_identity(ir, logical, addresses):
@@ -89,8 +98,9 @@ def forbidden(*args, **kwargs):
 problem.Machine.__init__ = forbidden
 problem.Tree.generate = forbidden
 problem.Input.generate = forbidden
-perf_takehome.reference_kernel = forbidden
-perf_takehome.reference_kernel2 = forbidden
+for module in (problem, perf_takehome):
+    for name in ('reference_kernel', 'reference_kernel2', 'build_mem_image'):
+        setattr(module, name, forbidden)
 assert compile_benchmark.cache_info().currsize == 0
 start=time.monotonic()
 k=perf_takehome.KernelBuilder();k.build_kernel(10,2047,256,16)
@@ -104,7 +114,12 @@ print(json.dumps({'seconds':time.monotonic()-start,
     # The isolated build has only production source files, no tests, configs,
     # saved programs, project scripts or access through the parent's PYTHONPATH.
     with tempfile.TemporaryDirectory(prefix="kernel-source-only-") as directory:
-        for name in ("perf_takehome.py", "kernel_compiler.py", "problem.py"):
+        for name in (
+            "perf_takehome.py",
+            "kernel_compiler.py",
+            "kernel_lookahead.py",
+            "problem.py",
+        ):
             shutil.copy2(ROOT / name, Path(directory) / name)
         for seed, cwd in (("0", ROOT), ("17", Path(directory))):
             env = dict(os.environ, PYTHONHASHSEED=seed, PYTHONDONTWRITEBYTECODE="1")
@@ -120,8 +135,8 @@ print(json.dumps({'seconds':time.monotonic()-start,
             )
             row = json.loads(result.stdout)
             assert row["digest"] == expected, row
-            assert row["cycles"] <= 1076 and row["scratch"] <= SCRATCH_SIZE
-            assert row["evaluations"] <= 921
+            assert row["cycles"] <= MAX_CYCLES and row["scratch"] <= SCRATCH_SIZE
+            assert row["evaluations"] <= MAX_EVALUATIONS
             row["source_only"] = cwd != ROOT
             rows.append(row)
     return rows
@@ -133,8 +148,8 @@ def main():
     kernel.build_kernel(10, 2047, 256, 16)
     cold_seconds = time.monotonic() - started
     assert kernel.compile_info["path"] == "ssa"
-    assert len(kernel.instrs) <= 1076 and kernel.scratch_ptr <= SCRATCH_SIZE
-    assert kernel.compile_info["evaluations"] <= 921
+    assert len(kernel.instrs) <= MAX_CYCLES and kernel.scratch_ptr <= SCRATCH_SIZE
+    assert kernel.compile_info["evaluations"] <= MAX_EVALUATIONS
     ir, logical, addresses, scratch = _analyze_sites(kernel.compile_info["cache_sites"])
     assert (
         scratch == kernel.scratch_ptr
@@ -146,7 +161,7 @@ def main():
         rng = random.Random(seed)
         tree = Tree(10, [rng.getrandbits(32) for _ in range(2047)])
         inp = Input([0] * 256, [rng.getrandbits(32) for _ in range(256)], 16)
-        assert check_output(kernel, tree, inp, pause=seed == 0) <= 1076
+        performance_gate(kernel, tree, inp, pause=seed == 0)
     # Preserve exact fallback behavior for non-default compiler tuning knobs.
     for override in ({"group_size": 16}, {"round_tile": 8}, {"selection_banks": 2}):
         other = KernelBuilder()
@@ -156,14 +171,21 @@ def main():
     legacy = KernelBuilder()
     legacy._build_legacy_kernel(10, 2047, 256, 16)
     assert check_output(legacy, tree, inp) == 1082
-    try:
-        assert check_output(legacy, tree, inp) <= 1076, (
-            "legacy exceeds promotion ceiling"
-        )
-    except AssertionError as error:
-        assert str(error) == "legacy exceeds promotion ceiling"
-    else:
-        raise AssertionError("performance check accepted the incumbent")
+    baseline = _compile_baseline()
+    prior = KernelBuilder()
+    prior.instrs, prior.scratch_ptr = baseline.materialize(), baseline.scratch_size
+    assert (baseline.cycles, baseline.scratch_size) == (1076, 1236)
+    assert (
+        digest(prior.instrs)
+        == "a1cedda0acceb4eada28ae1b14aad2898e768370e2028ca5febe9f3ea377ddbe"
+    )
+    for control, expected_cycles in ((legacy, 1082), (prior, 1076)):
+        try:
+            performance_gate(control, tree, inp)
+        except AssertionError as error:
+            assert error.args == ((expected_cycles, MAX_CYCLES),), error
+        else:
+            raise AssertionError("performance check accepted the incumbent")
 
     broken = deepcopy(logical)
     cycle, j, entry = next(
@@ -188,17 +210,34 @@ def main():
         for i, e, _, _ in b
         if ir.ops[i].kind == "const_choice"
         and e == "flow"
-        and ir.ops[i].code > 0xFFFFFF
+        and ir.ops[i].code == 0xFFFFFFFE
     )
     slot = mutant.instrs[slot_cycle]["flow"][0]
     assert slot[0] == "add_imm"
-    mutant.instrs[slot_cycle]["flow"][0] = slot[:-1] + (slot[-1] ^ 2,)
+    # Change the early-address multiplier from -2 to 0. Unlike a random bit
+    # flip, this keeps the address in memory and must fail the value oracle.
+    mutant.instrs[slot_cycle]["flow"][0] = slot[:-1] + (slot[-1] + 2,)
     try:
         check_output(mutant, tree, inp)
     except AssertionError as error:
         assert str(error) == "Incorrect output values", error
     else:
         raise AssertionError("frozen oracle accepted a corrupted flow constant")
+
+    mutant = deepcopy(kernel)
+    slot_cycle, slot_index, slot = next(
+        (c, j, slot)
+        for c, bundle in enumerate(mutant.instrs)
+        for j, slot in enumerate(bundle.get("flow", []))
+        if slot[0] == "vselect"
+    )
+    mutant.instrs[slot_cycle]["flow"][slot_index] = slot[:3] + (slot[4], slot[3])
+    try:
+        check_output(mutant, tree, inp)
+    except AssertionError as error:
+        assert str(error) == "Incorrect output values", error
+    else:
+        raise AssertionError("frozen oracle accepted swapped selector branches")
 
     expected = digest(kernel.instrs)
     started = time.monotonic()
@@ -225,9 +264,13 @@ def main():
                 "full_width_inputs": 100,
                 "explicit_override_fallbacks": 3,
                 "legacy_cycles": 1082,
+                "previous_production_cycles": baseline.cycles,
+                "executed_controls_rejected": [1082, 1076],
+                "digest": expected,
                 "lane_identity": True,
                 "dependency_mutation_rejected": True,
                 "flow_constant_mutation_rejected": True,
+                "selector_mutation_rejected": True,
                 "cached_program_isolation": True,
             },
             indent=2,

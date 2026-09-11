@@ -61,7 +61,7 @@ class _IR:
         return self.emit("binary", code, (a, b), width, preferred=preferred)
 
 
-def _build_ir(sites: tuple[Site, ...]) -> _IR:
+def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
     """Encoded values and mirrored indices; no physical scratch names yet.
 
     v = actual_value XOR C; q = 3*2**depth - 2 - index.
@@ -80,12 +80,37 @@ def _build_ir(sites: tuple[Site, ...]) -> _IR:
     raw_nodes = []
     for i in range(0, count, VLEN):
         raw_nodes.append(ir.emit("vload", args=(ir.const(7 + i),)))
-    cache = []
+    cache, scalars = [], []
     for i in range(count):
         ref = (raw_nodes[i // VLEN][0], i % VLEN)
         encoded = ir.binary("^", ref, ir.const(_C), preferred="alu", width=1)
+        scalars.append(encoded)
         cache.append(ir.emit("broadcast", args=(encoded,)))
     raw_root = ir.emit("broadcast", args=((raw_nodes[0][0], 0),))
+
+    def table_ids(depth):
+        ids = list(reversed(range((1 << depth) - 1, (1 << (depth + 1)) - 1)))
+        order = list(reversed(range(depth))) if depth == 3 else list(range(depth))
+        return [
+            ids[sum(((j >> k) & 1) << bit for k, bit in enumerate(order))]
+            for j in range(len(ids))
+        ], order
+
+    # Runtime-loaded pair differences, not compile-time tree contents.
+    # At depth 3 consume old branch bits first; depth 4 keeps normal order.
+    pair_diffs = {}
+    if advanced:
+        for depth in (3, 4):
+            if depth <= preload_depth:
+                ids, _ = table_ids(depth)
+                for j in (0, 2):
+                    no, yes = ids[j : j + 2]
+                    diff = ir.binary(
+                        "-", scalars[yes], scalars[no], preferred="alu", width=1
+                    )
+                    pair_diffs[no, yes] = ir.emit("broadcast", args=(diff,))
+    history = [[] for _ in range(blocks)]
+    next_addresses = [None] * blocks
     values, indices, bits, pointers = [], [], [], []
     nodes = (1 << (_HEIGHT + 1)) - 1
     for b in range(blocks):
@@ -99,33 +124,68 @@ def _build_ir(sites: tuple[Site, ...]) -> _IR:
             for r in range(begin, min(begin + 12, _ROUNDS)):
                 depth = r % (_HEIGHT + 1)
                 q, v = indices[b], values[b]
+                pre_address = None
+                # Benchmark-scoped placement from the bounded address screen.
+                if advanced and (b, r) == (0, 3) and (b, r + 1) not in selected:
+                    pre_address = ir.emit(
+                        "muladd", args=(q, ir.vc(-2), ir.vc(3 * (1 << (depth + 1)) + 5))
+                    )
                 if r == 0:
                     node = raw_root
                 elif depth <= 3 or (b, r) in selected:
                     entries = list(
                         reversed(cache[(1 << depth) - 1 : (1 << (depth + 1)) - 1])
                     )
-                    for bit_index in range(depth):
+                    bit_order = range(depth)
+                    if advanced:
+                        ids, bit_order = table_ids(depth)
+                        entries = [cache[j] for j in ids]
+                        assert len(history[b]) == depth
+                    for layer, bit_index in enumerate(bit_order):
                         bit = (
-                            bits[b]
+                            history[b][-1 - bit_index]
+                            if advanced
+                            else bits[b]
                             if bit_index == 0
                             else ir.binary("&", q, ir.vc(1 << bit_index))
                         )
                         assert bit is not None
                         entries = [
-                            ir.emit("select", args=(bit, entries[j + 1], entries[j]))
+                            ir.emit(
+                                "muladd",
+                                args=(bit, pair_diffs[ids[j], ids[j + 1]], entries[j]),
+                            )
+                            if advanced and depth in (3, 4) and layer == 0 and j < 4
+                            else ir.emit(
+                                "select", args=(bit, entries[j + 1], entries[j])
+                            )
                             for j in range(0, len(entries), 2)
                         ]
                     node = entries[0]
                 else:
-                    addr = ir.binary(
-                        "-", ir.vc(3 * (1 << depth) + 5), q, preferred="alu"
-                    )
+                    addr = next_addresses[b]
+                    if addr is None:
+                        addr = ir.binary(
+                            "-", ir.vc(3 * (1 << depth) + 5), q, preferred="alu"
+                        )
                     node = ir.emit("gather", args=(addr,))
                     v = ir.binary("^", v, ir.vc(_C), preferred="alu")
                 v = ir.binary("^", v, node, preferred="alu")
                 for h, (op1, c1, op2, op3, c3) in enumerate(HASH_STAGES):
-                    if h == 5:
+                    if advanced and h == 2:
+                        # Fuse stages 2/3: independent affine arms, then XOR.
+                        c2, c4 = HASH_STAGES[2][1], HASH_STAGES[3][1]
+                        a = ir.emit(
+                            "muladd", args=(v, ir.vc(33), ir.vc((c2 + c4) & 0xFFFFFFFF))
+                        )
+                        z = ir.emit(
+                            "muladd",
+                            args=(v, ir.vc(33 * 512), ir.vc((c2 << 9) & 0xFFFFFFFF)),
+                        )
+                        v = ir.binary("^", a, z)
+                    elif advanced and h == 3:
+                        continue
+                    elif h == 5:
                         shift = ir.binary(op3, v, ir.vc(c3))
                         v = ir.binary(op2, v, shift)
                     elif op1 == "+" and op2 == "+" and op3 == "<<":
@@ -135,13 +195,20 @@ def _build_ir(sites: tuple[Site, ...]) -> _IR:
                         shift = ir.binary(op3, v, ir.vc(c3))
                         v = ir.binary(op2, a, shift)
                 values[b] = v
+                next_addresses[b] = None
                 if r + 1 < _ROUNDS:
                     if depth == _HEIGHT:
                         indices[b], bits[b] = ir.vc(1), None
+                        history[b] = []
                     else:
                         bit = ir.binary("&", v, ir.vc(1), preferred="alu")
                         indices[b] = ir.emit("muladd", args=(q, ir.vc(2), bit))
                         bits[b] = bit
+                        history[b].append(bit)
+                        if pre_address is not None:
+                            next_addresses[b] = ir.binary(
+                                "-", pre_address, bit, preferred="alu"
+                            )
     for b in range(blocks):
         v = ir.binary("^", values[b], ir.vc(_C), preferred="alu")
         ir.emit("vstore", args=(pointers[b], v), width=0)
@@ -189,7 +256,7 @@ def _engine_cost(op, widths, selected=None):
     }[op.kind]
 
 
-def _schedule(ir: _IR):
+def _schedule(ir: _IR, lookahead=False):
     """Lane-ready issue with greedy engine choices and lifetime-pressure hints.
 
     Reads see the cycle's old scratch. Results become ready next cycle. An ALU
@@ -246,6 +313,23 @@ def _schedule(ir: _IR):
         return 1
 
     ready = {i for i, op in enumerate(ops) if not op.args}
+    policy = None
+    if lookahead:
+        from kernel_lookahead import make_policy
+
+        policy = make_policy(
+            ir,
+            successors,
+            remaining,
+            critical,
+            distance,
+            priority,
+            available,
+            progress,
+            modes,
+            complete,
+            ready,
+        )
     starts, ends, program = {}, {}, []
     while len(complete) < len(ops):
         cycle = len(program)
@@ -259,7 +343,8 @@ def _schedule(ir: _IR):
             gained = 0 if op.dst is None or i in modes else ir.widths[op.dst]
             return priority[i] + 100 * (gained - freed), i
 
-        for i in sorted(ready, key=key):
+        ordered = sorted(ready, key=key)
+        for order_index, i in enumerate(ordered):
             op, mask = ops[i], ready_mask(i)
             if not mask:
                 continue
@@ -287,6 +372,19 @@ def _schedule(ir: _IR):
                         and mask == masks[op.dst]
                     ):
                         engine = "valu"
+                if policy is not None:
+                    engine = policy(
+                        engine,
+                        i,
+                        mask,
+                        order_index,
+                        ordered,
+                        capacity,
+                        bundle,
+                        done,
+                        updates,
+                        cycle,
+                    )
             if not capacity[engine]:
                 continue
             partial = op.kind == "gather" or (op.kind == "binary" and engine == "alu")
@@ -437,15 +535,17 @@ class CompiledKernel:
         ]
 
 
-def _analyze_sites(sites: tuple[Site, ...]):
-    ir = _build_ir(sites)
-    logical, starts, ends = _schedule(ir)
+def _analyze_sites(sites: tuple[Site, ...], advanced=True):
+    ir = _build_ir(sites, advanced=advanced)
+    logical, starts, ends = _schedule(ir, lookahead=advanced)
     addresses, scratch = _allocate(ir, starts, ends)
     return ir, logical, addresses, scratch
 
 
-def _compile_sites(sites: tuple[Site, ...]) -> CompiledKernel:
-    ir, logical, addresses, scratch = _analyze_sites(sites)
+def _compile_sites(sites: tuple[Site, ...], advanced=True) -> CompiledKernel:
+    ir, logical, addresses, scratch = _analyze_sites(sites, advanced=advanced)
+    if scratch > SCRATCH_SIZE:
+        raise ValueError(("Scratch limit exceeded", scratch, SCRATCH_SIZE))
     program = _lower(ir, logical, addresses)
     return CompiledKernel(
         tuple(tuple((e, tuple(slots)) for e, slots in b.items()) for b in program),
@@ -470,8 +570,8 @@ def _rank(candidate):
 
 
 @lru_cache(maxsize=1)
-def compile_benchmark() -> CompiledKernel:
-    """Deterministic public-shape search; no saved configurations or programs.
+def _compile_baseline() -> CompiledKernel:
+    """Retain the 1,076 compiler as a cheap seed planner and executable control.
 
     Start with no depth-4 caches and admit profitable sites. Stop an admission
     scan early after saving one gather's load-issue budget. This is a search
@@ -490,7 +590,7 @@ def compile_benchmark() -> CompiledKernel:
     def evaluate(selected):
         selected = tuple(sorted(selected))
         if selected not in seen:
-            _, logical, _, scratch = _analyze_sites(selected)
+            _, logical, _, scratch = _analyze_sites(selected, advanced=False)
             cycles = len(logical) + any(e == "flow" for _, e, _, _ in logical[-1])
             seen[selected] = _Cost(cycles, scratch, selected)
         return seen[selected]
@@ -525,8 +625,49 @@ def compile_benchmark() -> CompiledKernel:
                     )
         best = min([best, *rows], key=_rank)
     assert best.scratch_size <= SCRATCH_SIZE, "No scratch-feasible compilation"
-    program = _compile_sites(best.cache_sites)
+    program = _compile_sites(best.cache_sites, advanced=False)
     assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch_size)
     return CompiledKernel(
         program.bundles, program.scratch_size, program.cache_sites, len(seen)
+    )
+
+
+@lru_cache(maxsize=1)
+def compile_benchmark() -> CompiledKernel:
+    """Refine an automatically generated seed under the advanced cost model.
+
+    The cheaper baseline planner starts empty. Score all one-site toggles under
+    the new scheduler, then repeat around the best result. At most 128 advanced
+    plans (1,049 total) are scored; no saved sites, input data, or programs are
+    read. Keeping the two cost models avoids running full lookahead throughout
+    the larger seed search. This is a bounded heuristic, not global selection.
+    """
+    baseline = _compile_baseline()
+    seen = {}
+
+    def evaluate(sites):
+        selected = tuple(sorted(sites))
+        if selected not in seen:
+            _, logical, _, scratch = _analyze_sites(selected)
+            cycles = len(logical) + any(e == "flow" for _, e, _, _ in logical[-1])
+            seen[selected] = _Cost(cycles, scratch, selected)
+        return seen[selected]
+
+    universe = tuple((b, r) for b in range(_BATCH // VLEN) for r in (4, 15))
+    best = evaluate(baseline.cache_sites)
+    for _ in range(2):
+        neighbors = [evaluate(set(best.cache_sites) ^ {site}) for site in universe]
+        candidate = min([best, *neighbors], key=_rank)
+        if candidate == best:
+            break
+        best = candidate
+    if best.scratch_size > SCRATCH_SIZE:
+        raise ValueError("No scratch-feasible advanced compilation")
+    program = _compile_sites(best.cache_sites)
+    assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch_size)
+    return CompiledKernel(
+        program.bundles,
+        program.scratch_size,
+        program.cache_sites,
+        baseline.evaluations + len(seen),
     )
