@@ -33,31 +33,25 @@ Cold builds took **17 to 19 minutes** on this host. A memoized build took about 
 
 The new path applies only to the benchmark with default tuning parameters. Other shapes and explicit overrides retain the legacy generator. Its 1,082-cycle benchmark implementation remains available as `KernelBuilder._build_legacy_kernel`.
 
-### Techniques that reduced the cycle count
+### From 1,303 to 980 cycles
 
-The machine can issue twelve scalar ALU operations, six vector ALU operations, two loads, two stores, and one flow operation per cycle. A shorter expression is not necessarily a faster kernel. The compiler must also expose independent work and avoid overloading an engine.
+The full progression saved **323 cycles, or 24.8% of execution time**. Read the [illustrated walkthrough](docs/performance-progression.md) for the intermediate checkpoints, dependency diagrams, algebra, failed experiments, and the distinction between experimental and production results.
 
-**Schedule logical values before assigning scratch addresses.** The single static assignment, or SSA, representation separates data dependencies from physical register reuse. The scheduler can interleave walkers without first imposing register-alias dependencies. A fresh allocator then reuses scratch words after their last reads. The compiler rejects candidates that exceed 1,536 words before lowering or execution.
+| Measured progression | Main changes |
+|---|---|
+| 1,303 → 1,113 | One-based and mirrored indices, XOR encoding, private hash temporaries, load-aware scheduling, and final store/pause packing |
+| 1,113 → 1,082 | Reuse branch predicates, selectively cache depth-4 lookups, fold the root mix, and move selected vector work to scalar slots |
+| 1,082 → 1,076 | Rebuild around single static assignment, allocate scratch after scheduling, and construct some constants on the flow engine |
+| 1,076 → 1,052 | Combine hash-stage fusion, retained branch history, arithmetic lookup leaves, engine lookahead, and cache reselection |
+| 1,052 → 1,041 | Advance startup gather dependencies and reselect caches under that policy |
+| 1,041 → 981 | Search complete cache neighborhoods, escape a plateau with a swap, and rebalance arithmetic selectors with cache choices |
+| 981 → 980 | Convert two late selectors to arithmetic, then jointly repair the final schedule with Z3 and allocate scratch afresh |
 
-**Simplify the repeated hash and traversal work.** Encoded values and mirrored tree indices reduce repeated transformations. Two middle hash stages become independent affine expressions followed by XOR, which exposes parallel work and uses vector multiply-add instructions. Cached nodes use the matching encoded representation, and the first round uses the raw root directly. These rules were part of the earlier improvements; their savings are not additive because each rewrite changes scheduling and register pressure.
+The machine has only two load slots, six vector-arithmetic slots, and one flow slot per cycle. Caching exchanges gathers for selection work; arithmetic selectors move work from flow to arithmetic. Those exchanges help only when the complete schedule improves. The phase totals above include interacting changes, not independent additive savings for each technique.
 
-**Trade selected gathers for cached lookups.** Shallow tree levels are loaded once. Selected depth-4 visits use lookup trees instead of eight lane gathers. More caching also costs selector operations and live scratch, so enabling every cache is not the answer. Starting from the existing automatic seed, full one-site comparisons and a bounded swap search reduced 1,041 cycles to 984. The winning site list is a search result, not a table in the generator.
+The final production query repairs a 32-cycle native suffix with 527 free issue-time variables. Earlier instruction times and native engine choices remain fixed. All constants, setup, loads, stores, and the final pause are charged. No saved timing table or ordinal scheduling edits are production inputs.
 
-**Balance lookup work across engines.** The compiler retains normalized branch bits, then mixes flow-engine `vselect` instructions with arithmetic lookup pairs. For a bit `p` equal to zero or one, `no + p * (yes - no)` selects the same value using wrapping arithmetic. Differences come from runtime-loaded nodes. Joint selection of arithmetic-pair counts and one further cache change reduced 984 cycles to 981.
-
-**Make loads ready earlier.** Bounded engine lookahead favors work that enables upcoming gathers. Startup priority advances the first four walkers' gather dependencies. Together with cache reselection, that startup policy previously reduced 1,052 cycles to 1,041. Filling an arithmetic slot is less useful when its work does not relieve the load bottleneck.
-
-**Repair the final schedule jointly.** The last improvement required more than greedy scheduling. The compiler selects late lookup conversions from the generated graph, checks dependency and capacity bounds, and submits a small suffix to Z3. The selected graph replaces two late flow selectors with arithmetic but still takes 981 cycles under the native scheduler. Exact repair of its 32-cycle native suffix reaches 980 while keeping the earlier instruction times and native engine choices fixed. The successful query had 527 free time variables and took about 72 seconds. Fresh allocation, lane checks, and frozen execution establish that the result is an executable kernel, not merely a timing witness.
-
-| Measured checkpoint | Cycles |
-|---|---:|
-| Previous startup-aware production compiler | 1,041 |
-| Automatic cache toggle/swap search | 984 |
-| Joint selector-profile and cache selection | 981 |
-| Late arithmetic conversions, native schedule | 981 |
-| Exact suffix repair and fresh allocation | 980 |
-
-The successful path uses neither saved ordinal scheduling edits nor the experimental final-XOR rewrite. All emitted constants, setup, loads, stores, and the final pause count toward the result. The current instruction counts give a capacity-only lower bound of 967 cycles. That is a bound for this instruction stream, not a proof of challenge-wide optimality.
+The current instruction stream has a capacity-only lower bound of 967 cycles, not a proof that 967 is attainable. The 979-cycle query that completed after promotion exhausted its 2 GiB memory cap after about 16 hours 52 minutes. Its result was **unknown**, not proof that 979 is impossible.
 
 ### Build and verification
 
