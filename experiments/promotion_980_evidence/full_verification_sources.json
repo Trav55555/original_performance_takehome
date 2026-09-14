@@ -1,0 +1,16 @@
+{
+  "kernel_compiler.py": "05bf9808fa54d0cc71437b57c3af74df8666e2db80251193c50050fb3a163921",
+  "kernel_optimizer.py": "3aae1aa8a9bb1cd795112f38db945e88d364db989406c01419a4cfc233119cb5",
+  "kernel_refinement.py": "920bd96385b30879b4c37469d20535827f18112b490b7d91fafe51f16aed5de3",
+  "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+  "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+  "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+  "perf_takehome.py": "aee377d80dd468868ec2ea22c0a823d54b484c602707750cb8f5b98e19f2c3b9",
+  "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+  "requirements.txt": "c750a9cba82152e9e4889a29f7754dc24a0f76320a39f6fcd45cac1c298b156a",
+  "scripts/verify_compiler.py": "579d7d7ba69b39e71ed1567b25558d4c72cbdaf5b1dda5aca84f6f0d90e81dfb",
+  "scripts/verify_retry.py": "03b5cf42224b4e6bd3a8558f7a814e01fa1d6861d6e36bafa2d79a73d76a534e",
+  "scripts/verify_optimizer.py": "bbcd6fdff0b4bda432668db757f0ac95974340167ce211e3cb4933399dd03078",
+  "tests/submission_tests.py": "11c57cc999da93acb41201191073cd657ddffa87635359b3157c6e177c18ea0a",
+  "tests/frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9"
+}

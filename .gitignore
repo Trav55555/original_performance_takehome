@@ -3,4 +3,5 @@ trace.json
 __pycache__/
 .ruff_cache/
 .hypothesis
+.venv/
 .DS_Store

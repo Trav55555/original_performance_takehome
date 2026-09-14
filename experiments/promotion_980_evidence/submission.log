@@ -1,0 +1,33 @@
+test_kernel_correctness (submission_tests.CorrectnessTests.test_kernel_correctness) ... Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+ok
+test_kernel_speedup (submission_tests.SpeedTests.test_kernel_speedup) ... Testing forest_height=10, rounds=16, batch_size=256
+CYCLES:  980
+Speedup over baseline:  150.74897959183673
+ok
+test_kernel_updated_starting_point (submission_tests.SpeedTests.test_kernel_updated_starting_point) ... ok
+test_opus45_11hr (submission_tests.SpeedTests.test_opus45_11hr) ... ok
+test_opus45_2hr (submission_tests.SpeedTests.test_opus45_2hr) ... ok
+test_opus45_casual (submission_tests.SpeedTests.test_opus45_casual) ... ok
+test_opus45_improved_harness (submission_tests.SpeedTests.test_opus45_improved_harness) ... ok
+test_opus4_many_hours (submission_tests.SpeedTests.test_opus4_many_hours) ... ok
+test_sonnet45_many_hours (submission_tests.SpeedTests.test_sonnet45_many_hours) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.364s
+
+OK

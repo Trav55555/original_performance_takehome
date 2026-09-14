@@ -1,0 +1,16 @@
+{
+  "fresh_allocations": 3,
+  "duplicate_lane_rejected": true,
+  "missing_dependency_rejected": true,
+  "dependency_timing_rejected": true,
+  "injected_scratch_rejected": [
+    1537,
+    1545
+  ],
+  "natural_scratch_rejected": 1719,
+  "overscratch_lower_calls": 0,
+  "budget_rejected_before_evaluation": true,
+  "executed_native_control": 981,
+  "cycles": 980,
+  "scratch": 1465
+}

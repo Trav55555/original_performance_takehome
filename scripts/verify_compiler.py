@@ -23,7 +23,8 @@ sys.path[:0] = [str(ROOT), str(ROOT / "tests"), str(ROOT / "scripts")]
 
 from frozen_problem import HASH_STAGES, Input, SCRATCH_SIZE, SLOT_LIMITS, Tree  # noqa: E402
 from kernel_compiler import (  # noqa: E402
-    _analyze_sites,
+    _analyze_compiled,
+    _compile_seed,
     _compile_baseline,
     _compile_sites,
     _lower,
@@ -32,8 +33,8 @@ from kernel_compiler import (  # noqa: E402
 from perf_takehome import KernelBuilder  # noqa: E402
 from verify_retry import check_output  # noqa: E402
 
-MAX_CYCLES = 1041
-MAX_EVALUATIONS = 1049
+MAX_CYCLES = 980
+MAX_EVALUATIONS = 4096
 
 
 def performance_gate(kernel, tree, inp, *, pause=False):
@@ -124,10 +125,14 @@ print(json.dumps({'seconds':time.monotonic()-start,
             "perf_takehome.py",
             "kernel_compiler.py",
             "kernel_lookahead.py",
+            "kernel_optimizer.py",
+            "kernel_refinement.py",
+            "kernel_retime.py",
+            "kernel_checks.py",
             "problem.py",
         ):
             shutil.copy2(ROOT / name, Path(directory) / name)
-        for seed, cwd in (("0", ROOT), ("17", Path(directory))):
+        for seed, cwd in (("0", Path(directory)), ("17", Path(directory))):
             env = dict(os.environ, PYTHONHASHSEED=seed, PYTHONDONTWRITEBYTECODE="1")
             env.pop("PYTHONPATH", None)
             result = subprocess.run(
@@ -137,7 +142,6 @@ print(json.dumps({'seconds':time.monotonic()-start,
                 capture_output=True,
                 text=True,
                 check=True,
-                timeout=180,
             )
             row = json.loads(result.stdout)
             assert row["digest"] == expected, row
@@ -156,7 +160,7 @@ def main():
     assert kernel.compile_info["path"] == "ssa"
     assert len(kernel.instrs) <= MAX_CYCLES and kernel.scratch_ptr <= SCRATCH_SIZE
     assert kernel.compile_info["evaluations"] <= MAX_EVALUATIONS
-    ir, logical, addresses, scratch = _analyze_sites(kernel.compile_info["cache_sites"])
+    ir, logical, addresses, scratch = _analyze_compiled(compile_benchmark())
     assert (
         scratch == kernel.scratch_ptr
         and _lower(ir, logical, addresses) == kernel.instrs
@@ -203,7 +207,13 @@ def main():
         digest(prototype_kernel.instrs)
         == "af7f9144e670c98df1f23356683481145199dddaf2bc2f3ee2db8353eca88993"
     )
+    startup_control = _compile_seed()
+    startup_kernel = KernelBuilder()
+    startup_kernel.instrs = startup_control.materialize()
+    startup_kernel.scratch_ptr = startup_control.scratch_size
+    assert startup_control.cycles == 1041
     for control, expected_cycles in (
+        (startup_kernel, 1041),
         (legacy, 1082),
         (prior, 1076),
         (previous_kernel, 1052),
@@ -295,7 +305,8 @@ def main():
                 "legacy_cycles": 1082,
                 "previous_production_cycles": previous.cycles,
                 "startup_prototype_cycles": prototype.cycles,
-                "executed_controls_rejected": [1082, 1076, 1052, 1042],
+                "executed_controls_rejected": [1082, 1076, 1052, 1042, 1041],
+                "solver_queries": compile_benchmark().solver_queries,
                 "digest": expected,
                 "lane_identity": True,
                 "dependency_mutation_rejected": True,

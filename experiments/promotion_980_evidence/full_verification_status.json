@@ -1,0 +1,14 @@
+{
+  "stage": "passed",
+  "seconds": 3301.0400037169456,
+  "build": {
+    "cycles": 980,
+    "scratch": 1465,
+    "evaluations": 1951,
+    "solver_queries": 1,
+    "seconds": 1142.6943079936318,
+    "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc"
+  },
+  "frozen_tests": 9,
+  "source_unchanged": true
+}

@@ -1,0 +1,281 @@
+{
+  "status": "verified",
+  "base_commit": "5691617",
+  "public_build": {
+    "cycles": 980,
+    "scratch": 1465,
+    "evaluations": 1951,
+    "solver_queries": 1,
+    "seconds": 1142.6943079936318,
+    "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc"
+  },
+  "compiler_verification": {
+    "cycles": 980,
+    "scratch": 1465,
+    "cache_sites": [
+      [
+        0,
+        15
+      ],
+      [
+        2,
+        15
+      ],
+      [
+        3,
+        15
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        15
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        7,
+        15
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        9,
+        15
+      ],
+      [
+        10,
+        4
+      ],
+      [
+        11,
+        4
+      ],
+      [
+        11,
+        15
+      ],
+      [
+        12,
+        4
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        13,
+        4
+      ],
+      [
+        14,
+        4
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        17,
+        4
+      ],
+      [
+        17,
+        15
+      ],
+      [
+        22,
+        4
+      ],
+      [
+        22,
+        15
+      ],
+      [
+        23,
+        4
+      ],
+      [
+        25,
+        4
+      ],
+      [
+        27,
+        4
+      ],
+      [
+        29,
+        15
+      ],
+      [
+        30,
+        4
+      ]
+    ],
+    "search_evaluations": 1951,
+    "cold_seconds": 0.001281247939914465,
+    "warm_seconds": 0.006580094341188669,
+    "fresh_processes": [
+      {
+        "seconds": 1051.9426677147858,
+        "cycles": 980,
+        "scratch": 1465,
+        "evaluations": 1951,
+        "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc",
+        "max_rss_kib": 140100,
+        "source_only": true
+      },
+      {
+        "seconds": 1035.2186059374362,
+        "cycles": 980,
+        "scratch": 1465,
+        "evaluations": 1951,
+        "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc",
+        "max_rss_kib": 140056,
+        "source_only": true
+      }
+    ],
+    "full_width_inputs": 100,
+    "explicit_override_fallbacks": 3,
+    "legacy_cycles": 1082,
+    "previous_production_cycles": 1052,
+    "startup_prototype_cycles": 1042,
+    "executed_controls_rejected": [
+      1082,
+      1076,
+      1052,
+      1042,
+      1041
+    ],
+    "solver_queries": 1,
+    "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc",
+    "lane_identity": true,
+    "dependency_mutation_rejected": true,
+    "flow_constant_mutation_rejected": true,
+    "selector_mutation_rejected": true,
+    "cached_program_isolation": true
+  },
+  "compiler_check_build_was_warm": true,
+  "optimizer_checks": {
+    "fresh_allocations": 3,
+    "duplicate_lane_rejected": true,
+    "missing_dependency_rejected": true,
+    "dependency_timing_rejected": true,
+    "injected_scratch_rejected": [
+      1537,
+      1545
+    ],
+    "natural_scratch_rejected": 1719,
+    "overscratch_lower_calls": 0,
+    "budget_rejected_before_evaluation": true,
+    "executed_native_control": 981,
+    "cycles": 980,
+    "scratch": 1465
+  },
+  "full_verification": {
+    "stage": "passed",
+    "seconds": 3301.0400037169456,
+    "build": {
+      "cycles": 980,
+      "scratch": 1465,
+      "evaluations": 1951,
+      "solver_queries": 1,
+      "seconds": 1142.6943079936318,
+      "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc"
+    },
+    "frozen_tests": 9,
+    "source_unchanged": true
+  },
+  "source_hashes": {
+    "kernel_compiler.py": "05bf9808fa54d0cc71437b57c3af74df8666e2db80251193c50050fb3a163921",
+    "kernel_optimizer.py": "3aae1aa8a9bb1cd795112f38db945e88d364db989406c01419a4cfc233119cb5",
+    "kernel_refinement.py": "920bd96385b30879b4c37469d20535827f18112b490b7d91fafe51f16aed5de3",
+    "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+    "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+    "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+    "perf_takehome.py": "aee377d80dd468868ec2ea22c0a823d54b484c602707750cb8f5b98e19f2c3b9",
+    "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "requirements.txt": "c750a9cba82152e9e4889a29f7754dc24a0f76320a39f6fcd45cac1c298b156a",
+    "scripts/verify_compiler.py": "579d7d7ba69b39e71ed1567b25558d4c72cbdaf5b1dda5aca84f6f0d90e81dfb",
+    "scripts/verify_retry.py": "03b5cf42224b4e6bd3a8558f7a814e01fa1d6861d6e36bafa2d79a73d76a534e",
+    "scripts/verify_optimizer.py": "bbcd6fdff0b4bda432668db757f0ac95974340167ce211e3cb4933399dd03078",
+    "tests/submission_tests.py": "11c57cc999da93acb41201191073cd657ddffa87635359b3157c6e177c18ea0a",
+    "tests/frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9"
+  },
+  "evidence_hashes": {
+    "full_verification_sources.json": "fe83d0abd01deb185260eb21b848cc617aabfc5341a9fe21bafba1333404781f",
+    "full_verification_status.json": "3e0c2209fff534f11ed77f9d466eb05cdbef6e09d25b94e08d1bda0eb3091df3",
+    "public_build.json": "58425dc9215656857d383064c7a103a68b7969eb0f392238c810a76c2076d785",
+    "compiler_verification.json": "f170f605042984d33ed14d5e524a16cb09fc52be8651b2d794321632cdcdd4a5",
+    "optimizer_checks.json": "a912c7ff681f76e1d94e5b4e8e3940200a1a6fee5f1b0cc5ec77710271f1f9e5",
+    "submission.log": "4950b007b5721dd8356b2ea6480cc3ceb515da72d3d02e8678205d86cf54e448",
+    "supplementary.log": "71ea400e18e3ef832f5b8a7298160f8c8876296f806dbedcfa63cc2b43b39e58",
+    "component_verification.json": "3a0aae69777a46ad02cc901c36d60175f8ffb3115611ad1121bc3c01f0ea511f",
+    "historical_scratch_control.json": "8ab211a345ac23fcb41732a040d4fd48e48e87b8d36f449c65afffccc51f8f92",
+    "archived_980_control.json": "b46557e9322bceb2bfc07ce58f04e84e905386b06fa97de1265013da430ff960",
+    "dependency_control.json": "e94b54eb90274c64508c5deafb957d8086032720983fc60e0df7ac0c9c2cb7a7",
+    "check_retime.json": "6658f0a84ca7a105d75150ae1dda69d52a4044cae7007208826f0c3da2afe333",
+    "progress.jsonl": "c5d2eceb6820dc9a44313102c7487441d6a1a89f9e77ba1a77f3d88fb7ba8fdc",
+    "refinement_progress.jsonl": "c574e8f2c2e4caa88c2ff026b7d63a537c10e1b8adb9112f836c94448743dbba",
+    "refinement_result.json": "2d7354a3ac309606bebdf0a6098e6094b7b3aeac19c24cd15d44af3ce53a14a4"
+  },
+  "scope": {
+    "benchmark": [
+      10,
+      2047,
+      256,
+      16
+    ],
+    "cores": 1,
+    "lanes": 8,
+    "scratch_limit": 1536,
+    "root_starts_only": true,
+    "final_values_only": true
+  },
+  "counts": {
+    "load": 1888,
+    "flow": 945,
+    "valu": 5800,
+    "alu": 11524,
+    "store": 32
+  },
+  "capacity_only_bound": 967,
+  "global_optimality_proved": false,
+  "archived_experimental_control": {
+    "cycles": 980,
+    "scratch": 1449,
+    "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+    "provenance": "source-plus-selected-timing-assignment",
+    "automatic_production_discovery": false,
+    "full_width_seeds": 1,
+    "asymmetric_patterns": 5,
+    "non_output_memory_preserved": true
+  },
+  "generation_uses_saved_configuration_or_timing": false,
+  "notes": [
+    "The development continuation used this run's freshly generated cache checkpoint. Subsequent public and two isolated cold builds started without it.",
+    "Score counts include the seed planner; repeated reconstruction checks add work beyond this counter.",
+    "The compiler-verification script ran in a warm process. Actual initial cold time is recorded under public_build.",
+    "Source-only oracle stubs cover the generator process; the solver worker consumes only the generated abstract graph.",
+    "The independent 979-cycle experiment is not part of this promotion or evidence.",
+    "No tests or simulator source was changed."
+  ]
+}

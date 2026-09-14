@@ -27,6 +27,8 @@ class _Op:
     args: tuple[Ref, ...]
     imm: int | None
     preferred: str = "valu"
+    site: tuple[int, int, int, int] | None = None
+    block: int | None = None
 
 
 class _IR:
@@ -62,7 +64,14 @@ class _IR:
         return self.emit("binary", code, (a, b), width, preferred=preferred)
 
 
-def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
+def _build_ir(
+    sites: tuple[Site, ...],
+    advanced=False,
+    *,
+    pairs=(2, 2),
+    final_blocks=(),
+    selector_sites=(),
+) -> _IR:
     """Encoded values and mirrored indices; no physical scratch names yet.
 
     v = actual_value XOR C; q = 3*2**depth - 2 - index.
@@ -72,6 +81,22 @@ def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
     ir = _IR()
     blocks = _BATCH // VLEN
     selected = set(sites)
+    decoded = set(final_blocks)
+    requested = set(selector_sites)
+    matched = set()
+    assert len(pairs) == 2 and 0 <= pairs[0] <= 4 and 0 <= pairs[1] <= 8
+    assert all(type(b) is int and 0 <= b < blocks for b in decoded)
+    if requested and not advanced:
+        raise ValueError("arithmetic conversion requires normalized predicates")
+    if any(
+        len(s) != 4
+        or s[2] != 0
+        or not 0 <= s[0] < blocks
+        or s[1] not in (3, 4, 14, 15)
+        or not 0 <= s[3] < (4 if s[1] in (3, 14) else 8)
+        for s in requested
+    ):
+        raise ValueError("invalid selector conversion site")
     assert all(
         0 <= b < blocks and 0 <= r < _ROUNDS and r % (_HEIGHT + 1) == 4
         for b, r in selected
@@ -104,7 +129,7 @@ def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
         for depth in (3, 4):
             if depth <= preload_depth:
                 ids, _ = table_ids(depth)
-                for j in (0, 2):
+                for j in range(0, 2 * pairs[depth - 3], 2):
                     no, yes = ids[j : j + 2]
                     diff = ir.binary(
                         "-", scalars[yes], scalars[no], preferred="alu", width=1
@@ -151,17 +176,30 @@ def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
                             else ir.binary("&", q, ir.vc(1 << bit_index))
                         )
                         assert bit is not None
-                        entries = [
-                            ir.emit(
-                                "muladd",
-                                args=(bit, pair_diffs[ids[j], ids[j + 1]], entries[j]),
-                            )
-                            if advanced and depth in (3, 4) and layer == 0 and j < 4
-                            else ir.emit(
-                                "select", args=(bit, entries[j + 1], entries[j])
-                            )
-                            for j in range(0, len(entries), 2)
-                        ]
+                        next_entries = []
+                        for j in range(0, len(entries), 2):
+                            site = (b, r, layer, j // 2)
+                            eligible = advanced and depth in (3, 4) and layer == 0
+                            native = eligible and j < 2 * pairs[depth - 3]
+                            forced = site in requested
+                            if forced:
+                                assert eligible
+                                matched.add(site)
+                            if native or forced:
+                                diff = (
+                                    pair_diffs[ids[j], ids[j + 1]]
+                                    if native
+                                    else ir.binary("-", entries[j + 1], entries[j])
+                                )
+                                entry = ir.emit("muladd", args=(bit, diff, entries[j]))
+                            else:
+                                entry = ir.emit(
+                                    "select", args=(bit, entries[j + 1], entries[j])
+                                )
+                            if eligible:
+                                ir.ops[-1].site = site
+                            next_entries.append(entry)
+                        entries = next_entries
                     node = entries[0]
                 else:
                     addr = next_addresses[b]
@@ -188,7 +226,15 @@ def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
                     elif advanced and h == 3:
                         continue
                     elif h == 5:
-                        shift = ir.binary(op3, v, ir.vc(c3))
+                        decode_here = b in decoded and r == _ROUNDS - 1
+                        shift = ir.binary(
+                            op3,
+                            v,
+                            ir.vc(c3),
+                            preferred="alu" if decode_here else "valu",
+                        )
+                        if decode_here:
+                            v = ir.binary("^", v, ir.vc(_C))
                         v = ir.binary(op2, v, shift)
                     elif op1 == "+" and op2 == "+" and op3 == "<<":
                         v = ir.emit("muladd", args=(v, ir.vc(1 + (1 << c3)), ir.vc(c1)))
@@ -211,9 +257,16 @@ def _build_ir(sites: tuple[Site, ...], advanced=False) -> _IR:
                             next_addresses[b] = ir.binary(
                                 "-", pre_address, bit, preferred="alu"
                             )
+    if matched != requested:
+        raise ValueError("selector conversion lookup absent")
     for b in range(blocks):
-        v = ir.binary("^", values[b], ir.vc(_C), preferred="alu")
+        v = (
+            values[b]
+            if b in decoded
+            else ir.binary("^", values[b], ir.vc(_C), preferred="alu")
+        )
         ir.emit("vstore", args=(pointers[b], v), width=0)
+        ir.ops[-1].block = b
 
     # Alternative constant construction exchanges load slots for flow slots.
     # Keep a conservative anchor dependency for BOTH forms, so greedy engine
@@ -555,6 +608,10 @@ class CompiledKernel:
     scratch_size: int
     cache_sites: tuple[Site, ...]
     evaluations: int = 0
+    parameters: tuple = ()
+    logical: tuple = ()
+    addresses: tuple = ()
+    solver_queries: int = 0
 
     @property
     def cycles(self):
@@ -670,7 +727,7 @@ def _compile_baseline() -> CompiledKernel:
 
 
 @lru_cache(maxsize=2)
-def compile_benchmark(*, startup=True) -> CompiledKernel:
+def _compile_seed(*, startup=True) -> CompiledKernel:
     """Refine an automatically generated seed under the advanced cost model.
 
     The cheaper baseline planner starts empty. Score all one-site toggles under
@@ -709,4 +766,66 @@ def compile_benchmark(*, startup=True) -> CompiledKernel:
         program.scratch_size,
         program.cache_sites,
         baseline.evaluations + len(seen),
+    )
+
+
+@lru_cache(maxsize=2)
+def compile_benchmark(*, startup=True) -> CompiledKernel:
+    """Discover configuration and timing from source, then cache immutable output.
+
+    No search results, timing assignments, or physical programs are read. The
+    exact worker has a 2 GiB address-space cap and no deadline. Failure to find
+    a legal 980-cycle compilation is explicit, not a silent slower fallback.
+    """
+    if not startup:
+        return _compile_seed(startup=False)
+    if not __debug__:
+        raise RuntimeError("Compiler verification requires Python assertions enabled")
+    from importlib.metadata import PackageNotFoundError, version
+
+    try:
+        solver_version = version("z3-solver")
+    except PackageNotFoundError as error:
+        raise RuntimeError(
+            "Install the pinned build dependency from requirements.txt"
+        ) from error
+    if solver_version != "4.15.4.0":
+        raise RuntimeError("Expected z3-solver==4.15.4.0")
+    from kernel_optimizer import Discovery
+    from kernel_refinement import finish
+
+    discovery = Discovery()
+    result = finish(discovery, discovery.cache_plan())
+    plan = result.cost.plan
+    return CompiledKernel(
+        tuple(
+            tuple((e, tuple(slots)) for e, slots in b.items()) for b in result.program
+        ),
+        result.cost.scratch,
+        plan.sites,
+        result.evaluations,
+        (plan.pairs, plan.final_blocks, plan.selector_sites),
+        tuple(tuple(bundle) for bundle in result.logical),
+        tuple(sorted(result.addresses.items())),
+        result.solver_queries,
+    )
+
+
+def _analyze_compiled(compiled):
+    """Rebuild SSA independently for checking the generated in-memory trace."""
+    if not compiled.parameters:
+        raise ValueError("Only discovered compilations carry a repair trace")
+    pairs, final_blocks, selector_sites = compiled.parameters
+    ir = _build_ir(
+        compiled.cache_sites,
+        advanced=True,
+        pairs=pairs,
+        final_blocks=final_blocks,
+        selector_sites=selector_sites,
+    )
+    return (
+        ir,
+        [list(b) for b in compiled.logical],
+        dict(compiled.addresses),
+        compiled.scratch_size,
     )

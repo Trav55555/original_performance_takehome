@@ -1,0 +1,2 @@
+# Deterministic compile-time scheduling only; the emitted kernel has no dependency.
+z3-solver==4.15.4.0

@@ -1,0 +1,10 @@
+{
+  "cycles": 980,
+  "scratch": 1449,
+  "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+  "provenance": "source-plus-selected-timing-assignment",
+  "automatic_production_discovery": false,
+  "full_width_seeds": 1,
+  "asymmetric_patterns": 5,
+  "non_output_memory_preserved": true
+}
