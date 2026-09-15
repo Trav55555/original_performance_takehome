@@ -1,0 +1,528 @@
+{
+  "status": "verified",
+  "scope": "local promotion; no commit or push",
+  "parent_commit": "0067321851cae6f75c07892030ee5e461b33424e",
+  "run_workspace": "/tmp/perf-promote979-run.atLGjV",
+  "build": {
+    "cycles": 979,
+    "scratch": 1463,
+    "evaluations": 1959,
+    "solver_queries": 0,
+    "seconds": 953.8837468787096,
+    "digest": "d71b7cc458e45d9ae400faf7cbd525bafa531d5c23d6f10d84f3706d60143848",
+    "parameters": [
+      [
+        2,
+        3
+      ],
+      [
+        29,
+        31
+      ],
+      [
+        [
+          22,
+          15,
+          0,
+          6
+        ],
+        [
+          29,
+          15,
+          0,
+          7
+        ]
+      ]
+    ],
+    "cache_sites": [
+      [
+        0,
+        15
+      ],
+      [
+        2,
+        15
+      ],
+      [
+        3,
+        15
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        15
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        7,
+        15
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        9,
+        15
+      ],
+      [
+        10,
+        4
+      ],
+      [
+        11,
+        4
+      ],
+      [
+        11,
+        15
+      ],
+      [
+        12,
+        4
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        13,
+        4
+      ],
+      [
+        14,
+        4
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        17,
+        4
+      ],
+      [
+        17,
+        15
+      ],
+      [
+        22,
+        4
+      ],
+      [
+        22,
+        15
+      ],
+      [
+        23,
+        4
+      ],
+      [
+        25,
+        4
+      ],
+      [
+        27,
+        4
+      ],
+      [
+        29,
+        15
+      ],
+      [
+        30,
+        4
+      ]
+    ]
+  },
+  "compiler_verification": {
+    "cycles": 979,
+    "scratch": 1463,
+    "cache_sites": [
+      [
+        0,
+        15
+      ],
+      [
+        2,
+        15
+      ],
+      [
+        3,
+        15
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        15
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        7,
+        15
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        9,
+        15
+      ],
+      [
+        10,
+        4
+      ],
+      [
+        11,
+        4
+      ],
+      [
+        11,
+        15
+      ],
+      [
+        12,
+        4
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        13,
+        4
+      ],
+      [
+        14,
+        4
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        17,
+        4
+      ],
+      [
+        17,
+        15
+      ],
+      [
+        22,
+        4
+      ],
+      [
+        22,
+        15
+      ],
+      [
+        23,
+        4
+      ],
+      [
+        25,
+        4
+      ],
+      [
+        27,
+        4
+      ],
+      [
+        29,
+        15
+      ],
+      [
+        30,
+        4
+      ]
+    ],
+    "search_evaluations": 1959,
+    "cold_seconds": 0.001100161112844944,
+    "warm_seconds": 0.006466421764343977,
+    "fresh_processes": [
+      {
+        "seconds": 962.8855758598074,
+        "cycles": 979,
+        "scratch": 1463,
+        "evaluations": 1959,
+        "solver_queries": 0,
+        "digest": "d71b7cc458e45d9ae400faf7cbd525bafa531d5c23d6f10d84f3706d60143848",
+        "max_rss_kib": 235892,
+        "source_only": true
+      },
+      {
+        "seconds": 954.3427489781752,
+        "cycles": 979,
+        "scratch": 1463,
+        "evaluations": 1959,
+        "solver_queries": 0,
+        "digest": "d71b7cc458e45d9ae400faf7cbd525bafa531d5c23d6f10d84f3706d60143848",
+        "max_rss_kib": 235892,
+        "source_only": true
+      }
+    ],
+    "full_width_inputs": 100,
+    "explicit_override_fallbacks": 3,
+    "legacy_cycles": 1082,
+    "previous_production_cycles": 1052,
+    "startup_prototype_cycles": 1042,
+    "executed_controls_rejected": [
+      1082,
+      1076,
+      1052,
+      1042,
+      1041
+    ],
+    "solver_queries": 0,
+    "digest": "d71b7cc458e45d9ae400faf7cbd525bafa531d5c23d6f10d84f3706d60143848",
+    "lane_identity": true,
+    "dependency_mutation_rejected": true,
+    "flow_constant_mutation_rejected": true,
+    "selector_mutation_rejected": true,
+    "cached_program_isolation": true
+  },
+  "full_verification_status": {
+    "stage": "passed",
+    "seconds": 2941.310855436139,
+    "build": {
+      "cycles": 979,
+      "scratch": 1463,
+      "evaluations": 1959,
+      "solver_queries": 0,
+      "seconds": 953.8837468787096,
+      "digest": "d71b7cc458e45d9ae400faf7cbd525bafa531d5c23d6f10d84f3706d60143848",
+      "parameters": [
+        [
+          2,
+          3
+        ],
+        [
+          29,
+          31
+        ],
+        [
+          [
+            22,
+            15,
+            0,
+            6
+          ],
+          [
+            29,
+            15,
+            0,
+            7
+          ]
+        ]
+      ],
+      "cache_sites": [
+        [
+          0,
+          15
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          3,
+          15
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          6,
+          15
+        ],
+        [
+          7,
+          4
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          9,
+          4
+        ],
+        [
+          9,
+          15
+        ],
+        [
+          10,
+          4
+        ],
+        [
+          11,
+          4
+        ],
+        [
+          11,
+          15
+        ],
+        [
+          12,
+          4
+        ],
+        [
+          12,
+          15
+        ],
+        [
+          13,
+          4
+        ],
+        [
+          14,
+          4
+        ],
+        [
+          16,
+          15
+        ],
+        [
+          17,
+          4
+        ],
+        [
+          17,
+          15
+        ],
+        [
+          22,
+          4
+        ],
+        [
+          22,
+          15
+        ],
+        [
+          23,
+          4
+        ],
+        [
+          25,
+          4
+        ],
+        [
+          27,
+          4
+        ],
+        [
+          29,
+          15
+        ],
+        [
+          30,
+          4
+        ]
+      ]
+    },
+    "frozen_tests": 9,
+    "source_unchanged": true
+  },
+  "source_hashes": {
+    "kernel_compiler.py": "56bc9035f22138bcbc6cdcb3baa94b829a1efdabf94f2064675563ef84c0658b",
+    "kernel_optimizer.py": "08d791bfefe1d20ddf60f0762155c3d13457304ad73b9bcbf92decafec2dce28",
+    "kernel_refinement.py": "7a49ef4aad897b0df6ced04fec226fcb4d3a957ebeb1c40c70f2704415526b2a",
+    "kernel_justify.py": "702a9cec520d6a571e48c2f428c5f5d3e7891bf9fc0d9ab861c0ce9cab46c108",
+    "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+    "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+    "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+    "perf_takehome.py": "aee377d80dd468868ec2ea22c0a823d54b484c602707750cb8f5b98e19f2c3b9",
+    "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "requirements.txt": "c750a9cba82152e9e4889a29f7754dc24a0f76320a39f6fcd45cac1c298b156a",
+    "scripts/verify_compiler.py": "42365d2a7362f163e372fd9a6eee4b2ca55f5c60191fca11ff66f16c376863f1",
+    "scripts/verify_retry.py": "03b5cf42224b4e6bd3a8558f7a814e01fa1d6861d6e36bafa2d79a73d76a534e",
+    "scripts/verify_optimizer.py": "02dd6cd9c42e7233cb4a85136f36a0067f22d65392e8e67c3b29746d01e5ba56",
+    "scripts/verify_justify.py": "c53766954db25407bd3aae3e7493a07b5949d556d82bec853ce0ea0aeb96a9ae",
+    "tests/submission_tests.py": "11c57cc999da93acb41201191073cd657ddffa87635359b3157c6e177c18ea0a",
+    "tests/frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9"
+  },
+  "discovery_score_breakdown": {
+    "cache_and_profiles": 1763,
+    "native_rewrite_additions": 188,
+    "justification_additions": 8,
+    "total": 1959
+  },
+  "evidence_hashes": {
+    "full_verification_sources.json": "b32bca263f1fdd020bf538f52cefdbb00b0655a48fa03f01b0057b588225b33f",
+    "full_verification_status.json": "bb43e9fddf7cb886b003edaa48f4372e1b3622d0925efc89a115729c419537eb",
+    "public_build.json": "ba70a799fc4fe914ceab0f10ce0883afbaa3e31bba3e18048ebda2b0e6770f4b",
+    "compiler_verification.json": "f4de71b1544955880178f7acd460e82a81ab46d5c100268d4129a33a900f232c",
+    "optimizer_checks.json": "e673b3991b49bd4aae5898b614bd921588f5e51d9f9f55a4be9388b4e3f24734",
+    "micro_checks.json": "16dd0fc04fe7586ba5715e4994e9e2cdaed0622e0503a8c5cfd03f15c6f770a0",
+    "dependency_checks.json": "00e16d6450dfa63be21682166524372339723880121a6b0bf6fcdc48e8691d75",
+    "review_status.json": "72dc80203a7f90c77c37d8f5ccc77277abdd71559b86066802bc17850177ffa4",
+    "assurance.json": "44b74f1d59bcb7a119695f3530ac145bddf332882d2dd5be9cfa1031c36e8d90",
+    "discovery_progress.jsonl": "008b0463327269355a3064c97d60930dd484c6bd40cc162cd8ebff946663374b",
+    "submission.log": "c8ddf964d3bd9b002433fd8fc28cc9a75e0b1410cbf99aabda2bb1b0faeb908b",
+    "supplementary.log": "68df3fd336e8e13c63f2337ad091a21e0669257899835a71e8f4d65aeadb97c6",
+    "exit.json": "eb8c823a1312839df676da1066b2724838dcedd57965d9b6adaf7898c659e659",
+    "full_verification.log": "e2f748d89d9a75a9b0f5fd28d337c47338ee2e9011a203cccc4c4580b169c464",
+    "program.md": "46040d54889ad6be3310aa8879475084360aab3011ab450aeee03f43c635bf98"
+  },
+  "solver_queries": 0,
+  "cold_builds": 3,
+  "source_only_builds": 2,
+  "restarted_builds": 0,
+  "production_reads_experimental_inputs": false,
+  "frozen_tests_and_simulator_changed": false,
+  "independent_review": "unavailable: subagent HTTP402 before work",
+  "committed": false,
+  "pushed": false
+}

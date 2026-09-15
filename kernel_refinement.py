@@ -1,14 +1,13 @@
-"""Discover local rewrites and repair a small suffix of the chosen graph."""
+"""Discover local rewrites, then justify a graph-derived final-hash neighborhood."""
 
 from dataclasses import dataclass, replace
 from itertools import combinations
 import kernel_compiler as compiler
-from kernel_optimizer import analyze
+from kernel_optimizer import Cost, analyze
 import kernel_retime as retime
+from kernel_justify import schedule
 from kernel_checks import lane_identity
 from problem import SCRATCH_SIZE
-
-MAX_SOLVER_QUERIES = 4
 
 
 @dataclass
@@ -86,8 +85,14 @@ def candidates(discovery, best):
     return [discovery.evaluate(plan) for plan in sorted(proposals)]
 
 
-def finish(discovery, best, target=980):
+def finish(discovery, best, target=979):
     rows = candidates(discovery, best)
+    # This necessary-window test selects a seed; it is not a feasibility bound
+    # on unrestricted backward/forward scheduling. No solver is invoked.
+    feasible = [r for r in rows if r.feasible]
+    if not feasible:
+        raise RuntimeError("No feasible refinement frontier")
+    anchor_target = min(r.cycles for r in feasible) - 1
     eligible = []
     for cost in sorted(rows, key=lambda r: r.rank):
         if not cost.feasible:
@@ -103,60 +108,77 @@ def finish(discovery, best, target=980):
                 logical,
                 addresses,
                 ir,
-                discovery.seed_evaluations + len(discovery.scores),
+                discovery.evaluations,
                 0,
                 None,
             )
-        if cost.cycles - target > 8:
+        if cost.cycles - anchor_target > 8:
             continue
         model = retime.capture(ir, logical)
         for width in (32, 64):
-            start = max(0, target + 1 - width)
-            preflight = retime.preflight(model, start, target)
+            start = max(0, anchor_target + 1 - width)
+            preflight = retime.preflight(model, start, anchor_target)
             if preflight["admitted"]:
                 eligible.append(
                     ((-start, cost.rank, preflight["membership_terms"]), cost, start)
                 )
     eligible.sort(key=lambda entry: entry[0])
-    queries = 0
-    for _, cost, start in eligible:
-        if queries == MAX_SOLVER_QUERIES:
-            break
-        repeated, (ir, logical, addresses) = analyze(cost.plan)
-        assert repeated == cost
-        model = retime.capture(ir, logical)
-        # Fail before spending solver work if native reconstruction is not exact.
-        native, words, _, _ = retime.lower(
-            ir, model, [j["time"] for j in model["jobs"]]
+    if not eligible:
+        raise RuntimeError("No admitted refinement seed within compiler budget")
+    seed = eligible[0][1]
+    discovery.report("justification-seed", seed)
+    result = justify_finals(discovery, seed.plan)
+    if result.cost.cycles > target:
+        raise RuntimeError(
+            ("No allocation-feasible refinement within compiler budget", target)
         )
-        assert (
-            native == compiler._lower(ir, logical, addresses) and words == cost.scratch
-        )
-        queries += 1
-        discovery.report("exact-query", cost)
-        answer = retime.repair(model, start, target)
-        if answer["status"] == "unknown":
-            raise RuntimeError(
-                ("Exact compiler returned unknown", answer.get("reason"))
+    return result
+
+
+def justify_finals(discovery, plan):
+    """Eight schedules at most: two orders and two graph-derived terminal blocks."""
+    evaluated = {}
+
+    def evaluate(proposal, tie):
+        key = (proposal, tie)
+        if key not in evaluated:
+            discovery.reserve_schedule(proposal, tie)
+            _, (ir, logical, _) = analyze(proposal)
+            model = retime.capture(ir, logical)
+            times = schedule(model, tie=tie)
+            program, words, logical, addresses = retime.lower(ir, model, times)
+            cost = Cost(max(times) + 1, words, proposal)
+            discovery.report("justify-" + tie, cost)
+            evaluated[key] = (
+                Result(cost, program, logical, addresses, ir, 0, 0, None)
+                if program is not None
+                else None
             )
-        if answer["status"] != "sat":
-            continue
-        program, scratch, logical, addresses = retime.lower(ir, model, answer["times"])
-        if program is None:
-            continue
-        assert scratch <= SCRATCH_SIZE and len(program) <= target
-        final = replace(cost, cycles=len(program), scratch=scratch)
-        discovery.report("executable-repair", final)
-        return Result(
-            final,
-            program,
-            logical,
-            addresses,
-            ir,
-            discovery.seed_evaluations + len(discovery.scores),
-            queries,
-            {k: v for k, v in answer.items() if k != "times"},
-        )
-    raise RuntimeError(
-        ("No allocation-feasible repair within compiler budget", queries, len(eligible))
-    )
+        return evaluated[key]
+
+    seeds = [evaluate(plan, tie) for tie in ("native", "tail")]
+    legal = [r for r in seeds if r is not None]
+    if not legal:
+        raise RuntimeError("No allocation-feasible justification seed")
+    base = min(legal, key=lambda r: r.cost.rank)
+    stores = {
+        base.ir.ops[i].block: t
+        for t, entries in enumerate(base.logical)
+        for i, engine, _, _ in entries
+        if engine == "store"
+    }
+    blocks = sorted(stores, key=lambda b: (-stores[b], b))[:2]
+    for size in (1, 2):
+        for subset in combinations(blocks, size):
+            proposal = replace(
+                plan, final_blocks=tuple(sorted(set(plan.final_blocks) | set(subset)))
+            )
+            for tie in ("native", "tail"):
+                result = evaluate(proposal, tie)
+                if result is not None:
+                    legal.append(result)
+    best = min(legal, key=lambda r: r.cost.rank)
+    assert best.cost.scratch <= SCRATCH_SIZE
+    best.evaluations = discovery.evaluations
+    discovery.report("executable-justification", best.cost)
+    return best

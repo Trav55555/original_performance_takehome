@@ -13,6 +13,8 @@ sys.path[:0] = [str(ROOT), str(ROOT / "scripts"), str(ROOT / "tests")]
 import kernel_compiler as compiler
 import kernel_retime as retime
 from kernel_optimizer import Discovery, MAX_EVALUATIONS, Plan, analyze
+from kernel_justify import schedule
+from verify_compiler import performance_gate, MAX_CYCLES
 from frozen_problem import Tree, Input
 from perf_takehome import KernelBuilder
 from verify_retry import check_output
@@ -84,7 +86,7 @@ def main():
             raise AssertionError("Evaluation budget bypassed")
     pairs, final_blocks, selector_sites = compiled.parameters
     cost, (native_ir, native_logical, native_addresses) = analyze(
-        Plan(compiled.cache_sites, pairs, final_blocks, selector_sites)
+        Plan(compiled.cache_sites, pairs, (), selector_sites)
     )
     assert cost.feasible and cost.cycles == 981
     kernel = KernelBuilder()
@@ -93,7 +95,41 @@ def main():
     rng = random.Random(612)
     tree = Tree(10, [rng.getrandbits(32) for _ in range(2047)])
     inp = Input([0] * 256, [rng.getrandbits(32) for _ in range(256)], 16)
-    assert check_output(kernel, tree, inp) == 981 > 980
+    assert check_output(kernel, tree, inp) == 981 > MAX_CYCLES
+    native_model = retime.capture(native_ir, native_logical)
+    control_times = schedule(native_model, tie="tail")
+    control, control_words, control_logical, _ = retime.lower(
+        native_ir, native_model, control_times
+    )
+    assert control is not None and len(control) == 980
+    kernel.instrs, kernel.scratch_ptr = control, control_words
+    try:
+        performance_gate(kernel, tree, inp)
+    except AssertionError as error:
+        assert error.args == ((980, MAX_CYCLES),)
+    else:
+        raise AssertionError("Performance gate accepted the 980 control")
+    stores = {
+        native_ir.ops[i].block: t
+        for t, entries in enumerate(control_logical)
+        for i, e, _, _ in entries
+        if e == "store"
+    }
+    last = min(stores, key=lambda b: (-stores[b], b))
+    _, (overflow_ir, overflow_logical, _) = analyze(
+        Plan(compiled.cache_sites, pairs, (last,), selector_sites)
+    )
+    overflow_model = retime.capture(overflow_ir, overflow_logical)
+    overflow_times = schedule(overflow_model, tie="tail")
+    with patch.object(
+        compiler, "_lower", side_effect=AssertionError("forbidden lowering")
+    ) as lower:
+        rejected_program, retimed_words, _, _ = retime.lower(
+            overflow_ir, overflow_model, overflow_times
+        )
+        assert rejected_program is None and retimed_words == 1537
+        lower.assert_not_called()
+    assert compiled.solver_queries == 0
     print(
         json.dumps(
             {
@@ -106,6 +142,9 @@ def main():
                 "overscratch_lower_calls": 0,
                 "budget_rejected_before_evaluation": True,
                 "executed_native_control": 981,
+                "executed_980_control_rejected": True,
+                "natural_retimed_scratch_rejected": retimed_words,
+                "solver_queries": compiled.solver_queries,
                 "cycles": compiled.cycles,
                 "scratch": scratch,
             },

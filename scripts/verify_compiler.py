@@ -33,7 +33,7 @@ from kernel_compiler import (  # noqa: E402
 from perf_takehome import KernelBuilder  # noqa: E402
 from verify_retry import check_output  # noqa: E402
 
-MAX_CYCLES = 980
+MAX_CYCLES = 979
 MAX_EVALUATIONS = 4096
 
 
@@ -97,7 +97,7 @@ def digest(instructions):
 def cold_builds(expected):
     code = """
 import hashlib,json,resource,time
-import perf_takehome,problem
+import perf_takehome,problem,kernel_retime
 from kernel_compiler import compile_benchmark
 
 def forbidden(*args, **kwargs):
@@ -108,12 +108,15 @@ problem.Input.generate = forbidden
 for module in (problem, perf_takehome):
     for name in ('reference_kernel', 'reference_kernel2', 'build_mem_image'):
         setattr(module, name, forbidden)
+for name in ('solve', 'repair', '_worker'):
+    setattr(kernel_retime, name, forbidden)
 assert compile_benchmark.cache_info().currsize == 0
 start=time.monotonic()
 k=perf_takehome.KernelBuilder();k.build_kernel(10,2047,256,16)
 print(json.dumps({'seconds':time.monotonic()-start,
     'cycles':len(k.instrs),'scratch':k.scratch_ptr,
     'evaluations':k.compile_info['evaluations'],
+    'solver_queries':compile_benchmark().solver_queries,
     'digest':hashlib.sha256(json.dumps(k.instrs).encode()).hexdigest(),
     'max_rss_kib':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}))
 """
@@ -127,6 +130,7 @@ print(json.dumps({'seconds':time.monotonic()-start,
             "kernel_lookahead.py",
             "kernel_optimizer.py",
             "kernel_refinement.py",
+            "kernel_justify.py",
             "kernel_retime.py",
             "kernel_checks.py",
             "problem.py",
@@ -146,7 +150,7 @@ print(json.dumps({'seconds':time.monotonic()-start,
             row = json.loads(result.stdout)
             assert row["digest"] == expected, row
             assert row["cycles"] <= MAX_CYCLES and row["scratch"] <= SCRATCH_SIZE
-            assert row["evaluations"] <= MAX_EVALUATIONS
+            assert row["evaluations"] <= MAX_EVALUATIONS and row["solver_queries"] == 0
             row["source_only"] = cwd != ROOT
             rows.append(row)
     return rows

@@ -1,0 +1,44 @@
+{
+  "profile": "general",
+  "summary": {
+    "files": 3,
+    "lines": 426,
+    "functions": 14,
+    "errors": 0,
+    "warnings": 3
+  },
+  "findings": [
+    {
+      "rule": "complex_function",
+      "severity": "warning",
+      "path": "/tmp/perf-promote979.repo/kernel_justify.py",
+      "line": 7,
+      "message": "Function schedule has approximate branch complexity 34; review above 20.",
+      "excerpt": "def schedule(model, *, tie=\"native\", caps=CAP):",
+      "suggestion": "Use a language-native complexity tool, then simplify or document the risk disposition."
+    },
+    {
+      "rule": "complex_function",
+      "severity": "warning",
+      "path": "/tmp/perf-promote979.repo/kernel_optimizer.py",
+      "line": 83,
+      "message": "Function cache_plan has approximate branch complexity 22; review above 20.",
+      "excerpt": "def cache_plan(self):",
+      "suggestion": "Use a language-native complexity tool, then simplify or document the risk disposition."
+    },
+    {
+      "rule": "complex_function",
+      "severity": "warning",
+      "path": "/tmp/perf-promote979.repo/kernel_refinement.py",
+      "line": 25,
+      "message": "Function candidates has approximate branch complexity 29; review above 20.",
+      "excerpt": "def candidates(discovery, best):",
+      "suggestion": "Use a language-native complexity tool, then simplify or document the risk disposition."
+    }
+  ],
+  "limitations": [
+    "Findings are review prompts, not a quality or compliance score.",
+    "Use language-native compilers, linters, type checkers, static analyzers, and tests as the real gates.",
+    "The scanner cannot establish safety, traceability adequacy, bounded resources, or NASA compliance."
+  ]
+}

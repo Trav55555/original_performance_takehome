@@ -16,7 +16,7 @@ Measured in clock cycles from the simulated machine. All of these numbers are fo
 - **1548 cycles**: Claude Sonnet 4.5 after many more than 2 hours of test-time compute
 - **1487 cycles**: Claude Opus 4.5 after 11.5 hours in the harness
 - **1363 cycles**: Claude Opus 4.5 in an improved test time compute harness
-- **980 cycles**: This repo, using automatic cache/selector discovery and exact suffix scheduling. Previously 1041 cycles.
+- **979 cycles**: This repo, using automatic cache/selector discovery, backward/forward scheduling and final-hash reordering. Previously 980 cycles.
 - **??? cycles**: Best human performance ever is substantially better than the above, but we won't say how much.
 
 While it's no longer a good time-limited test, you can still use this test to get us excited about hiring you! If you optimize below 1487 cycles, beating Claude Opus 4.5's best performance at launch, email us at performance-recruiting@anthropic.com with your code (and ideally a resume) so we can be appropriately impressed, especially if you get near the best solution we've seen. New model releases may change what threshold impresses us though, and no guarantees that we keep this readme updated with the latest on that.
@@ -25,17 +25,17 @@ Install the build dependency below, then run `python tests/submission_tests.py` 
 
 ## Current implementation and verification
 
-The default kernel takes **980 cycles** for height 10, 2,047 tree nodes, batch size 256, and 16 rounds. Scratch usage is **1,465 of 1,536 words**, on one core with eight SIMD lanes. This saves 61 cycles from the preceding 1,041-cycle implementation.
+The default kernel takes **979 cycles** for height 10, 2,047 tree nodes, batch size 256, and 16 rounds. Scratch usage is **1,463 of 1,536 words**, on one core with eight SIMD lanes. This saves one cycle and two words from the preceding 980/1,465 implementation.
 
-The compiler discovers its cache choices, lookup conversions, and instruction timing from source. It does not read saved configurations, timing tables, physical programs, or runtime input values. The measured build used 1,951 score entries and one optimization query. Reconstruction checks add compilation work beyond that score count.
+The compiler discovers its cache choices, lookup conversions, final-hash blocks and instruction timing from source. It does not read saved configurations, timing tables, physical programs, or runtime input values. The measured build used **1,959 score entries and zero solver queries**. Reconstruction checks add compilation work beyond that score count.
 
-Cold builds took **17 to 19 minutes** on this host. A memoized build took about **6.6 ms**. Compiled programs are immutable tuples, and each builder receives fresh mutable bundles. There is no disk cache. The earlier selected-timing experiment reached the same 980 cycles using 1,449 words, but this production compiler discovers a different schedule using 16 more words.
+Three cold builds took **15.9 to 16.0 minutes** on this host. A memoized build took about **6.5 ms**. Compiled programs are immutable tuples, and each builder receives fresh mutable bundles. There is no disk cache. An earlier selected-timing experiment used 1,449 words at 980 cycles; the current schedule is faster but uses 14 more words than that separate experiment.
 
 The new path applies only to the benchmark with default tuning parameters. Other shapes and explicit overrides retain the legacy generator. Its 1,082-cycle benchmark implementation remains available as `KernelBuilder._build_legacy_kernel`.
 
-### From 1,303 to 980 cycles
+### From 1,303 to 979 cycles
 
-The full progression saved **323 cycles, or 24.8% of execution time**. Read the [illustrated walkthrough](docs/performance-progression.md) for the intermediate checkpoints, dependency diagrams, algebra, failed experiments, and the distinction between experimental and production results.
+The full progression saved **324 cycles, or 24.9% of execution time**. Read the [illustrated walkthrough through 980](docs/performance-progression.md) for the intermediate checkpoints, dependency diagrams, algebra and failed experiments. The [979 promotion report](experiments/promotion_979_results.md) covers the latest step and its source-only verification.
 
 | Measured progression | Main changes |
 |---|---|
@@ -46,25 +46,27 @@ The full progression saved **323 cycles, or 24.8% of execution time**. Read the 
 | 1,052 → 1,041 | Advance startup gather dependencies and reselect caches under that policy |
 | 1,041 → 981 | Search complete cache neighborhoods, escape a plateau with a swap, and rebalance arithmetic selectors with cache choices |
 | 981 → 980 | Convert two late selectors to arithmetic, then jointly repair the final schedule with Z3 and allocate scratch afresh |
+| 980 → 979 | Preserve a continuous gather stream with backward/forward scheduling and shorten the final hash path; discover the terminal blocks and allocate scratch afresh |
 
 The machine has only two load slots, six vector-arithmetic slots, and one flow slot per cycle. Caching exchanges gathers for selection work; arithmetic selectors move work from flow to arithmetic. Those exchanges help only when the complete schedule improves. The phase totals above include interacting changes, not independent additive savings for each technique.
 
-The final production query repairs a 32-cycle native suffix with 527 free issue-time variables. Earlier instruction times and native engine choices remain fixed. All constants, setup, loads, stores, and the final pause are charged. No saved timing table or ordinal scheduling edits are production inputs.
+The preceding 980 promotion repaired a 32-cycle native suffix with 527 free issue-time variables. The current compiler instead applies one backward/forward pass with fixed native engines. It derives two late terminal blocks from the generated schedule and checks their singleton and paired final-hash rewrites under two tie orders. All constants, setup, loads, stores and the final pause are charged. No saved timing table or ordinal scheduling edits are production inputs.
 
-The current instruction stream has a capacity-only lower bound of 967 cycles, not a proof that 967 is attainable. The 979-cycle query that completed after promotion exhausted its 2 GiB memory cap after about 16 hours 52 minutes. Its result was **unknown**, not proof that 979 is impossible.
+The current instruction stream has a capacity-only lower bound of 967 cycles, not a proof that 967 is attainable. An older 979-cycle solver query exhausted its 2 GiB memory cap after about 16 hours 52 minutes. Its result remains **unknown** for that graph and scope. The current constructive 979 result uses a different graph and scheduling method; global optimality is still unresolved.
 
 ### Build and verification
 
-The exact scheduler requires pinned `z3-solver==4.15.4.0` at build time. The emitted kernel has no Z3 dependency. Solver workers have a 2 GiB address-space cap and no wall-clock or CPU deadline. Compilation is bounded by 4,096 score entries and four optimization queries; unknown results fail explicitly rather than silently returning a slower kernel. Keep Python assertions enabled.
+The default compiler uses no solver queries. It retains the pinned `z3-solver==4.15.4.0` build-dependency check for compatibility with the retained exact-scheduling tools. The emitted kernel has no Z3 dependency. Compilation is bounded by 4,096 score entries, including at most eight new backward/forward schedules, and fails explicitly if it cannot find a legal 979-cycle result. Keep Python assertions enabled. The retained exact workers still have a 2 GiB address-space cap and no wall-clock or CPU deadline.
 
 ```sh
 python -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 python tests/submission_tests.py
-python scripts/verify_retry.py
+python scripts/verify_retry.py --max-cycles 979
 python scripts/verify_compiler.py
 python scripts/verify_optimizer.py
+python scripts/verify_justify.py
 git diff --exit-code 5452f74 -- tests/ problem.py
 ```
 
@@ -72,7 +74,7 @@ Separate commands start separate compiler caches. Allow time for cold compilatio
 
 Verification through `KernelBuilder` passed all nine frozen submission tests, 100 generated inputs, 100 full-width inputs, five asymmetric patterns, and nine other root-starting shapes. Three non-benchmark performance ceilings remain in place. Checks cover lane ownership, missing dependencies, duplicate lanes, corrupted constants and selectors, scratch rejection before lowering, explicit-override fallback, cached-program isolation, and co-issued pause/store completion. Both source-only rebuilds reproduced the same program at hash seeds 0 and 17.
 
-The 980-cycle ceiling rejects the executed native 981-cycle control and the 1,041, 1,042, 1,052, 1,076, and 1,082 controls. See [the promotion results](experiments/promotion_980_results.md) and [machine-readable receipt](experiments/promotion_980_receipt.json).
+The 979-cycle ceiling rejects the executed 980-cycle control. The native 981-cycle control and the 1,041, 1,042, 1,052, 1,076 and 1,082 controls also execute as expected. Checks reject a natural 1,537-word retimed allocation before lowering. See [the promotion results](experiments/promotion_979_results.md) and [machine-readable receipt](experiments/promotion_979_receipt.json). The [previous 980 promotion](experiments/promotion_980_results.md) remains documented.
 
 `tests/` and `problem.py` remain unchanged. The kernel assumes root-starting traversals and writes final values only, not indices. These checks do not establish support for non-root starts or arbitrary dimensions.
 
@@ -102,7 +104,7 @@ Simply placing regeneration near stores in source order did not keep it late in 
 
 Each policy passed three full-width frozen executions with identical cycle counts across runs, plus physical scratch-lane checks. The best tie also passed twenty additional full-width cases, five patterns, and a corrupted-pointer control. The measurements include every added instruction and retained base-pointer lifetime.
 
-The [bounded research follow-up](experiments/research_followup_results.md) records the preceding cache and regional-scheduling experiments. Later [frontier experiments](experiments/four_frontiers_results.md) reached 1,074 cycles. An [independent audit](experiments/github_1063_audit.md) reproduced a public fork at 1,063, and [isolated technique ports](experiments/technique_port_results.md) reached 1,052. Those techniques were integrated at 1,052 cycles. [Load-gap profiling](experiments/load_gap_results.md) then led to a 1,042-cycle startup policy. Its integration reselected caches and reached 1,041 cycles through the normal entry point. The cache, selector, and exact-scheduling work above subsequently reduced that to 980.
+The [bounded research follow-up](experiments/research_followup_results.md) records the preceding cache and regional-scheduling experiments. Later [frontier experiments](experiments/four_frontiers_results.md) reached 1,074 cycles. An [independent audit](experiments/github_1063_audit.md) reproduced a public fork at 1,063, and [isolated technique ports](experiments/technique_port_results.md) reached 1,052. Those techniques were integrated at 1,052 cycles. [Load-gap profiling](experiments/load_gap_results.md) then led to a 1,042-cycle startup policy. Its integration reselected caches and reached 1,041 cycles through the normal entry point. Cache, selector and exact-scheduling work subsequently reduced that to 980. Backward/forward scheduling with final-hash reordering now reaches 979.
 
 ## Warning: LLMs can cheat
 

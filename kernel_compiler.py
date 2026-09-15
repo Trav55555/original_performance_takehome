@@ -774,8 +774,9 @@ def compile_benchmark(*, startup=True) -> CompiledKernel:
     """Discover configuration and timing from source, then cache immutable output.
 
     No search results, timing assignments, or physical programs are read. The
-    exact worker has a 2 GiB address-space cap and no deadline. Failure to find
-    a legal 980-cycle compilation is explicit, not a silent slower fallback.
+    default path uses bounded backward/forward scheduling, without a solver.
+    Failure to find a legal 979-cycle compilation is explicit, not a silent
+    slower fallback. The pinned dependency check is retained for compatibility.
     """
     if not startup:
         return _compile_seed(startup=False)

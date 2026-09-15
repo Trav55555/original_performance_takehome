@@ -1,0 +1,12 @@
+{
+  "command": "scripts/verify_justify.py",
+  "passed": true,
+  "toy_before": 6,
+  "toy_after": 5,
+  "tie_orders": 2,
+  "executions": 3,
+  "budget_before_construction": true,
+  "duplicate_reservation_rejected": true,
+  "empty_frontier_rejected": true,
+  "source_sha256": "c53766954db25407bd3aae3e7493a07b5949d556d82bec853ce0ea0aeb96a9ae"
+}

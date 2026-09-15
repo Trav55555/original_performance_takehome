@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "controls": [
+        "missing-dependency",
+        "wrong-version"
+      ],
+      "discovery_calls": 0
+    },
+    {
+      "controls": [
+        "assertions-disabled"
+      ],
+      "discovery_calls": 0
+    }
+  ],
+  "kernel_constructions": 0,
+  "solver_queries": 0
+}

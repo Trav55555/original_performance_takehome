@@ -1,0 +1,6 @@
+PASS: 100 random inputs, 5 bit patterns, 9 other shapes
+PASS: 3 non-benchmark performance gates
+PASS: scheduler hazards; co-issued pause/store; corrupted kernel rejected
+Cycles: 979; scratch: 1463/1536
+Engine operations: {'load': 1888, 'flow': 945, 'valu': 5800, 'alu': 11524, 'store': 32}
+Capacity-only lower bounds for this instruction stream: {'load': 944, 'flow': 945, 'valu': 967, 'alu': 961, 'store': 16}

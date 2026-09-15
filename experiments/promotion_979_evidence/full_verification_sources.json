@@ -1,0 +1,18 @@
+{
+  "kernel_compiler.py": "56bc9035f22138bcbc6cdcb3baa94b829a1efdabf94f2064675563ef84c0658b",
+  "kernel_optimizer.py": "08d791bfefe1d20ddf60f0762155c3d13457304ad73b9bcbf92decafec2dce28",
+  "kernel_refinement.py": "7a49ef4aad897b0df6ced04fec226fcb4d3a957ebeb1c40c70f2704415526b2a",
+  "kernel_justify.py": "702a9cec520d6a571e48c2f428c5f5d3e7891bf9fc0d9ab861c0ce9cab46c108",
+  "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+  "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+  "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+  "perf_takehome.py": "aee377d80dd468868ec2ea22c0a823d54b484c602707750cb8f5b98e19f2c3b9",
+  "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+  "requirements.txt": "c750a9cba82152e9e4889a29f7754dc24a0f76320a39f6fcd45cac1c298b156a",
+  "scripts/verify_compiler.py": "42365d2a7362f163e372fd9a6eee4b2ca55f5c60191fca11ff66f16c376863f1",
+  "scripts/verify_retry.py": "03b5cf42224b4e6bd3a8558f7a814e01fa1d6861d6e36bafa2d79a73d76a534e",
+  "scripts/verify_optimizer.py": "02dd6cd9c42e7233cb4a85136f36a0067f22d65392e8e67c3b29746d01e5ba56",
+  "scripts/verify_justify.py": "c53766954db25407bd3aae3e7493a07b5949d556d82bec853ce0ea0aeb96a9ae",
+  "tests/submission_tests.py": "11c57cc999da93acb41201191073cd657ddffa87635359b3157c6e177c18ea0a",
+  "tests/frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9"
+}

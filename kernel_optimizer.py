@@ -53,17 +53,32 @@ class Discovery:
         self.scores = {}
         self.observer = observer
         self.seed_evaluations = 0
+        self.schedule_reservations = set()
+
+    @property
+    def evaluations(self):
+        return (
+            self.seed_evaluations + len(self.scores) + len(self.schedule_reservations)
+        )
+
+    def reserve_schedule(self, plan, tie):
+        if self.evaluations >= MAX_EVALUATIONS:
+            raise RuntimeError("Compilation evaluation budget exhausted")
+        key = (plan, tie)
+        if key in self.schedule_reservations:
+            raise RuntimeError("Duplicate schedule reservation")
+        self.schedule_reservations.add(key)
 
     def evaluate(self, plan):
         if plan not in self.scores:
-            if self.seed_evaluations + len(self.scores) >= MAX_EVALUATIONS:
+            if self.evaluations >= MAX_EVALUATIONS:
                 raise RuntimeError("Compilation evaluation budget exhausted")
             self.scores[plan] = analyze(plan)[0]
         return self.scores[plan]
 
     def report(self, phase, cost):
         if self.observer:
-            self.observer(phase, cost, self.seed_evaluations + len(self.scores))
+            self.observer(phase, cost, self.evaluations)
 
     def cache_plan(self):
         seed = compiler._compile_seed()
