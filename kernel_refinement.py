@@ -85,7 +85,7 @@ def candidates(discovery, best):
     return [discovery.evaluate(plan) for plan in sorted(proposals)]
 
 
-def finish(discovery, best, target=979):
+def finish(discovery, best, target=975):
     rows = candidates(discovery, best)
     # This necessary-window test selects a seed; it is not a feasibility bound
     # on unrestricted backward/forward scheduling. No solver is invoked.
@@ -136,7 +136,7 @@ def finish(discovery, best, target=979):
 
 
 def justify_finals(discovery, plan):
-    """Eight schedules at most: two orders and two graph-derived terminal blocks."""
+    """Twelve schedules at most: three orders and two derived terminal blocks."""
     evaluated = {}
 
     def evaluate(proposal, tie):
@@ -156,7 +156,8 @@ def justify_finals(discovery, plan):
             )
         return evaluated[key]
 
-    seeds = [evaluate(plan, tie) for tie in ("native", "tail")]
+    ties = ("native", "tail", "startup")
+    seeds = [evaluate(plan, tie) for tie in ties]
     legal = [r for r in seeds if r is not None]
     if not legal:
         raise RuntimeError("No allocation-feasible justification seed")
@@ -173,7 +174,7 @@ def justify_finals(discovery, plan):
             proposal = replace(
                 plan, final_blocks=tuple(sorted(set(plan.final_blocks) | set(subset)))
             )
-            for tie in ("native", "tail"):
+            for tie in ties:
                 result = evaluate(proposal, tie)
                 if result is not None:
                     legal.append(result)

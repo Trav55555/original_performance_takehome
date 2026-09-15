@@ -775,7 +775,7 @@ def compile_benchmark(*, startup=True) -> CompiledKernel:
 
     No search results, timing assignments, or physical programs are read. The
     default path uses bounded backward/forward scheduling, without a solver.
-    Failure to find a legal 979-cycle compilation is explicit, not a silent
+    Failure to find a legal 975-cycle compilation is explicit, not a silent
     slower fallback. The pinned dependency check is retained for compatibility.
     """
     if not startup:

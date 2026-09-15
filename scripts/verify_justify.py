@@ -30,7 +30,7 @@ def main():
     ]
     model = retime.capture(ir, logical)
     original = [j["time"] for j in model["jobs"]]
-    for tie in ("native", "tail"):
+    for tie in ("native", "tail", "startup"):
         times = schedule(model, tie=tie, caps=dict(retime.CAP, load=1))
         assert max(times) + 1 == 5 and times[0] > original[0]
         program, words, _, _ = retime.lower(ir, model, times)
@@ -83,9 +83,9 @@ def main():
             {
                 "toy_before": 6,
                 "toy_after": 5,
-                "tie_orders": 2,
+                "tie_orders": 3,
                 "moved_later": True,
-                "executions": 3,
+                "executions": 4,
                 "missing_edge_rejected": True,
                 "budget_before_construction": True,
                 "duplicate_reservation_rejected": True,

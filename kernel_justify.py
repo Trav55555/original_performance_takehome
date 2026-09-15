@@ -9,9 +9,11 @@ def schedule(model, *, tie="native", caps=CAP):
 
     Jobs may move later than their native times and cross original cycle
     boundaries. Engine choices and exact lane dependencies stay fixed.
-    Scratch feasibility is deliberately left to fresh allocation by the caller.
+    ``startup`` gives the ancestry of the first 26 logical gathers a bounded
+    forty-cycle priority boost during forward insertion. Scratch feasibility is
+    deliberately left to fresh allocation by the caller.
     """
-    if tie not in ("native", "tail"):
+    if tie not in ("native", "tail", "startup"):
         raise ValueError("Unknown justification tie order")
     jobs = model["jobs"]
     native = [j["time"] for j in jobs]
@@ -50,9 +52,29 @@ def schedule(model, *, tie="native", caps=CAP):
         used[e][t] += 1
         right[i] = t
     validate(model, right)
-    priority = [
-        (right[i], i if tie == "native" else -path[i], i) for i in range(len(jobs))
-    ]
+    if tie == "startup":
+        gather_ops = sorted(
+            {
+                job["op"]
+                for job in jobs
+                if job["op"] is not None and model["ops"][job["op"]]["kind"] == "gather"
+            }
+        )[:26]
+        startup = [job["op"] in gather_ops for job in jobs]
+        todo = [i for i, selected in enumerate(startup) if selected]
+        while todo:
+            for parent, _ in parents[todo.pop()]:
+                if not startup[parent]:
+                    startup[parent] = True
+                    todo.append(parent)
+        priority = [
+            (64 * right[i] - 2560 * startup[i], right[i], -path[i], i)
+            for i in range(len(jobs))
+        ]
+    else:
+        priority = [
+            (right[i], i if tie == "native" else -path[i], i) for i in range(len(jobs))
+        ]
     indegree = [len(p) for p in parents]
     ready = [
         (priority[i], i) for i in range(len(jobs)) if i != pause and not indegree[i]

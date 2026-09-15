@@ -33,7 +33,7 @@ from kernel_compiler import (  # noqa: E402
 from perf_takehome import KernelBuilder  # noqa: E402
 from verify_retry import check_output  # noqa: E402
 
-MAX_CYCLES = 979
+MAX_CYCLES = 975
 MAX_EVALUATIONS = 4096
 
 

@@ -96,7 +96,7 @@ def check_scheduler():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seeds", type=int, default=100)
-    parser.add_argument("--max-cycles", type=int, default=980)
+    parser.add_argument("--max-cycles", type=int, default=975)
     args = parser.parse_args()
     assert args.seeds > 0
 
