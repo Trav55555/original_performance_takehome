@@ -1,6 +1,6 @@
 # Experiments and evidence
 
-[Home](../Readme.md) · [Full performance history](../docs/performance-progression.md) · [Technique wiki](../docs/reference/README.md) · [Verification commands](../docs/verification.md)
+[Home](../README.md) · [Full performance history](../docs/performance-progression.md) · [Technique wiki](../docs/reference/README.md) · [Verification commands](../docs/verification.md)
 
 ## Current production
 
@@ -61,7 +61,7 @@ The directory originally indexed only three January prototypes. Their descriptio
 | [`batch_sweep.py`](batch_sweep.py) | Batch-size experiments around the early manually scheduled implementation |
 | [`medium_tree_opt.py`](medium_tree_opt.py) | Early arithmetic lookup prototype, documented as failing correctness; its predicted speedup was not a measured valid result |
 
-Root-level notes also remain in place for provenance: [implementation log](../implementation_guide.md), [algorithmic proposals](../algorithmic_optimizations.md), [expert analysis](../expert_analysis.md), [initialization guide](../init_optimization_guide.md) and [vectorization research](../vector_research.md). Their historical banners point to maintained guidance.
+Former root-level notes now live in [docs/history](../docs/history/README.md): [implementation log](../docs/history/implementation_guide.md), [algorithmic proposals](../docs/history/algorithmic_optimizations.md), [expert analysis](../docs/history/expert_analysis.md), [initialization guide](../docs/history/init_optimization_guide.md) and [vectorization research](../docs/history/vector_research.md). Their historical banners point to maintained guidance. Old root-level prototypes and sweep output are in [experiments/archive](archive/README.md); their contents were preserved rather than repaired or rerun.
 
 ## Artifact availability
 

@@ -1,6 +1,7 @@
 import http.server
 import os
 from datetime import datetime
+from pathlib import Path
 import webbrowser
 import urllib.request
 
@@ -14,7 +15,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
-                with open("watch_trace.html", "rb") as file:
+                with Path(__file__).with_suffix(".html").open("rb") as file:
                     self.wfile.write(file.read())
 
             # Stream the contents of 'trace.json' at '/trace.json'

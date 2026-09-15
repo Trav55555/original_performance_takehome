@@ -1,6 +1,6 @@
 # Implementation Guide
 
-> Historical January 2026 implementation and session log, retained for provenance. Its "current", "final", tuning and validation instructions describe older code, not today's compiler. Use the [architecture map](docs/architecture.md), [verification guide](docs/verification.md), [full history](docs/performance-progression.md) and [technique wiki](docs/reference/README.md) for maintained guidance.
+> Historical January 2026 implementation and session log, retained for provenance. Its "current", "final", tuning and validation instructions describe older code, not today's compiler. Use the [architecture map](../architecture.md), [verification guide](../verification.md), [full history](../performance-progression.md) and [technique wiki](../reference/README.md) for maintained guidance.
 
 ## Rules of Engagement
 - Do not modify anything under `tests/`, including `tests/frozen_problem.py` and `tests/submission_tests.py`.

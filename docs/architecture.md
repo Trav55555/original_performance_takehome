@@ -1,6 +1,6 @@
 # Current compiler architecture
 
-[Home](../Readme.md) · [Verification](verification.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
+[Home](../README.md) · [Verification](verification.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
 
 This map describes the [979-cycle source release at `2c4705b`](https://github.com/Trav55555/original_performance_takehome/tree/2c4705b73038b723b1021ff65943d54b5d1fe842). Unverified working-tree changes are outside this reference baseline. Historical prototypes and fixed-configuration controls are not its default execution path.
 
@@ -72,4 +72,6 @@ Production still calls `kernel_retime.capture`, `preflight`, `validate` and `low
 
 Production does not read `experiments/`, receipts, saved site lists or saved timings. Some verifiers deliberately construct historical controls; that is separate from production discovery.
 
-Keep root module paths stable during documentation work. The [source-only verifier](../scripts/verify_compiler.py) copies an explicit source-file list into an isolated directory. Moving code requires updating that contract and rerunning the affected verification, not just fixing Markdown links.
+Historical notes are in [docs/history](history/README.md), prototype code in [experiments/archive](../experiments/archive/README.md), and the viewer in [tools/trace](../tools/trace/README.md). The root intentionally retains the submission API, simulator and production compiler modules.
+
+Keep those root module paths stable during documentation work. The [source-only verifier](../scripts/verify_compiler.py) copies an explicit source-file list into an isolated directory. Moving code requires updating that contract and rerunning the affected verification, not just fixing Markdown links.

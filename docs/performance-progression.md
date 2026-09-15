@@ -1,6 +1,6 @@
 # Full performance history: 147,734 to 979 cycles
 
-[Home](../Readme.md) · [Architecture](architecture.md) · [Technique wiki](reference/README.md) · [Experiment index](../experiments/README.md)
+[Home](../README.md) · [Architecture](architecture.md) · [Technique wiki](reference/README.md) · [Experiment index](../experiments/README.md)
 
 The project began with a scalar starter whose recorded baseline is **147,734 cycles**. Published production now executes in **979 cycles / 1,463 scratch words**, with zero solver queries. That is 146,755 fewer simulated cycles, about 151 times faster than the recorded starter. The later 1,303 → 979 phase saved 324 cycles, or 24.9% of execution time.
 
@@ -96,7 +96,7 @@ January 21 commits made the frozen simulator an independent file rather than a s
 
 ## 147,734 → 4,294: vectorize, retain state and overlap walkers
 
-The [January session log](../implementation_guide.md#progress-log) records these intermediate measurements before the first optimized commit. They are historical observations, not separately rebuilt releases:
+The [January session log](history/implementation_guide.md#progress-log) records these intermediate measurements before the first optimized commit. They are historical observations, not separately rebuilt releases:
 
 | Recorded change | Cycles |
 |---|---:|

@@ -1,6 +1,6 @@
 # Technique and research reference
 
-[Home](../../Readme.md) · [Full history](../performance-progression.md) · [Architecture](../architecture.md) · [Verification](../verification.md) · [Experiment index](../../experiments/README.md)
+[Home](../../README.md) · [Full history](../performance-progression.md) · [Architecture](../architecture.md) · [Verification](../verification.md) · [Experiment index](../../experiments/README.md)
 
 Use this wiki to look up a method, its assumptions and what happened when we tested it. Use the performance history for chronology and the architecture guide for today's call path. Current production is 979 cycles / 1463 scratch words, promoted in `2c4705b`.
 

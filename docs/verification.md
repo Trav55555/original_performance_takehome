@@ -1,6 +1,6 @@
 # Verification and tool guide
 
-[Home and setup](../Readme.md#build-and-run) · [Architecture](architecture.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
+[Home and setup](../README.md#build-and-run) · [Architecture](architecture.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
 
 This guide describes the published `2c4705b` verification baseline, not unverified working-tree experiments. Run commands from the repository root, in the environment installed from `requirements.txt`, with Python assertions enabled. That release must execute in at most **979 cycles** and use at most **1536 scratch words**. The promoted result uses 1463 words.
 
@@ -48,7 +48,7 @@ Only the named verifiers above are listed here as current verification entry poi
 | `scripts/analyze_*.py`, `profiler.py`, `bottleneck_detector.py`, `visualize_schedule.py`, `value_reuse_profiler.py` | Historical analysis tools. Inspect their imports, shape assumptions and build calls before use; some construct a kernel. |
 | `scripts/breakthrough_experiments.py`, `scheduler_experiments.py`, `experiment_batching.py`, `validate_speculative.py` | Historical experimental drivers, not permission to start another search or evidence of current compatibility. |
 | `experiments/baseline.py`, `batch_sweep.py`, `medium_tree_opt.py` | Early prototypes. See the [experiment index](../experiments/README.md#historical-prototypes-and-guides) for their original status. |
-| `param_sweep.py`, `radical_experiment.py`, `perf_takehome_experiment1.py` | Root-level historical experiments. They are not the production entry point. |
-| `watch_trace.py`, `watch_trace.html` | Local trace inspection. Debug behavior must not change the measured kernel or oracle. |
+| [`experiments/archive/`](../experiments/archive/README.md) | Historical root-level prototypes and sweep output, relocated without repairing or rerunning their algorithms. Not production entry points. |
+| [`tools/trace/`](../tools/trace/README.md) | Trace viewer and HTML asset. Run `python tools/trace/watch_trace.py` from the root to view an existing `trace.json`. Debug behavior must not change the measured kernel or oracle. |
 
 No historical driver was rerun to prepare this guide. Old `/tmp` commands may depend on missing artifacts or source hashes from a different compiler version. Do not adjust old receipts to make those guards pass. New searches need a new scope and budget.

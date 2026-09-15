@@ -16,7 +16,9 @@ The latest change saved one cycle and two scratch words over the previous 980-cy
 | Look up a technique or research result | [Technique and research wiki](docs/reference/README.md) |
 | Inspect reports and raw evidence | [Experiment index](experiments/README.md) |
 
-Old root-level guides are marked historical. They are not current implementation or verification instructions.
+Historical notes live in [`docs/history/`](docs/history/README.md), archived prototype code in [`experiments/archive/`](experiments/archive/README.md), and the trace viewer in [`tools/trace/`](tools/trace/README.md). They are separate from current compiler and verification guidance.
+
+The root keeps the submission entry point, simulator, production `kernel_*.py` modules and environment files. Their flat import paths are part of the submission and source-only verification contract.
 
 ## Build and run
 

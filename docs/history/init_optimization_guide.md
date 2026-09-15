@@ -1,6 +1,6 @@
 # Init Phase Micro-Optimization Guide
 
-> Historical January 2026 initialization study around the 1303-cycle checkpoint. Its headroom estimates and proposed steps are not a current work plan. See the [full history](docs/performance-progression.md), [current architecture](docs/architecture.md) and [scheduling reference](docs/reference/scheduling-and-allocation.md).
+> Historical January 2026 initialization study around the 1303-cycle checkpoint. Its headroom estimates and proposed steps are not a current work plan. See the [full history](../performance-progression.md), [current architecture](../architecture.md) and [scheduling reference](../reference/scheduling-and-allocation.md).
 
 ## Background
 
