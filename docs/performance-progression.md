@@ -1,24 +1,62 @@
-# From 1,303 to 980 cycles
+# Full performance history: 147,734 to 979 cycles
 
-We saved **323 cycles: 24.8% less execution time, or about 1.33× faster**.
+[Home](../Readme.md) · [Architecture](architecture.md) · [Technique wiki](reference/README.md) · [Experiment index](../experiments/README.md)
 
-The story was not one clever scheduling trick. We repeatedly changed the representation, exposed more independent work, moved work between execution engines, and then reconsidered the schedule. A change that failed early sometimes became useful after another bottleneck moved.
+The project began with a scalar starter whose recorded baseline is **147,734 cycles**. Published production now executes in **979 cycles / 1,463 scratch words**, with zero solver queries. That is 146,755 fewer simulated cycles, about 151 times faster than the recorded starter. The later 1,303 → 979 phase saved 324 cycles, or 24.9% of execution time.
+
+This history covers the upstream setup, January vectorization and manual scheduling, the automatic scheduler, and the September compiler/research work through the 979 promotion. It does not treat every experiment as a production release.
 
 ```text
-1303 → 1113   Representation, temporary storage, and pipeline scheduling
-1113 → 1082   Predicate reuse, selective caching, and instruction choice
-1082 → 1076   Rebuilt compiler and alternative constant construction
-1076 → 1052   Hash fusion, lookup changes, and cache reselection
-1052 → 1041   Startup scheduling and another cache reselection
-1041 →  981   Deeper cache search and joint selector balancing
- 981 →  980   Small, exact, allocation-checked suffix repair
+147734 → 4294   SIMD, retained walker state, batching and load overlap
+  4294 → 2905   Manual bundle packing, hash fusion and wider prefetch
+  2905 → 1305   Automatic list scheduling and shallow cached selection
+  1305 → 1303   Reuse selection arithmetic and batch initialization
+  1303 → 1113   Encoded state, private temporaries and load-aware scheduling
+  1113 → 1082   Predicate reuse, selective caching and instruction choice
+  1082 → 1076   SSA compiler and alternative constant construction
+  1076 → 1052   Hash fusion, lookup changes and cache reselection
+  1052 → 1041   Startup scheduling and another cache reselection
+  1041 →  981   Cache neighborhoods and joint selector balancing
+   981 →  980   Small, exact, allocation-checked suffix repair
+   980 →  979   Solver-free reordering plus a shorter final hash path
 ```
 
-This history covers the work from the 1,303-cycle baseline through release `168e0f2` and the subsequent completed 979-cycle query.
+The diagram follows selected milestones, not a monotonic record of every attempted change. January counts come from contemporaneous commit messages and the session log; they were not rerun for this documentation update. Later reports state their own execution, allocation and promotion gates. The current result has the [full 979 promotion evidence](../experiments/promotion_979_results.md). Schematics below are not measured timings unless explicitly labeled.
 
-Below, the cycle counts are measured checkpoints. The diagrams are schematic unless marked with actual issue times. Some checkpoints were experiments rather than separately published releases.
+## Milestone ledger
 
-## 1. What we were optimizing
+Dates are Git author dates. They locate saved work, not hours spent optimizing. The January session log contains additional intermediate measurements without separate commits; those are distinguished below. Git records the next kernel-development commit after January on September 10.
+
+| Date | Commit or source | Cycles | Scratch words | Status and change |
+|---|---|---:|---:|---|
+| Jan 19–21 | [Starter](https://github.com/Trav55555/original_performance_takehome/tree/f88c9458dbc5ef09d7801d961d905698e7e7cae1), [frozen checkpoint](https://github.com/Trav55555/original_performance_takehome/tree/5452f74) | 147734 | Not listed | Recorded scalar baseline; upstream setup and test-integrity guidance |
+| Jan 22 | [8535c4b](https://github.com/Trav55555/original_performance_takehome/commit/8535c4b) | 4294 | Not listed | SIMD, three-batch work and software pipelining |
+| Jan 22 | [9b66c24](https://github.com/Trav55555/original_performance_takehome/commit/9b66c24) | 4030 | Not listed | Batch setup, broadcasts, XOR/address work |
+| Jan 22 | [b60ddb3](https://github.com/Trav55555/original_performance_takehome/commit/b60ddb3) | 3946 | Not listed | Batch remainder index operations |
+| Jan 22 | [50f0c03](https://github.com/Trav55555/original_performance_takehome/commit/50f0c03) | 3765 | Not listed | Affine hash fusion and shallow arithmetic selection |
+| Jan 22 | [dd47206](https://github.com/Trav55555/original_performance_takehome/commit/dd47206) | 3645 | Not listed | Explicit WIP checkpoint; six-way batching for broadcast rounds |
+| Jan 22 | [e84802b](https://github.com/Trav55555/original_performance_takehome/commit/e84802b) | ~3241 | Not listed | Extend six-way batching to select/gather rounds |
+| Jan 22 | [1107260](https://github.com/Trav55555/original_performance_takehome/commit/1107260) | ~2905 | Not listed | Gather loads share index-update bundles |
+| Jan 22 | [4c21d2e](https://github.com/Trav55555/original_performance_takehome/commit/4c21d2e) | 1305 | Not listed | Automatic list scheduler, shallow caches and tiling |
+| Jan 22 | [3ab1a17](https://github.com/Trav55555/original_performance_takehome/commit/3ab1a17) | 1323 | Not listed | Regression from skipping final index updates; next baseline restored 1305 |
+| Jan 22–23 | [caffa90](https://github.com/Trav55555/original_performance_takehome/commit/caffa90), [3e2e6fb](https://github.com/Trav55555/original_performance_takehome/commit/3e2e6fb) | 1304 | Not listed | Reuse selection arithmetic; unused broadcasts removed without another cycle gain |
+| Jan 23 | [46be33c](https://github.com/Trav55555/original_performance_takehome/commit/46be33c) | 1303 | Not listed | Batch initialization; January endpoint |
+| Sep 10 | [b09d2a6](https://github.com/Trav55555/original_performance_takehome/commit/b09d2a6) | 1113 | See reports | Retry, load urgency and pause/store packing |
+| Sep 10 | [b033825](https://github.com/Trav55555/original_performance_takehome/commit/b033825) | 1088 | See reports | Predicate reuse and selected depth-4 caches |
+| Sep 10 | [d746d15](https://github.com/Trav55555/original_performance_takehome/commit/d746d15) | 1084 | See reports | Root cancellation and scheduling retune |
+| Sep 10 | [8d0506a](https://github.com/Trav55555/original_performance_takehome/commit/8d0506a) | 1082 | 1536 | Scoped hash scalarization; retained legacy implementation |
+| Sep 10 | [0bef02a](https://github.com/Trav55555/original_performance_takehome/commit/0bef02a) | 1076 | 1236 | [Automatic rebuilt compiler promotion](../experiments/rebuilt_promotion_results.md) |
+| Sep 10 | [0accd81](https://github.com/Trav55555/original_performance_takehome/commit/0accd81) | 1052 | 1457 | [Fusion/lookup promotion](../experiments/technique_promotion_results.md) |
+| Sep 11 | [5691617](https://github.com/Trav55555/original_performance_takehome/commit/5691617) | 1041 | 1458 | [Startup-policy promotion](../experiments/startup_promotion_results.md) |
+| Sep 11–13 | [Published discovery trace](../experiments/promotion_980_evidence/progress.jsonl) | 1037 → 981 | Varies | Experimental cache/selector milestones, later automatically rediscovered |
+| Sep 13 | [168e0f2](https://github.com/Trav55555/original_performance_takehome/commit/168e0f2) | 980 | 1465 | [Exact-repair production promotion](../experiments/promotion_980_results.md); distinct from experimental 980/1449 |
+| Sep 14 | [0067321](https://github.com/Trav55555/original_performance_takehome/commit/0067321) | 980 | 1483 | [Solver-free research tie](../experiments/resource_order_results.md), not a new production result |
+| Sep 14 | [2c4705b](https://github.com/Trav55555/original_performance_takehome/commit/2c4705b) | 979 | 1463 | [Current source-only production promotion](../experiments/promotion_979_results.md) |
+| Sep 14–15 | `988dd9b`, `960f4c3` | 979 | 1463 | README updates only; no new performance result |
+
+Each retained compiler milestone supersedes the preceding retained implementation. Experimental rows do not. Missing scratch measurements are left blank in substance rather than inferred from the machine limit. [Production reports](../experiments/README.md#production-promotion-records) connect later promotions to verification receipts.
+
+## What we were optimizing
 
 There are 256 independent inputs, each taking 16 steps through a binary tree. Eight SIMD lanes make **32 groups of walkers**.
 
@@ -48,7 +86,74 @@ An irregular eight-lane tree gather requires eight scalar loads: **at least four
 
 The central problem became: **how do we keep the scarce engines supplied without exhausting scratch?**
 
-## 2. 1,303 → 1,117: representation and parallelism
+## Origins: the scalar starter and frozen benchmark
+
+The initial January 19 source used scalar arithmetic and load/store operations, with one non-debug operation per instruction bundle. Inside each round it loaded each walker's index and value, fetched a tree node, hashed the value, updated the index and wrote state back.
+
+The [upstream submission tests at the frozen checkpoint](https://github.com/Trav55555/original_performance_takehome/blob/5452f74/tests/submission_tests.py) record `BASELINE = 147734`. Their 18,532-cycle threshold refers to a different, improved challenge starting point. It was not a measured intermediate result of this repository's optimization sequence. The model/human thresholds in the original challenge are comparison context, not commits in this history.
+
+January 21 commits made the frozen simulator an independent file rather than a symlink and added warnings against changing tests. That boundary remains intact. The modern compiler is verified for final values from root starts while preserving non-output memory; the early records should not be read as having passed every modern promotion gate.
+
+## 147,734 → 4,294: vectorize, retain state and overlap walkers
+
+The [January session log](../implementation_guide.md#progress-log) records these intermediate measurements before the first optimized commit. They are historical observations, not separately rebuilt releases:
+
+| Recorded change | Cycles |
+|---|---:|
+| Original scalar baseline | 147734 |
+| Basic eight-lane SIMD with two batches | 10656 |
+| Software pipelining, prefetch during hash | 8496 |
+| Vector copy instead of scalar copy loop | 6704 |
+| Broadcast common root loads at rounds 0 and 11 | 6660 |
+| Three-batch processing | 6078 |
+| Replace branch selection with arithmetic | 5566 |
+| Fuse index multiply/add | 5334 |
+| Replace wrap selection with a masked multiply | 5054 |
+| Batch broadcast rounds | 4294 |
+
+The log also mentions a 6592-cycle vectorized result from an earlier session, without enough context to place it in this exact sequence. It is not silently inserted as another monotonic improvement.
+
+SIMD applied the same arithmetic to eight walkers at once. Keeping indices and values in scratch across rounds avoided repeated state traffic. Processing several batches exposed independent arithmetic while the next batch's irregular node loads issued.
+
+```text
+Scalar starter:     load A → hash A → update/store A → load B → hash B
+Batched SIMD:      [load group B] overlaps [hash group A]
+                   [hash groups A, B, C] fills more arithmetic slots
+```
+
+These changes work together. The commit at [8535c4b](https://github.com/Trav55555/original_performance_takehome/commit/8535c4b) records 4294 cycles and lists vectorization, three-batch processing, prefetch, broadcast reuse, arithmetic branch updates and persistent scratch state. It does not provide independent ablations for every claimed component.
+
+## 4,294 → about 2,905: improve manually packed bundles
+
+Initialization and remainder handling left issue slots empty. January's next changes grouped constant loads, vector broadcasts, address arithmetic and remainder operations so more independent work could share each bundle.
+
+The session log includes local 4272, 4150, 4010 and 3996 measurements while developing the 4030-cycle committed version. They were different combinations, not a steadily falling release series. Remainder index batching then produced the 3946-cycle commit.
+
+At 3765, stages 0, 2 and 4 of the hash used affine multiply-add fusion, and rounds 1 and 12 used arithmetic selection from runtime-loaded shallow nodes. Six-way batching first reached a WIP 3645 result for broadcast rounds, then about 3241 after extending it to selection and gather rounds. Widening prefetch to share index-update bundles produced about 2905.
+
+The six VALU slots explain the attraction of six-way batching, but do not prove six is always the best concurrency level. Gather dependencies, scratch usage and remainder handling still matter. The later scheduler replaced these manual packing choices.
+
+Sources: commits [9b66c24](https://github.com/Trav55555/original_performance_takehome/commit/9b66c24), [b60ddb3](https://github.com/Trav55555/original_performance_takehome/commit/b60ddb3), [50f0c03](https://github.com/Trav55555/original_performance_takehome/commit/50f0c03), [dd47206](https://github.com/Trav55555/original_performance_takehome/commit/dd47206), [e84802b](https://github.com/Trav55555/original_performance_takehome/commit/e84802b) and [1107260](https://github.com/Trav55555/original_performance_takehome/commit/1107260).
+
+## About 2,905 → 1,303: automate scheduling, then remove small costs
+
+The large January rewrite generated a flat operation list and let a greedy scheduler pack bundles subject to physical read/write hazards and engine capacities. It cached tree levels 0 through 3 and used selection networks instead of repeated gathers. Group/round tiling controlled how much work and storage were live together.
+
+```text
+Earlier generator:  choose computation AND hand-place its bundles
+Later generator:    emit operations → derive hazards → pack legal bundles
+September SSA:      emit logical values → schedule → choose physical storage
+```
+
+The [4c21d2e commit](https://github.com/Trav55555/original_performance_takehome/commit/4c21d2e) records 1305 cycles. The session log's 1307 and 1304 observations describe nearby development variants; they do not replace that committed checkpoint. Its `group_size=17` and `round_tile=13` settings are historical, not today's defaults.
+
+Removing final index updates seemed like an obvious win but regressed to 1323 at [3ab1a17](https://github.com/Trav55555/original_performance_takehome/commit/3ab1a17). The next saved baseline returned to 1305. This is an early example of less work producing a worse heuristic schedule.
+
+Level-3 selection recomputed `idx - 7` after temporary values were overwritten. Extracting all predicate bits first removed 64 vector operations and reached 1304. Removing unused constants and broadcasts maintained that count. Batching initialization then reached 1303 on January 23.
+
+The old logs called this the "final solution" and estimated little remaining headroom. Those estimates described a particular instruction stream and scheduler. September's graph changes demonstrate why they were not global limits.
+
+## 1,303 → 1,117: representation and parallelism
 
 The first large reduction came from rebuilding how traversal state and temporary values were represented.
 
@@ -118,7 +223,7 @@ The major lesson here was that **register layout determines how much parallelism
 
 Source: [retry progression](../experiments/retry_results.md).
 
-## 3. 1,117 → 1,113: prioritize future loads and pack the ending
+## 1,117 → 1,113: prioritize future loads and pack the ending
 
 At this point, instruction ordering alone still had a small payoff.
 
@@ -155,7 +260,7 @@ This saved one real cycle. We checked pause-enabled execution and both engine it
 
 Sources: [lookahead packing](../experiments/lookahead_packing_results.md), [pause and scheduling bounds](../experiments/scheduling_bounds_results.md).
 
-## 4. 1,113 → 1,082: reuse predicates, then spend the recovered space
+## 1,113 → 1,082: reuse predicates, then spend the recovered space
 
 This phase illustrates how one optimization can enable another. At 1,113 cycles, a bound on the existing physical-register graph left at most nine cycles of scheduling improvement. Reaching 1,088 required changing that graph, not violating the bound.
 
@@ -220,7 +325,7 @@ Broad scalarization lost. The retained rule was a narrow benchmark-specific exce
 
 Sources: [predicate reuse and caching](../experiments/cross_domain_results.md), [root folding](../experiments/domain_sweep_results.md), [scoped scalarization](../experiments/algorithmica_results.md).
 
-## 5. 1,082 → 1,076: a new compiler creates room for further changes
+## 1,082 → 1,076: a new compiler creates room for further changes
 
 The physical-register implementation had reached **all 1,536 scratch words**. We rebuilt around single static assignment, or SSA: each logical result has its own identity before physical storage is chosen.
 
@@ -260,7 +365,7 @@ An earlier, smaller experiment that renamed only selection temporaries had merel
 
 Sources: [rebuilt promotion](../experiments/rebuilt_promotion_results.md), [constant-choice experiments](../experiments/algorithmica_followup_results.md).
 
-## 6. 1,076 → 1,052: combine algebra, lookup representation, and reselection
+## 1,076 → 1,052: combine algebra, lookup representation, and reselection
 
 First, bounded engine lookahead plus an address-precomputation rewrite produced a **1,074-cycle experimental control**.
 
@@ -320,7 +425,7 @@ The combined changes altered which cache sites were profitable. Reselecting cach
 
 Source: [technique-port experiments](../experiments/technique_port_results.md).
 
-## 7. 1,052 → 1,041: repair startup, then reselect again
+## 1,052 → 1,041: repair startup, then reselect again
 
 A finite kernel pays for pipeline startup as well as steady-state work.
 
@@ -338,7 +443,7 @@ That last cycle matters conceptually: the integration did not just copy an exper
 
 Source: [startup integration](../experiments/startup_promotion_results.md).
 
-## 8. 1,041 → 981: search the new cache/selector trade-off properly
+## 1,041 → 981: search the new cache/selector trade-off properly
 
 Earlier production searches were deliberately small. With compile time now secondary, we explored complete cache-toggle neighborhoods repeatedly.
 
@@ -377,7 +482,7 @@ Even the initially slower `1 / 5` profile enabled a 982-cycle combination. **Rej
 
 Sources: [cache descent](../experiments/cache_descent_results.md), [automatically reproduced search trace](../experiments/promotion_980_evidence/progress.jsonl).
 
-## 9. 981 → 980: the last cycle required coordinated scheduling
+## 981 → 980: small exact suffix repair
 
 This was the hardest cycle, not the largest gain.
 
@@ -448,7 +553,7 @@ Three cold builds independently reproduced the same 980-cycle program. The price
 
 Sources: [experimental 980 verification control](../experiments/promotion_980_evidence/archived_980_control.json), [published promotion](../experiments/promotion_980_results.md).
 
-## 10. Outcome at the 980-cycle release
+## Historical outcome at the 980-cycle release
 
 ```text
                          Cycles    Scratch words
@@ -473,4 +578,44 @@ Being thirteen cycles above 967 does not mean thirteen cycles are recoverable. D
 
 Throughout the progression, the target remained the same root-starting computation on the unchanged one-core machine. The final promotion passed all nine frozen tests, full-width and asymmetric input checks, memory-preservation checks, mutation controls, fresh allocation checks, and source-only reproduction.
 
+## 980 → 979: change resource order and shorten the last path
+
+Research continued after the exact-repair promotion. Tensor/Mobius lookup forms, coefficient sharing, slope-select and geometric/event scheduling gave useful local changes but no faster complete kernel in their declared screens. The [research wiki](reference/search-and-research.md) preserves those distinctions and the source-availability limits. None of those failures proves that every variant of the technique is unhelpful.
+
+A resource-order pilot then tried genuine backward/forward justification. On the unchanged native 981-cycle graph, one pass filled a late gather hole and produced a solver-free 980-cycle program. It moved 8587 jobs earlier and 955 later. Allowing some jobs to move later changed resource order in ways the earlier compactor could not.
+
+That experimental tie used 1483 words, versus the then-production solver-based program's 1465. It was not itself a faster production release. Extra passes did not improve cycles, and the tested resource-deadline candidates exceeded scratch before lowering.
+
+Final-hash rewriting supplied the next step:
+
+```text
+(u XOR (u >> 16)) XOR C = (u XOR C) XOR (u >> 16)
+
+                                      Reordered native     Final-hash pair
+Last gather issue                            968                  968
+Last block's gather-to-store path              11                   10
+Final store and pause issue                  979                  978
+Complete execution cycles                    980                  979
+```
+
+Both schedules keep 1816 gathers continuous at two per cycle from 61 through 968. The rewrite makes the constant XOR and shift independent and changes the shift's preferred engine. It shortens the final path without reducing the per-engine instruction counts.
+
+Some final-hash graphs had worse native timing spans, 984 to 989, but became 979-cycle programs after reordering and fresh allocation. A 979 timing assignment needing 1537 words was not legal and was rejected. The paired rewrite fit 1463 words. These are coupled graph/scheduling/allocation effects, not independent savings that can be added to any kernel.
+
+### From selected experiment to automatic production
+
+The production compiler retained automatic cache and selector discovery. It used necessary-window preflight ranking to choose a generated seed, tried two scheduling orders, and derived two late terminal blocks from the better legal schedule. Singleton and paired rewrites under those orders added at most eight schedule scores. The discovered blocks were 29 and 31, not saved winner IDs supplied to the search.
+
+The build used 1959 scores under a 4096 limit and made zero solver queries. It reproduced the experimental program through the public builder and two isolated source-only cold builds, then passed the full promotion gates. Each cold build took about 16 minutes; a warm call took about 6.5 ms. Those host costs are separate from the 979 emitted execution cycles.
+
+Sources: [resource-order pilot](../experiments/resource_order_results.md), [979 promotion](../experiments/promotion_979_results.md), [receipt](../experiments/promotion_979_receipt.json) and [automatic discovery trace](../experiments/promotion_979_evidence/discovery_progress.jsonl). The earlier selected final-hash pilot is cataloged as local-only evidence in the wiki; it is not a fresh-clone dependency.
+
+## Current endpoint and what remains unknown
+
+Commit `2c4705b` published **979 cycles / 1463 scratch words** on September 14. The following README commits documented that result without changing its program. The older 979 solver OOM remains unknown for its own graph and constraints. It is not retroactively a successful query, and it does not conflict with the later constructive result.
+
+The capacity-only bound for the current instruction stream remains 967. No global optimum or real-hardware speedup has been established. Earlier "final" results and scoped lower bounds remain historical evidence, not current limits.
+
 **The recurring lesson: optimize the complete dependency graph under its resource limits. Fewer instructions, more caching, more SIMD, or a shorter local chain are useful only when the fully executed kernel gets faster.**
+
+For current code, read the [architecture map](architecture.md). For methods and negative results, use the [technique wiki](reference/README.md). For exact verification commands and costs, use the [verification guide](verification.md).

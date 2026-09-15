@@ -1,5 +1,7 @@
 # Breaking the VALU Bound: Algorithmic Optimizations
 
+> Historical January 2026 proposals, retained without revalidating their predictions. "Current", "not yet applied" and lower-bound claims refer to the old graph and knowledge at that time. See the [full history](docs/performance-progression.md) and [technique wiki](docs/reference/README.md) for later tests and current conclusions.
+
 ## The Revelation
 
 README states: **"Best human performance ever is substantially better than [1,363 cycles]"**

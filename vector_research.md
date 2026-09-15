@@ -1,5 +1,7 @@
 # Research: Vectorization for Performance Takehome (VLEN=8 Platform)
 
+> Historical January 2026 exploratory notes. Hardware comparisons and optimization suggestions below were not revalidated for the current compiler. See the [technique wiki](docs/reference/README.md), [full history](docs/performance-progression.md) and [verification guide](docs/verification.md) for measured outcomes and limits.
+
 ## 1. Problem Characterization
 The platform is a simulated VLIW/SIMD machine with tight constraints:
 - **VLEN=8**: Matches AVX2-style width (for 32-bit floats/ints).

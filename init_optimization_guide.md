@@ -1,5 +1,7 @@
 # Init Phase Micro-Optimization Guide
 
+> Historical January 2026 initialization study around the 1303-cycle checkpoint. Its headroom estimates and proposed steps are not a current work plan. See the [full history](docs/performance-progression.md), [current architecture](docs/architecture.md) and [scheduling reference](docs/reference/scheduling-and-allocation.md).
+
 ## Background
 
 Current performance: **1,303 cycles (92.2% efficient)**

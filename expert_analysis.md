@@ -1,5 +1,7 @@
 # Expert Analysis: Applying CPU Optimization Knowledge to VLIW Problem
 
+> Historical January 2026 analysis of the 1303-cycle implementation. Its hardware analogies, efficiency estimates and proposed gains are not current verified claims. See the [full history](docs/performance-progression.md), [current architecture](docs/architecture.md) and [technique wiki](docs/reference/README.md). Simulator results do not predict real CPU/GPU speedups.
+
 ## Executive Summary
 
 Your performance take-home project is an **excellent analog** to real-world CPU optimization problems. I'll analyze your current solution through the lens of modern CPU optimization techniques and identify which optimizations you've already applied and which remain untapped.

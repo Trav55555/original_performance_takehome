@@ -1,10 +1,22 @@
 # Anthropic's original performance take-home
 
-**979 cycles, 1,463 scratch words, no solver queries.** This result was promoted in `2c4705b`. The public builder and two isolated source-only rebuilds produced the same program. See the [verification report](experiments/promotion_979_results.md) and [receipt](experiments/promotion_979_receipt.json).
+**979 cycles, 1,463 scratch words, no solver queries.** This result was promoted in `2c4705b`. The public builder and two isolated source-only rebuilds produced the same program. The figures and compiler description below refer to this verified release. See the [verification report](experiments/promotion_979_results.md) and [receipt](experiments/promotion_979_receipt.json).
 
 This repo optimizes Anthropic's original performance take-home. The benchmark uses a height-10 tree with 2,047 nodes, a batch of 256 inputs and 16 rounds. It runs on one core with eight SIMD lanes and a 1,536-word scratch limit.
 
 The latest change saved one cycle and two scratch words over the previous 980-cycle implementation. Other shapes and explicit tuning overrides still use the legacy generator, whose benchmark implementation takes 1,082 cycles.
+
+## Find your way around
+
+| Goal | Read |
+|---|---|
+| Build and check the current result | [Setup below](#build-and-run), [verification commands and costs](docs/verification.md) |
+| Understand the current code | [Architecture and module map](docs/architecture.md) |
+| Follow the whole project | [147,734 → 979 history and milestone ledger](docs/performance-progression.md) |
+| Look up a technique or research result | [Technique and research wiki](docs/reference/README.md) |
+| Inspect reports and raw evidence | [Experiment index](experiments/README.md) |
+
+Old root-level guides are marked historical. They are not current implementation or verification instructions.
 
 ## Build and run
 
@@ -61,12 +73,15 @@ The 979-cycle performance gate rejected an executed 980-cycle control. The nativ
 
 The current instruction stream has a capacity-only lower bound of 967 cycles. That does not mean 967 is attainable. An older attempt to solve for 979 exhausted 2 GiB after about 16 hours 52 minutes and returned **unknown**. It used a different graph and scope from the successful implementation. Neither result proves global optimality.
 
-## From 1,303 to 979 cycles
+## From 147,734 to 979 cycles
 
-The progression saved 324 cycles, or 24.9% of execution time. The [illustrated walkthrough through 980](docs/performance-progression.md) records the checkpoints, dependency diagrams, algebra and failed experiments. The [979 report](experiments/promotion_979_results.md) covers the last step.
+The recorded scalar baseline is 147,734 cycles. The current result is a roughly 151× speedup in simulated execution. The [full illustrated history](docs/performance-progression.md) covers the upstream starter, January vectorization and scheduling, September compiler research, and the final promotion. The later 1,303 → 979 phase alone saved 324 cycles, or 24.9% of execution time. The [979 report](experiments/promotion_979_results.md) supplies the current verification evidence.
 
 | Cycles | Main changes |
 |---|---|
+| 147,734 → 4,294 | SIMD, persistent walker state, batching and software pipelining |
+| 4,294 → about 2,905 | Manual bundle packing, affine hash fusion and a wider prefetch window |
+| About 2,905 → 1,303 | Automatic list scheduling, shallow selection caches, predicate reuse and initialization cleanup |
 | 1,303 → 1,113 | One-based and mirrored indices, XOR encoding, private hash temporaries, load-aware scheduling and final store/pause packing |
 | 1,113 → 1,082 | Reuse branch predicates, cache selected depth-4 lookups, fold the root mix and move selected vector work to scalar slots |
 | 1,082 → 1,076 | Build a single-static-assignment graph, allocate scratch after scheduling and construct some constants on the flow engine |
@@ -76,7 +91,7 @@ The progression saved 324 cycles, or 24.9% of execution time. The [illustrated w
 | 981 → 980 | Convert two late selectors to arithmetic, repair the final schedule with Z3 and allocate scratch again |
 | 980 → 979 | Keep gathers continuous with backward/forward scheduling, shorten the final hash path and allocate scratch again |
 
-The savings in each row include interactions between changes. They are not independent gains that can be added in other combinations.
+The savings in each row include interactions between changes. They are not independent gains that can be added in other combinations. January counts are historical commit/session measurements, not fresh executions under every modern promotion gate.
 
 ### Experiments worth keeping
 
