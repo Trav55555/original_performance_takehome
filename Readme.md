@@ -1,70 +1,27 @@
-# Anthropic's Original Performance Take-Home
+# Anthropic's original performance take-home
 
-**Verified production result: 979 cycles, 1,463 scratch words, zero solver queries.** Promoted in `2c4705b`. Three cold builds, including two isolated source-only rebuilds, reproduced the same program. See the [promotion and verification report](experiments/promotion_979_results.md).
+**979 cycles, 1,463 scratch words, no solver queries.** This result was promoted in `2c4705b`. The public builder and two isolated source-only rebuilds produced the same program. See the [verification report](experiments/promotion_979_results.md) and [receipt](experiments/promotion_979_receipt.json).
 
-This repo contains a version of Anthropic's original performance take-home, before Claude Opus 4.5 started doing better than humans given only 2 hours.
+This repo optimizes Anthropic's original performance take-home. The benchmark uses a height-10 tree with 2,047 nodes, a batch of 256 inputs and 16 rounds. It runs on one core with eight SIMD lanes and a 1,536-word scratch limit.
 
-The original take-home was a 4-hour one that starts close to the contents of this repo, after Claude Opus 4 beat most humans at that, it was updated to a 2-hour one which started with code which achieved 18532 cycles (7.97x faster than this repo starts you). This repo is based on the newer take-home which has a few more instructions and comes with better debugging tools, but has the starter code reverted to the slowest baseline. After Claude Opus 4.5 we started using a different base for our time-limited take-homes.
+The latest change saved one cycle and two scratch words over the previous 980-cycle implementation. Other shapes and explicit tuning overrides still use the legacy generator, whose benchmark implementation takes 1,082 cycles.
 
-Now you can try to beat Claude Opus 4.5 given unlimited time!
+## Build and run
 
-## Performance benchmarks 
-
-Measured in clock cycles from the simulated machine. All of these numbers are for models doing the 2 hour version which started at 18532 cycles:
-
-- **2164 cycles**: Claude Opus 4 after many hours in the test-time compute harness
-- **1790 cycles**: Claude Opus 4.5 in a casual Claude Code session, approximately matching the best human performance in 2 hours
-- **1579 cycles**: Claude Opus 4.5 after 2 hours in our test-time compute harness
-- **1548 cycles**: Claude Sonnet 4.5 after many more than 2 hours of test-time compute
-- **1487 cycles**: Claude Opus 4.5 after 11.5 hours in the harness
-- **1363 cycles**: Claude Opus 4.5 in an improved test time compute harness
-- **979 cycles**: This repo, using automatic cache/selector discovery, backward/forward scheduling and final-hash reordering. Previously 980 cycles.
-- **??? cycles**: Best human performance ever is substantially better than the above, but we won't say how much.
-
-While it's no longer a good time-limited test, you can still use this test to get us excited about hiring you! If you optimize below 1487 cycles, beating Claude Opus 4.5's best performance at launch, email us at performance-recruiting@anthropic.com with your code (and ideally a resume) so we can be appropriately impressed, especially if you get near the best solution we've seen. New model releases may change what threshold impresses us though, and no guarantees that we keep this readme updated with the latest on that.
-
-Install the build dependency below, then run `python tests/submission_tests.py` to see which thresholds you pass.
-
-## Current implementation and verification
-
-The default kernel takes **979 cycles** for height 10, 2,047 tree nodes, batch size 256, and 16 rounds. Scratch usage is **1,463 of 1,536 words**, on one core with eight SIMD lanes. This saves one cycle and two words from the preceding 980/1,465 implementation.
-
-The compiler discovers its cache choices, lookup conversions, final-hash blocks and instruction timing from source. It does not read saved configurations, timing tables, physical programs, or runtime input values. The measured build used **1,959 score entries and zero solver queries**. Reconstruction checks add compilation work beyond that score count.
-
-Three cold builds took **15.9 to 16.0 minutes** on this host. A memoized build took about **6.5 ms**. Compiled programs are immutable tuples, and each builder receives fresh mutable bundles. There is no disk cache. An earlier selected-timing experiment used 1,449 words at 980 cycles; the current schedule is faster but uses 14 more words than that separate experiment.
-
-The new path applies only to the benchmark with default tuning parameters. Other shapes and explicit overrides retain the legacy generator. Its 1,082-cycle benchmark implementation remains available as `KernelBuilder._build_legacy_kernel`.
-
-### From 1,303 to 979 cycles
-
-The full progression saved **324 cycles, or 24.9% of execution time**. Read the [illustrated walkthrough through 980](docs/performance-progression.md) for the intermediate checkpoints, dependency diagrams, algebra and failed experiments. The [979 promotion report](experiments/promotion_979_results.md) covers the latest step and its source-only verification.
-
-| Measured progression | Main changes |
-|---|---|
-| 1,303 → 1,113 | One-based and mirrored indices, XOR encoding, private hash temporaries, load-aware scheduling, and final store/pause packing |
-| 1,113 → 1,082 | Reuse branch predicates, selectively cache depth-4 lookups, fold the root mix, and move selected vector work to scalar slots |
-| 1,082 → 1,076 | Rebuild around single static assignment, allocate scratch after scheduling, and construct some constants on the flow engine |
-| 1,076 → 1,052 | Combine hash-stage fusion, retained branch history, arithmetic lookup leaves, engine lookahead, and cache reselection |
-| 1,052 → 1,041 | Advance startup gather dependencies and reselect caches under that policy |
-| 1,041 → 981 | Search complete cache neighborhoods, escape a plateau with a swap, and rebalance arithmetic selectors with cache choices |
-| 981 → 980 | Convert two late selectors to arithmetic, then jointly repair the final schedule with Z3 and allocate scratch afresh |
-| 980 → 979 | Preserve a continuous gather stream with backward/forward scheduling and shorten the final hash path; discover the terminal blocks and allocate scratch afresh |
-
-The machine has only two load slots, six vector-arithmetic slots, and one flow slot per cycle. Caching exchanges gathers for selection work; arithmetic selectors move work from flow to arithmetic. Those exchanges help only when the complete schedule improves. The phase totals above include interacting changes, not independent additive savings for each technique.
-
-The preceding 980 promotion repaired a 32-cycle native suffix with 527 free issue-time variables. The current compiler instead applies one backward/forward pass with fixed native engines. It derives two late terminal blocks from the generated schedule and checks their singleton and paired final-hash rewrites under two tie orders. All constants, setup, loads, stores and the final pause are charged. No saved timing table or ordinal scheduling edits are production inputs.
-
-The current instruction stream has a capacity-only lower bound of 967 cycles, not a proof that 967 is attainable. An older 979-cycle solver query exhausted its 2 GiB memory cap after about 16 hours 52 minutes. Its result remains **unknown** for that graph and scope. The current constructive 979 result uses a different graph and scheduling method; global optimality is still unresolved.
-
-### Build and verification
-
-The default compiler uses no solver queries. It retains the pinned `z3-solver==4.15.4.0` build-dependency check for compatibility with the retained exact-scheduling tools. The emitted kernel has no Z3 dependency. Compilation is bounded by 4,096 score entries, including at most eight new backward/forward schedules, and fails explicitly if it cannot find a legal 979-cycle result. Keep Python assertions enabled. The retained exact workers still have a 2 GiB address-space cap and no wall-clock or CPU deadline.
+Keep Python assertions enabled. The default compiler no longer calls a solver, but it still checks for `z3-solver==4.15.4.0` for compatibility with the retained exact-scheduling tools. The emitted kernel has no Z3 dependency.
 
 ```sh
 python -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 python tests/submission_tests.py
+```
+
+Expect the first build to take about 16 minutes on the host used for verification. The three measured cold builds took 15.9 to 16.0 minutes; a cached build took about 6.5 ms. There is no disk cache, so each new Python process starts over. Within a process, the compiler caches immutable tuples and gives each builder its own mutable instruction bundles.
+
+Run the additional checks with:
+
+```sh
 python scripts/verify_retry.py --max-cycles 979
 python scripts/verify_compiler.py
 python scripts/verify_optimizer.py
@@ -72,29 +29,64 @@ python scripts/verify_justify.py
 git diff --exit-code 5452f74 -- tests/ problem.py
 ```
 
-Separate commands start separate compiler caches. Allow time for cold compilation; `verify_compiler.py` also performs two isolated cold rebuilds.
+These commands have separate compiler caches. `verify_compiler.py` also runs two isolated cold rebuilds; `verify_justify.py` uses small scheduling tests without benchmark discovery.
 
-Verification through `KernelBuilder` passed all nine frozen submission tests, 100 generated inputs, 100 full-width inputs, five asymmetric patterns, and nine other root-starting shapes. Three non-benchmark performance ceilings remain in place. Checks cover lane ownership, missing dependencies, duplicate lanes, corrupted constants and selectors, scratch rejection before lowering, explicit-override fallback, cached-program isolation, and co-issued pause/store completion. Both source-only rebuilds reproduced the same program at hash seeds 0 and 17.
+## How the compiler reaches 979
 
-The 979-cycle ceiling rejects the executed 980-cycle control. The native 981-cycle control and the 1,041, 1,042, 1,052, 1,076 and 1,082 controls also execute as expected. Checks reject a natural 1,537-word retimed allocation before lowering. See [the promotion results](experiments/promotion_979_results.md) and [machine-readable receipt](experiments/promotion_979_receipt.json). The [previous 980 promotion](experiments/promotion_980_results.md) remains documented.
+The compiler searches for cache choices and arithmetic replacements for lookup selectors. It then schedules the generated graph backward and forward, keeping each instruction's native engine assignment. From that schedule it finds two late terminal blocks and tests final-hash rewrites for each block and the pair, under two tie orders.
 
-`tests/` and `problem.py` remain unchanged. The kernel assumes root-starting traversals and writes final values only, not indices. These checks do not establish support for non-root starts or arbitrary dimensions.
+All choices come from generated graphs and measured schedule costs. The compiler reads no saved configurations, timing tables, physical programs or runtime input values. Each new schedule gets a fresh scratch allocation. Setup, constants, broadcasts, loads, stores and the final pause all count toward execution time.
 
-## Prototype history and rejected experiments
+The successful build used 1,959 score entries. The limit is 4,096, including at most eight backward/forward schedules. Reconstruction checks add compilation work beyond that score count. If the search cannot find a legal result at or below 979 cycles, compilation fails rather than returning a slower kernel.
 
-See [the Algorithmica follow-up lessons](experiments/algorithmica_followup_results.md) for measured tradeoffs, graph-bound limits, and source references.
+The machine has two load slots, six vector-arithmetic slots and one flow slot per cycle. Caching replaces gathers with selection work; arithmetic selectors move work from flow to arithmetic. Fewer instructions on one engine can mean more contention on another. Only the complete schedule decides whether a change helps.
 
-The original rebuilt prototype reached **1,076 cycles using 1,253 scratch words** on the same benchmark. The first promotion independently reselected cache sites and reached the same cycle count with 1,236 words, without importing the old configuration.
+The [previous 980-cycle compiler](experiments/promotion_980_results.md) used Z3 to repair a 32-cycle native suffix with 527 free issue-time variables. The current path uses no solver. The old exact workers remain available with a 2 GiB address-space cap and no wall-clock or CPU deadline.
 
-The rebuilt generator schedules logical values before assigning scratch addresses and can choose between scalar and vector arithmetic. That prototype moved 27 constant instructions from the load engine to flow-engine `add_imm` instructions using an existing base. This saved six cycles against its preceding rebuilt candidate. All initialization, instructions, scratch lifetimes, stores, and the final pause count toward the result.
+An earlier selected-timing experiment reached 980 cycles with 1,449 words. The current compiler is faster but uses 14 more words than that separate experiment. That saved timing is not an input to production discovery.
 
-The selected 1,076-cycle program passed all nine frozen submission tests and the supplementary verifier through a test adapter. It also passed 100 full-width random cases, five bit patterns, physical scratch-lane checks, and dependency and corrupted-constant controls. Those historical checks validated a selected program. The promotion receipt above adds normal-entry-point and automatic-selection verification. A compact port of constant selection to the retained generator only tied 1,082 cycles.
+### What is verified
 
-Earlier bounded experiments did not improve the 1,076-cycle result. Their tested arithmetic lookup selectors, progressive depth-5 selection, and equivalence-checked hash rewrites lost to their controls. These negatives did not rule out the later joint hash/selector improvements. Startup and tail scheduling changes did not beat the winner. Exact solving found no one-cycle reduction in its tested 16-, 32-, or 64-cycle suffixes with the prefix, physical registers, and instruction choices fixed. These suffix results are local. The legacy graph's 1,074-cycle lower bound does not transfer to the rebuilt graph.
+Verification through `KernelBuilder` passed:
 
-### Retaining versus recomputing output pointers
+- All nine frozen submission tests, 100 generated inputs, 100 full-width inputs, five asymmetric patterns and nine other root-starting shapes.
+- Lane-ownership and dependency checks, plus mutations that introduce missing dependencies, duplicate lanes, corrupted constants and swapped selector branches.
+- Scratch rejection before lowering, including a natural 1,537-word retimed allocation.
+- Explicit-override fallback, isolation between cached program copies, scheduler hazards and co-issued pause/store completion.
+- Three non-benchmark performance ceilings and two source-only rebuilds at hash seeds 0 and 17.
 
-Twelve policies tested whether regenerating output pointers could reduce scratch lifetimes enough to pay for the extra instructions.
+The 979-cycle performance gate rejected an executed 980-cycle control. The native 981-cycle control and the older 1,041, 1,042, 1,052, 1,076 and 1,082 controls also ran as expected.
+
+`tests/` and `problem.py` are unchanged. The kernel assumes root-starting traversals and writes final values only, not indices. It preserves all other memory. These checks do not establish support for non-root starts or arbitrary dimensions.
+
+The current instruction stream has a capacity-only lower bound of 967 cycles. That does not mean 967 is attainable. An older attempt to solve for 979 exhausted 2 GiB after about 16 hours 52 minutes and returned **unknown**. It used a different graph and scope from the successful implementation. Neither result proves global optimality.
+
+## From 1,303 to 979 cycles
+
+The progression saved 324 cycles, or 24.9% of execution time. The [illustrated walkthrough through 980](docs/performance-progression.md) records the checkpoints, dependency diagrams, algebra and failed experiments. The [979 report](experiments/promotion_979_results.md) covers the last step.
+
+| Cycles | Main changes |
+|---|---|
+| 1,303 → 1,113 | One-based and mirrored indices, XOR encoding, private hash temporaries, load-aware scheduling and final store/pause packing |
+| 1,113 → 1,082 | Reuse branch predicates, cache selected depth-4 lookups, fold the root mix and move selected vector work to scalar slots |
+| 1,082 → 1,076 | Build a single-static-assignment graph, allocate scratch after scheduling and construct some constants on the flow engine |
+| 1,076 → 1,052 | Fuse hash stages, retain branch history, use arithmetic lookup leaves and engine lookahead, then reselect caches |
+| 1,052 → 1,041 | Advance startup gather dependencies and reselect caches under that policy |
+| 1,041 → 981 | Search cache neighborhoods, escape a plateau with a swap and tune arithmetic selectors alongside cache choices |
+| 981 → 980 | Convert two late selectors to arithmetic, repair the final schedule with Z3 and allocate scratch again |
+| 980 → 979 | Keep gathers continuous with backward/forward scheduling, shorten the final hash path and allocate scratch again |
+
+The savings in each row include interactions between changes. They are not independent gains that can be added in other combinations.
+
+### Experiments worth keeping
+
+The original rebuilt prototype reached 1,076 cycles with 1,253 scratch words. Automatic cache reselection later matched that speed with 1,236 words, without importing the old configuration. Moving 27 constant instructions from load to flow-engine `add_imm` saved six cycles against the preceding rebuilt candidate.
+
+The selected prototype passed nine frozen tests through an adapter, 100 full-width cases, five patterns, physical lane checks and dependency/constant corruption controls. Those checks validated a selected program. The production reports add automatic discovery and verification through the normal builder. A smaller port of constant selection to the legacy generator only tied 1,082 cycles.
+
+Early tests of arithmetic selectors, progressive depth-5 selection, equivalent hash rewrites, and startup/tail scheduling did not beat the 1,076-cycle control. Later combinations did. Exact searches also found no one-cycle gain in the tested 16-, 32- and 64-cycle suffixes when the prefix, physical registers and instruction choices stayed fixed. Those results apply to those graphs and constraints, not every rewrite. The legacy graph's 1,074-cycle lower bound does not apply to the rebuilt graph.
+
+Twelve output-pointer policies tested whether recomputing pointers could reduce their scratch lifetimes:
 
 | Policy | Cycles | Scratch words |
 |---|---:|---:|
@@ -102,24 +94,37 @@ Twelve policies tested whether regenerating output pointers could reduce scratch
 | Best freely scheduled regeneration | 1,076 | 1,241 |
 | Regenerate near stores | 1,081 to 1,093 | 1,241 |
 
-Simply placing regeneration near stores in source order did not keep it late in the schedule. The scheduler moved many constants early. Explicitly delaying regeneration shortened pointer lifetimes but made execution slower. Even the best tie saved only twelve words, so pointer regeneration is not selected for integration.
+Putting regeneration near stores in source code did not keep it late in the schedule. The scheduler moved many constants early. Forcing later regeneration shortened lifetimes but slowed execution. The best tie saved only twelve words, so it was not integrated. Each policy passed three full-width cases and physical lane checks; the best also passed twenty more cases, five patterns and a corrupted-pointer control. All added work and retained base-pointer lifetimes were counted.
 
-Each policy passed three full-width frozen executions with identical cycle counts across runs, plus physical scratch-lane checks. The best tie also passed twenty additional full-width cases, five patterns, and a corrupted-pointer control. The measurements include every added instruction and retained base-pointer lifetime.
+The [Algorithmica follow-up](experiments/algorithmica_followup_results.md) records the resource tradeoffs and source references. The [bounded research follow-up](experiments/research_followup_results.md) covers the earlier cache and regional-scheduling work. Later [frontier experiments](experiments/four_frontiers_results.md) reached 1,074 cycles. An [audit of a public fork](experiments/github_1063_audit.md) reproduced 1,063, and [isolated technique ports](experiments/technique_port_results.md) reached 1,052 before integration. [Load-gap profiling](experiments/load_gap_results.md) produced a 1,042-cycle policy; cache reselection reduced it to 1,041 through the normal builder.
 
-The [bounded research follow-up](experiments/research_followup_results.md) records the preceding cache and regional-scheduling experiments. Later [frontier experiments](experiments/four_frontiers_results.md) reached 1,074 cycles. An [independent audit](experiments/github_1063_audit.md) reproduced a public fork at 1,063, and [isolated technique ports](experiments/technique_port_results.md) reached 1,052. Those techniques were integrated at 1,052 cycles. [Load-gap profiling](experiments/load_gap_results.md) then led to a 1,042-cycle startup policy. Its integration reselected caches and reached 1,041 cycles through the normal entry point. Cache, selector and exact-scheduling work subsequently reduced that to 980. Backward/forward scheduling with final-hash reordering now reaches 979.
+## About the original challenge
 
-## Warning: LLMs can cheat
+Anthropic's original take-home allowed four hours. After Claude Opus 4 surpassed most human results, Anthropic switched to a two-hour version starting at 18,532 cycles, 7.97 times faster than the slow baseline. This repo uses that version's extra instructions and debugging tools, with the starter code reset to the slow baseline. Anthropic changed the starting point again after Opus 4.5.
 
-None of the solutions we received on the first day post-release below 1300 cycles were valid solutions. In each case, a language model modified the tests to make the problem easier.
+Anthropic reported these model results using the 18,532-cycle starting point. The run lengths differ, and this repo's 979-cycle result is not a two-hour attempt.
 
-If you use an AI agent, we recommend instructing it not to change the `tests/` folder and to use `tests/submission_tests.py` for verification.
+| Cycles | Reported run |
+|---:|---|
+| 2,164 | Claude Opus 4 after many hours |
+| 1,790 | Opus 4.5 casual run, roughly matching the best human performance in two hours |
+| 1,579 | Opus 4.5 after two hours |
+| 1,548 | Sonnet 4.5 after many hours |
+| 1,487 | Opus 4.5 after 11.5 hours |
+| 1,363 | Opus 4.5 with an improved test setup |
 
-Please run the following commands to validate your submission, and mention that you did so when submitting:
-```
-# This should be empty, the tests folder must be unchanged
+Anthropic did not publish its best human result. The original README invited solutions below 1,487 cycles to performance-recruiting@anthropic.com, with code and preferably a resume. It also warned that the hiring threshold could change with new model releases. That invitation is historical context, not a current hiring guarantee from this repo.
+
+### Do not change the test to improve the score
+
+Anthropic reported that none of the first-day submissions below 1,300 cycles were valid. The agents had changed the tests. If you use an agent, tell it to leave `tests/` and the simulator alone and to verify with `tests/submission_tests.py`.
+
+For a submission, run these commands and report that you ran them:
+
+```sh
+# This should be empty.
 git diff origin/main tests/
-# You should pass some of these tests and use the cycle count this prints
 python tests/submission_tests.py
 ```
 
-An example of this kind of hack is a model noticing that `problem.py` has multicore support, implementing multicore as an optimization, noticing there's no speedup and "debugging" that `N_CORES = 1` and "fixing" the core count so they get a speedup. Multicore is disabled intentionally in this version.
+Multicore is intentionally disabled. Changing `N_CORES = 1` to make the score better changes the benchmark; it is not an optimization.
