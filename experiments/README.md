@@ -65,7 +65,7 @@ Former root-level notes now live in [docs/history](../docs/history/README.md): [
 
 ## Artifact availability
 
-The [preserved campaign collection](archive/campaigns/README.md) now includes final-hash ordering, mathematical models, model combinations and slope/select. It preserves 336 archive members plus 12 raw record copies. Saved F08 replay is verified; complete historical search reexecution is not. The index documents exact contents, exclusions and verification commands.
+The [campaign code collection](archive/campaigns/README.md) includes final-hash ordering, mathematical models, model combinations and slope/select. It keeps 51 Python source files and eight unchanged reports/protocols, without workspace bundles, generated artifacts or replay tooling. The index links the implementations and explains why these historical scripts are not supported standalone runners.
 
 The promotion source and maintained verifiers reproduce production without `/tmp` research workspaces. Other reports may preserve only decisions and provenance while referring to temporary drivers, graphs or timing files. A receipt is not necessarily a complete executable archive.
 

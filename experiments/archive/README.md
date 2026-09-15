@@ -2,7 +2,7 @@
 
 [Home](../../README.md) · [Experiment index](../README.md) · [Historical notes](../../docs/history/README.md)
 
-The [preserved campaign collection](campaigns/README.md) contains selected final-hash, mathematical-model and slope/select evidence, with hash manifests and a saved-program replay command. It distinguishes replayable artifacts from workspace captures whose reexecution is unverified.
+The [campaign code collection](campaigns/README.md) contains readable Python sources, reports and protocols for final-hash, mathematical-model and slope/select research. It excludes workspace bundles and generated artifacts. Historical drivers are not supported standalone runners.
 
 ## Root-level prototypes
 
