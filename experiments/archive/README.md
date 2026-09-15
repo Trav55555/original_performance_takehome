@@ -1,8 +1,12 @@
-# Archived root-level prototypes
+# Research archives
 
 [Home](../../README.md) · [Experiment index](../README.md) · [Historical notes](../../docs/history/README.md)
 
-These files were relocated from the repository root without changing their contents. They are historical artifacts, not supported runners or current verification commands. Relocation did not repeat any sweep, compiler experiment or performance measurement.
+The [preserved campaign collection](campaigns/README.md) contains selected final-hash, mathematical-model and slope/select evidence, with hash manifests and a saved-program replay command. It distinguishes replayable artifacts from workspace captures whose reexecution is unverified.
+
+## Root-level prototypes
+
+The following files were relocated from the repository root without changing their contents. They are historical artifacts, not supported runners or current verification commands. Relocation did not repeat any sweep, compiler experiment or performance measurement.
 
 | File | Role and limits |
 |---|---|

@@ -1,0 +1,4131 @@
+{
+  "program": "five-arm mathematical models",
+  "status": "completed-no-improvement",
+  "baseline_commit": "d3544dc",
+  "workspace": "/tmp/perf-math-program.Z3q77s",
+  "published_incumbent": {
+    "cycles": 980,
+    "scratch": 1465,
+    "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc"
+  },
+  "protocol": "mathematical_models_program.md",
+  "results": "mathematical_models_results.md",
+  "program_sha256": "fd3ca52f8ce758b9b06904c4203eaba1f6aad381f6635f47904cc4ed25113c3d",
+  "production_source_hashes": {
+    "kernel_compiler.py": "05bf9808fa54d0cc71437b57c3af74df8666e2db80251193c50050fb3a163921",
+    "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+    "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+    "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+    "kernel_optimizer.py": "3aae1aa8a9bb1cd795112f38db945e88d364db989406c01419a4cfc233119cb5",
+    "kernel_refinement.py": "920bd96385b30879b4c37469d20535827f18112b490b7d91fafe51f16aed5de3",
+    "perf_takehome.py": "aee377d80dd468868ec2ea22c0a823d54b484c602707750cb8f5b98e19f2c3b9",
+    "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "tests/frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "tests/submission_tests.py": "11c57cc999da93acb41201191073cd657ddffa87635359b3157c6e177c18ea0a"
+  },
+  "research_source_hashes": {
+    "run.py": "efa97f64268abe5575761c10fedc6c6990a286b95ef409eb6a93c9309baa8706",
+    "research.py": "fe781853b1a309da79e35dce4c9bb7f5dd51f82722e9adf763c7037212cb831a",
+    "event.py": "e49e413fe9960031c9f9c7d2498515aba4c5db8612847513a6e6bb68e8e0012c",
+    "math_variants.py": "c43f97dad571230b16ea2064144692f1252a4b21a5c053aaf1140a4da43284e2",
+    "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+    "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+    "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+    "kernel_compiler.py": "ff455dcf29e15284d73cc0df1f663fa1afc0f3021c426d622abe1a2943cacc3e",
+    "original/kernel_compiler.py": "05bf9808fa54d0cc71437b57c3af74df8666e2db80251193c50050fb3a163921",
+    "baseline_plan.json": "47658ff1592a3cf825ff89586aad90c4b522baf09a55c44b00a07366c656894e",
+    "program.md": "fd3ca52f8ce758b9b06904c4203eaba1f6aad381f6635f47904cc4ed25113c3d"
+  },
+  "evidence_hashes": {
+    "program.md": "fd3ca52f8ce758b9b06904c4203eaba1f6aad381f6635f47904cc4ed25113c3d",
+    "baseline_plan.json": "47658ff1592a3cf825ff89586aad90c4b522baf09a55c44b00a07366c656894e",
+    "research_sources.json": "1427ead27fa3ccc235a454d580e9a7ee7768196f6b51167e0e37331ed913ddac",
+    "protected_sources.json": "063f0e4cba2a391025d863cfd51cce66fcca3e233acfbb16713badc0a05686c3",
+    "selection.json": "4d135316da71ad2a7ab51c52583c0840caf56ce553cf5a16270963ebf8e1015e",
+    "attempts.jsonl": "3a83ec596aa3331af57d383d1e8afe240dee5acbed5b193493cdda7ff65a7265",
+    "results.jsonl": "d9928ff1eeb35aef1178e65bd30be82216d0bd5dd5e6238e202678ed5627b8a6",
+    "screen_result.json": "7f5aa35aa891219ad8a8fda6a4f21ee94af5eeea31cb5b47a1ec2b2a7e3f5c5d",
+    "combinations.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "pure_checks.json": "d9f0a8bef6246860a3113cedd2e32418bd9902285e8af04e46a9fe641f5961f8",
+    "audit.py": "98af013337010a246c9be72563eac84a5ff5acf3f7f18f5046c23d403fe55f9b",
+    "audit.json": "3a7b8f9ba01cd7afc07d33a11c9b7a0d51b931e3a719d1dfcb8cf28cdb0debe6",
+    "run.log": "b29cc6a1b637898cc6ba37510ca085c6126259800277f6c7aef7d64bcc56a45d"
+  },
+  "audit": {
+    "status": "passed",
+    "attempts": 78,
+    "candidate_attempts": 74,
+    "controls": 4,
+    "feasible_candidates": 65,
+    "scratch_rejections": 9,
+    "candidate_seed_executions": 195,
+    "finalist_pattern_executions": 25,
+    "native_control_cycles": 981,
+    "published_control_cycles": 980,
+    "conditional_combinations": 0,
+    "winner_verification_runs": 0,
+    "solver_queries": 0,
+    "production_sources_unchanged": true,
+    "research_sources_unchanged": true,
+    "manifest_rows_and_artifact_digests_checked": true
+  },
+  "pure_checks": {
+    "recursive": 3072,
+    "tile": 512,
+    "branch": 2064
+  },
+  "summary": {
+    "best_by_arm": {
+      "A": {
+        "arm": "A",
+        "name": "A18",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              1
+            ]
+          ]
+        },
+        "cycles": 981,
+        "scratch": 1497,
+        "status": "smoke-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5804,
+          "alu": 11536,
+          "store": 32
+        },
+        "capacity_lower_bound": 968,
+        "last_gather": 968,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 964,
+          "31": 968
+        },
+        "digest": "2b34b56ae50fb390d10c83c1ff588176d43790cddf019b94341de1ad45b8ae1c",
+        "smoke_cases": 3,
+        "pattern_cases": 5
+      },
+      "B": {
+        "arm": "B",
+        "name": "B03",
+        "config": {
+          "full": {
+            "depths": [
+              3
+            ],
+            "repeated": true,
+            "reverse": false
+          }
+        },
+        "cycles": 1003,
+        "scratch": 1377,
+        "status": "smoke-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 785,
+          "valu": 5937,
+          "alu": 11784,
+          "store": 32
+        },
+        "capacity_lower_bound": 990,
+        "last_gather": 991,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 933,
+          "21": 940,
+          "23": 952,
+          "24": 958,
+          "25": 965,
+          "26": 970,
+          "27": 977,
+          "28": 981,
+          "30": 987,
+          "31": 991
+        },
+        "digest": "293d09ce8325448e5811704da3c4218f8dcfbe4d5a5438be8f0a2efff535beb0",
+        "smoke_cases": 3,
+        "pattern_cases": 5
+      },
+      "C": {
+        "arm": "C",
+        "name": "C02",
+        "config": {
+          "branch_sites": [
+            [
+              31,
+              14
+            ]
+          ],
+          "branch_kind": "project"
+        },
+        "cycles": 981,
+        "scratch": 1465,
+        "status": "smoke-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5802,
+          "alu": 11524,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 964,
+          "31": 969
+        },
+        "digest": "1d3c5f03ea54493137f96dd13b55e3766535da75ed7c94a2ed8e4c9d9a58ebe8",
+        "smoke_cases": 3,
+        "pattern_cases": 5
+      },
+      "D": {
+        "arm": "D",
+        "name": "D01",
+        "config": {
+          "geometry": [
+            "wave4",
+            1,
+            8
+          ]
+        },
+        "cycles": 987,
+        "scratch": 1482,
+        "status": "smoke-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5799,
+          "alu": 11532,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 975,
+        "final_gather_by_block": {
+          "1": 894,
+          "4": 902,
+          "5": 906,
+          "10": 910,
+          "13": 914,
+          "14": 918,
+          "15": 922,
+          "18": 926,
+          "19": 930,
+          "20": 934,
+          "21": 938,
+          "23": 942,
+          "24": 946,
+          "25": 950,
+          "26": 955,
+          "27": 959,
+          "28": 963,
+          "30": 971,
+          "31": 975
+        },
+        "digest": "598eb8b2dd26bba43716172a3ab5438bdfd2a78e4ccccdd307804d6abc21b5ab",
+        "smoke_cases": 3,
+        "pattern_cases": 5
+      },
+      "E": {
+        "arm": "E",
+        "name": "E01",
+        "config": {
+          "event": {
+            "order": "native",
+            "start": 0
+          }
+        },
+        "cycles": 981,
+        "scratch": 1465,
+        "status": "smoke-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5800,
+          "alu": 11524,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 964,
+          "31": 969
+        },
+        "digest": "f280cd4aa2f8527134255ac6435548aa8af9edbf7db99bf6a63c644a84c30233",
+        "smoke_cases": 3,
+        "event": {
+          "order": "native",
+          "start": 0,
+          "chain_edges": 20166,
+          "moved_jobs": 72,
+          "cycles": 981,
+          "scope": "least timing for this fixed capacity-chain event graph"
+        },
+        "pattern_cases": 5
+      }
+    },
+    "blocked_arms": [],
+    "elapsed_seconds": 84.03577971179038,
+    "solver_queries": 0,
+    "full_verification_required": []
+  },
+  "results_rows": [
+    {
+      "arm": "control",
+      "name": "original-native",
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "passed",
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493"
+    },
+    {
+      "arm": "control",
+      "name": "isolated-native",
+      "config": {},
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "control",
+      "name": "published980-replay",
+      "cycles": 980,
+      "scratch": 1465,
+      "status": "passed",
+      "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc"
+    },
+    {
+      "arm": "control",
+      "name": "event-toy",
+      "cycles": 3,
+      "scratch": 10,
+      "status": "passed",
+      "native_cycles": 9
+    },
+    {
+      "arm": "A",
+      "name": "A01",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            3,
+            0
+          ]
+        ]
+      },
+      "cycles": 986,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 943,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 974,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 970,
+        "31": 974
+      },
+      "digest": "00078b09ecc4fa27aeb9c8395eaf6d4edb5188b221078116afd1c226e2deb7fd",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A02",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            3,
+            1
+          ]
+        ]
+      },
+      "cycles": 986,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 943,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 974,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 970,
+        "31": 974
+      },
+      "digest": "cbe2726325ba9c97780c764c307f4ea01e53277a703d6b6699350a476126d16a",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A03",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            2,
+            0
+          ]
+        ]
+      },
+      "cycles": 991,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5803,
+        "alu": 11560,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 979,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 975,
+        "31": 979
+      },
+      "digest": "d2e415493bffce9c37d7fd8946e5acdd95e4436811c93183e1d9b6b7ada01f5e",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A04",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            2,
+            1
+          ]
+        ]
+      },
+      "cycles": 991,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5803,
+        "alu": 11560,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 979,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 975,
+        "31": 979
+      },
+      "digest": "575777996ef44d9aa0d2cabc65ffcc5cd71abb661713ff13456e3b2639b5feed",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A05",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            0,
+            0
+          ]
+        ]
+      },
+      "cycles": 986,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5803,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 974,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 970,
+        "31": 974
+      },
+      "digest": "135202a23d87707a198401292b35edfc13f20e9fa741993ea0f6fd87e655b250",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A06",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            0,
+            1
+          ]
+        ]
+      },
+      "cycles": 986,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5803,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 974,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 970,
+        "31": 974
+      },
+      "digest": "29b12ffeca955b5f31de515a0a540257bc77dd90f1e8a6f77b4ca5ffd74b9cea",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A07",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            1,
+            0
+          ]
+        ]
+      },
+      "cycles": 988,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 943,
+        "valu": 5804,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 976,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 972,
+        "31": 976
+      },
+      "digest": "a9fa516998a7cdc564ebbf2b0241211b7e2284b4c9548bb1ba2c7bfa194cccb8",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A08",
+      "config": {
+        "tiles": [
+          [
+            29,
+            15,
+            1,
+            1
+          ]
+        ]
+      },
+      "cycles": 987,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 943,
+        "valu": 5804,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 975,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 971,
+        "31": 975
+      },
+      "digest": "e6ab0027245eebea128888263276bbb9609c976da71c2b8a6fe4b66a213444f9",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A09",
+      "config": {
+        "tiles": [
+          [
+            22,
+            15,
+            2,
+            0
+          ]
+        ]
+      },
+      "cycles": 983,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5805,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 970,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 957,
+        "28": 961,
+        "30": 966,
+        "31": 970
+      },
+      "digest": "4c6cfc839024b65339de8a44737d7b2417927089a21c1aa462409df05ea30475",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A10",
+      "config": {
+        "tiles": [
+          [
+            22,
+            15,
+            2,
+            1
+          ]
+        ]
+      },
+      "cycles": 983,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5805,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 970,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 953,
+        "27": 957,
+        "28": 961,
+        "30": 966,
+        "31": 970
+      },
+      "digest": "12fd8fda2a9b4f24561b0089f0101afd8838143db2b5b3c5a9f83712c8f09b03",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A11",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            1,
+            0
+          ]
+        ]
+      },
+      "cycles": 984,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5806,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "digest": "d78614e199a2495dc2a312600670eb5cf5d90ecdc3ea62e58053c12a404a44bb",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A12",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            1,
+            1
+          ]
+        ]
+      },
+      "cycles": 985,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5805,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 973,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 969,
+        "31": 973
+      },
+      "digest": "59760d5c1d4db1c58be7f7b09d9edaec67935eda829875c2a73e53c59ce3ba30",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A13",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            1,
+            0
+          ]
+        ]
+      },
+      "cycles": 986,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5806,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 957,
+        "28": 961,
+        "30": 965,
+        "31": 969
+      },
+      "digest": "451ec905844f058b4d680b09228d470cfcf43c0e2d1ed7f2a1f989ea40dca8f3",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A14",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            1,
+            1
+          ]
+        ]
+      },
+      "cycles": 983,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 942,
+        "valu": 5806,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 971,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 971,
+        "31": 967
+      },
+      "digest": "a4f7e2f0f60625edff21a6934c15f19081f72ac4a9dcbdaf93b877da7388843d",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A15",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ]
+      },
+      "cycles": 983,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "digest": "4c3f8478ace78d156ea448af5223d83aed2e8f89220634628e82945c447b42de",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A16",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ]
+      },
+      "cycles": 983,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "digest": "89b9cd9ef082b01430d88908ff9d7106628fffd7b7c95f6968fafef9ee747c98",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A17",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ]
+      },
+      "cycles": 985,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 973,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 957,
+        "28": 961,
+        "30": 969,
+        "31": 973
+      },
+      "digest": "418be872654bdad995f4dc0576dff70f7e242a33014737a24eb8284855449cf7",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A18",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ]
+      },
+      "cycles": 981,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 968,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 968
+      },
+      "digest": "2b34b56ae50fb390d10c83c1ff588176d43790cddf019b94341de1ad45b8ae1c",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A19",
+      "config": {
+        "tiles": [
+          [
+            29,
+            14,
+            0,
+            0
+          ]
+        ]
+      },
+      "cycles": 984,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "digest": "5d5d5803d78202a3defd515c3d14202919aa16a2ba1547b1ec935fe179fe80d5",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A20",
+      "config": {
+        "tiles": [
+          [
+            29,
+            14,
+            0,
+            1
+          ]
+        ]
+      },
+      "cycles": 984,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "digest": "2698b7c0922e0217361c9f1e3d6103e6d319175b27eb62e68df8d03d3e65a5e0",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A21",
+      "config": {
+        "tiles": [
+          [
+            22,
+            15,
+            1,
+            0
+          ]
+        ]
+      },
+      "cycles": 983,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 943,
+        "valu": 5804,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 971,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 967,
+        "31": 971
+      },
+      "digest": "df2d14e6581912e09cbd8dcbb0eb1b76b8b5864418cc9dbcc62c5e4f63c7385d",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A22",
+      "config": {
+        "tiles": [
+          [
+            22,
+            15,
+            1,
+            1
+          ]
+        ]
+      },
+      "cycles": 983,
+      "scratch": 1466,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 943,
+        "valu": 5804,
+        "alu": 11544,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 971,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 967,
+        "31": 971
+      },
+      "digest": "5cc1329009a82094fce3de5a0b6a77d39b7a2cb6bb8c8b725f43434aff318594",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A23",
+      "config": {
+        "tiles": [
+          [
+            28,
+            14,
+            0,
+            0
+          ]
+        ]
+      },
+      "cycles": 984,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "digest": "3777abce4a6aef212e9a41517f05938ec73493859b8d37ee2eea0ebd318e9105",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "A",
+      "name": "A24",
+      "config": {
+        "tiles": [
+          [
+            28,
+            14,
+            0,
+            1
+          ]
+        ]
+      },
+      "cycles": 984,
+      "scratch": 1497,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5804,
+        "alu": 11536,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "digest": "1bd93a2d9b8950ca140a4be87b2742bbe86ea1de2e22df3f1d2725362c1fd61b",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B01",
+      "config": {
+        "full": {
+          "depths": [
+            3
+          ],
+          "repeated": false,
+          "reverse": false
+        }
+      },
+      "cycles": 1023,
+      "scratch": 1307,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1884,
+        "flow": 629,
+        "valu": 6057,
+        "alu": 12038,
+        "store": 32
+      },
+      "capacity_lower_bound": 1010,
+      "last_gather": 1011,
+      "final_gather_by_block": {
+        "1": 886,
+        "4": 894,
+        "5": 902,
+        "10": 906,
+        "13": 910,
+        "14": 914,
+        "15": 918,
+        "18": 937,
+        "19": 945,
+        "20": 953,
+        "21": 960,
+        "23": 972,
+        "24": 979,
+        "25": 987,
+        "26": 992,
+        "27": 998,
+        "28": 1002,
+        "30": 1007,
+        "31": 1011
+      },
+      "digest": "ddb65f1ff4e174fa6f8895aa4a07356cf8b9be56e46ad1e79e1294db79a233e6",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B02",
+      "config": {
+        "full": {
+          "depths": [
+            3
+          ],
+          "repeated": false,
+          "reverse": true
+        }
+      },
+      "cycles": 1027,
+      "scratch": 1305,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1884,
+        "flow": 629,
+        "valu": 6053,
+        "alu": 12070,
+        "store": 32
+      },
+      "capacity_lower_bound": 1009,
+      "last_gather": 1013,
+      "final_gather_by_block": {
+        "1": 890,
+        "4": 898,
+        "5": 906,
+        "10": 910,
+        "13": 914,
+        "14": 918,
+        "15": 922,
+        "18": 941,
+        "19": 949,
+        "20": 957,
+        "21": 964,
+        "23": 975,
+        "24": 983,
+        "25": 989,
+        "26": 994,
+        "27": 1000,
+        "28": 1004,
+        "30": 1009,
+        "31": 1013
+      },
+      "digest": "49eac61f06c2fa5fd98d0c9838d29298e75be0e63312577c200d81bd49c14744",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B03",
+      "config": {
+        "full": {
+          "depths": [
+            3
+          ],
+          "repeated": true,
+          "reverse": false
+        }
+      },
+      "cycles": 1003,
+      "scratch": 1377,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 785,
+        "valu": 5937,
+        "alu": 11784,
+        "store": 32
+      },
+      "capacity_lower_bound": 990,
+      "last_gather": 991,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 933,
+        "21": 940,
+        "23": 952,
+        "24": 958,
+        "25": 965,
+        "26": 970,
+        "27": 977,
+        "28": 981,
+        "30": 987,
+        "31": 991
+      },
+      "digest": "293d09ce8325448e5811704da3c4218f8dcfbe4d5a5438be8f0a2efff535beb0",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B04",
+      "config": {
+        "full": {
+          "depths": [
+            3
+          ],
+          "repeated": true,
+          "reverse": true
+        }
+      },
+      "cycles": 1003,
+      "scratch": 1385,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 785,
+        "valu": 5936,
+        "alu": 11792,
+        "store": 32
+      },
+      "capacity_lower_bound": 990,
+      "last_gather": 990,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 935,
+        "21": 943,
+        "23": 954,
+        "24": 960,
+        "25": 967,
+        "26": 971,
+        "27": 977,
+        "28": 981,
+        "30": 986,
+        "31": 990
+      },
+      "digest": "b9c83c25489e38890aba36e473387ed8343ac3d7c97f43c7e8e5826578b4ecdb",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B05",
+      "config": {
+        "full": {
+          "depths": [
+            4
+          ],
+          "repeated": false,
+          "reverse": false
+        }
+      },
+      "cycles": 1026,
+      "scratch": 1540,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "B",
+      "name": "B06",
+      "config": {
+        "full": {
+          "depths": [
+            4
+          ],
+          "repeated": false,
+          "reverse": true
+        }
+      },
+      "cycles": 1028,
+      "scratch": 1571,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "B",
+      "name": "B07",
+      "config": {
+        "full": {
+          "depths": [
+            4
+          ],
+          "repeated": true,
+          "reverse": false
+        }
+      },
+      "cycles": 1004,
+      "scratch": 1470,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 791,
+        "valu": 5937,
+        "alu": 11804,
+        "store": 32
+      },
+      "capacity_lower_bound": 990,
+      "last_gather": 992,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 937,
+        "21": 944,
+        "23": 954,
+        "24": 959,
+        "25": 969,
+        "26": 973,
+        "27": 977,
+        "28": 981,
+        "30": 987,
+        "31": 992
+      },
+      "digest": "50ce0f6f72e520b0ff0f2c69204a8e7d71a90acfe70adcc35ba24fbb78a2b181",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B08",
+      "config": {
+        "full": {
+          "depths": [
+            4
+          ],
+          "repeated": true,
+          "reverse": true
+        }
+      },
+      "cycles": 1005,
+      "scratch": 1463,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 791,
+        "valu": 5936,
+        "alu": 11812,
+        "store": 32
+      },
+      "capacity_lower_bound": 990,
+      "last_gather": 993,
+      "final_gather_by_block": {
+        "1": 894,
+        "4": 906,
+        "5": 910,
+        "10": 914,
+        "13": 918,
+        "14": 922,
+        "15": 926,
+        "18": 930,
+        "19": 934,
+        "20": 938,
+        "21": 943,
+        "23": 954,
+        "24": 959,
+        "25": 969,
+        "26": 974,
+        "27": 978,
+        "28": 982,
+        "30": 989,
+        "31": 993
+      },
+      "digest": "c8711c6a13e94631a1e720b90cf91d82f350079d4d3536e7f6e4f02259f28ed5",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B09",
+      "config": {
+        "full": {
+          "depths": [
+            3,
+            4
+          ],
+          "repeated": false,
+          "reverse": false
+        }
+      },
+      "cycles": 1071,
+      "scratch": 1323,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1884,
+        "flow": 283,
+        "valu": 6333,
+        "alu": 12611,
+        "store": 32
+      },
+      "capacity_lower_bound": 1056,
+      "last_gather": 1059,
+      "final_gather_by_block": {
+        "1": 892,
+        "4": 900,
+        "5": 908,
+        "10": 912,
+        "13": 937,
+        "14": 948,
+        "15": 960,
+        "18": 977,
+        "19": 988,
+        "20": 998,
+        "21": 1006,
+        "23": 1017,
+        "24": 1023,
+        "25": 1031,
+        "26": 1036,
+        "27": 1043,
+        "28": 1047,
+        "30": 1055,
+        "31": 1059
+      },
+      "digest": "cbe4da522657a230a522109804fa840b2a1ba3a8f90b21b31bb9c93f1d6066d5",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B10",
+      "config": {
+        "full": {
+          "depths": [
+            3,
+            4
+          ],
+          "repeated": false,
+          "reverse": true
+        }
+      },
+      "cycles": 1071,
+      "scratch": 1331,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1885,
+        "flow": 282,
+        "valu": 6332,
+        "alu": 12619,
+        "store": 32
+      },
+      "capacity_lower_bound": 1056,
+      "last_gather": 1059,
+      "final_gather_by_block": {
+        "1": 896,
+        "4": 908,
+        "5": 912,
+        "10": 916,
+        "13": 939,
+        "14": 951,
+        "15": 961,
+        "18": 980,
+        "19": 989,
+        "20": 1002,
+        "21": 1008,
+        "23": 1020,
+        "24": 1026,
+        "25": 1035,
+        "26": 1040,
+        "27": 1046,
+        "28": 1050,
+        "30": 1055,
+        "31": 1059
+      },
+      "digest": "77642d6034e7217786fa10e18dd6844282a8d62519740df00046a17eb52be15e",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B11",
+      "config": {
+        "full": {
+          "depths": [
+            3,
+            4
+          ],
+          "repeated": true,
+          "reverse": false
+        }
+      },
+      "cycles": 1026,
+      "scratch": 1382,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 631,
+        "valu": 6073,
+        "alu": 12072,
+        "store": 32
+      },
+      "capacity_lower_bound": 1013,
+      "last_gather": 1014,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 933,
+        "19": 943,
+        "20": 954,
+        "21": 960,
+        "23": 972,
+        "24": 979,
+        "25": 987,
+        "26": 992,
+        "27": 998,
+        "28": 1002,
+        "30": 1010,
+        "31": 1014
+      },
+      "digest": "750444a9c9fdf058056446d3061f09374c80df00ab70b4c59c7ddb5d32edab4a",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "B",
+      "name": "B12",
+      "config": {
+        "full": {
+          "depths": [
+            3,
+            4
+          ],
+          "repeated": true,
+          "reverse": true
+        }
+      },
+      "cycles": 1026,
+      "scratch": 1383,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 631,
+        "valu": 6072,
+        "alu": 12080,
+        "store": 32
+      },
+      "capacity_lower_bound": 1012,
+      "last_gather": 1014,
+      "final_gather_by_block": {
+        "1": 894,
+        "4": 906,
+        "5": 910,
+        "10": 914,
+        "13": 918,
+        "14": 922,
+        "15": 926,
+        "18": 934,
+        "19": 944,
+        "20": 955,
+        "21": 961,
+        "23": 974,
+        "24": 980,
+        "25": 989,
+        "26": 994,
+        "27": 999,
+        "28": 1003,
+        "30": 1010,
+        "31": 1014
+      },
+      "digest": "1e9dab4ebb06ff9e40af8dbab44f59aad2b06622f105c388a8d643faaf84a045",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C01",
+      "config": {
+        "branch_sites": [
+          [
+            31,
+            14
+          ]
+        ],
+        "branch_kind": "radix"
+      },
+      "cycles": 984,
+      "scratch": 1489,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1890,
+        "flow": 945,
+        "valu": 5806,
+        "alu": 11548,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 900,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 967,
+        "31": 972
+      },
+      "digest": "9123e448da8cd7712c7e44025ccdbdeb1452700e0890ad8d299983acef9af759",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C02",
+      "config": {
+        "branch_sites": [
+          [
+            31,
+            14
+          ]
+        ],
+        "branch_kind": "project"
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5802,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "1d3c5f03ea54493137f96dd13b55e3766535da75ed7c94a2ed8e4c9d9a58ebe8",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C03",
+      "config": {
+        "branch_sites": [
+          [
+            29,
+            14
+          ]
+        ],
+        "branch_kind": "radix"
+      },
+      "cycles": 986,
+      "scratch": 1481,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1890,
+        "flow": 945,
+        "valu": 5806,
+        "alu": 11548,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 974,
+      "final_gather_by_block": {
+        "1": 889,
+        "4": 897,
+        "5": 905,
+        "10": 909,
+        "13": 913,
+        "14": 917,
+        "15": 921,
+        "18": 925,
+        "19": 929,
+        "20": 933,
+        "21": 937,
+        "23": 941,
+        "24": 945,
+        "25": 949,
+        "26": 953,
+        "27": 957,
+        "28": 961,
+        "30": 970,
+        "31": 974
+      },
+      "digest": "327460c7814ff8d9be42a3d8788bbf32f51b004c94d753207c12bbaa4c7df2ef",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C04",
+      "config": {
+        "branch_sites": [
+          [
+            29,
+            14
+          ]
+        ],
+        "branch_kind": "project"
+      },
+      "cycles": 986,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5801,
+        "alu": 11532,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 974,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 970,
+        "31": 974
+      },
+      "digest": "80f5602b67dc872fc7e1129e6d306695d328d7eb53ebe597989844ff7db7ff5b",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C05",
+      "config": {
+        "branch_sites": [
+          [
+            30,
+            14
+          ]
+        ],
+        "branch_kind": "radix"
+      },
+      "cycles": 989,
+      "scratch": 1489,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1890,
+        "flow": 945,
+        "valu": 5807,
+        "alu": 11540,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 970,
+      "final_gather_by_block": {
+        "1": 889,
+        "4": 897,
+        "5": 905,
+        "10": 909,
+        "13": 913,
+        "14": 917,
+        "15": 921,
+        "18": 925,
+        "19": 929,
+        "20": 933,
+        "21": 937,
+        "23": 941,
+        "24": 945,
+        "25": 949,
+        "26": 953,
+        "27": 957,
+        "28": 961,
+        "30": 966,
+        "31": 970
+      },
+      "digest": "e765eca1f5b86466db13d16161b835ae0c18c2a4cc1a70b7cddaab0485a7b369",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C06",
+      "config": {
+        "branch_sites": [
+          [
+            30,
+            14
+          ]
+        ],
+        "branch_kind": "project"
+      },
+      "cycles": 982,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5801,
+        "alu": 11532,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "a80774d5db84d8b3ebaabd59836fb38158784b28d192436c18c79ed74ba0d729",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C07",
+      "config": {
+        "branch_sites": [
+          [
+            27,
+            14
+          ]
+        ],
+        "branch_kind": "radix"
+      },
+      "cycles": 985,
+      "scratch": 1481,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1890,
+        "flow": 945,
+        "valu": 5806,
+        "alu": 11548,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 973,
+      "final_gather_by_block": {
+        "1": 889,
+        "4": 897,
+        "5": 905,
+        "10": 909,
+        "13": 913,
+        "14": 917,
+        "15": 921,
+        "18": 925,
+        "19": 929,
+        "20": 933,
+        "21": 937,
+        "23": 941,
+        "24": 945,
+        "25": 949,
+        "26": 953,
+        "27": 957,
+        "28": 961,
+        "30": 969,
+        "31": 973
+      },
+      "digest": "37e0c30d0df50c10bbecd93ec1d24d6d362a74974aea633bff0133a3f5c19c6a",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "C",
+      "name": "C08",
+      "config": {
+        "branch_sites": [
+          [
+            27,
+            14
+          ]
+        ],
+        "branch_kind": "project"
+      },
+      "cycles": 986,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5801,
+        "alu": 11532,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 974,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 970,
+        "31": 974
+      },
+      "digest": "e15f3c0fa30b94a322f7ce9e57c5bb7a6be77e73e9681704936c554068c04aa7",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D01",
+      "config": {
+        "geometry": [
+          "wave4",
+          1,
+          8
+        ]
+      },
+      "cycles": 987,
+      "scratch": 1482,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5799,
+        "alu": 11532,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 975,
+      "final_gather_by_block": {
+        "1": 894,
+        "4": 902,
+        "5": 906,
+        "10": 910,
+        "13": 914,
+        "14": 918,
+        "15": 922,
+        "18": 926,
+        "19": 930,
+        "20": 934,
+        "21": 938,
+        "23": 942,
+        "24": 946,
+        "25": 950,
+        "26": 955,
+        "27": 959,
+        "28": 963,
+        "30": 971,
+        "31": 975
+      },
+      "digest": "598eb8b2dd26bba43716172a3ab5438bdfd2a78e4ccccdd307804d6abc21b5ab",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D02",
+      "config": {
+        "geometry": [
+          "wave4",
+          1,
+          2
+        ]
+      },
+      "cycles": 1023,
+      "scratch": 1536,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5822,
+        "alu": 11348,
+        "store": 32
+      },
+      "capacity_lower_bound": 971,
+      "last_gather": 1009,
+      "final_gather_by_block": {
+        "1": 927,
+        "4": 931,
+        "5": 935,
+        "10": 939,
+        "13": 943,
+        "14": 947,
+        "15": 951,
+        "18": 955,
+        "19": 959,
+        "20": 963,
+        "21": 968,
+        "23": 979,
+        "24": 984,
+        "25": 988,
+        "26": 993,
+        "27": 997,
+        "28": 1001,
+        "30": 1005,
+        "31": 1009
+      },
+      "digest": "5f15b3bdb9865cdd42de5a8c93543053cb029136534d8c3ef443cc78b07d9ca1",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D03",
+      "config": {
+        "geometry": [
+          "wave4",
+          1,
+          1
+        ]
+      },
+      "cycles": 1151,
+      "scratch": 1925,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "D",
+      "name": "D04",
+      "config": {
+        "geometry": [
+          "wave8",
+          1,
+          8
+        ]
+      },
+      "cycles": 987,
+      "scratch": 1490,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5801,
+        "alu": 11516,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 975,
+      "final_gather_by_block": {
+        "1": 895,
+        "4": 903,
+        "5": 907,
+        "10": 911,
+        "13": 915,
+        "14": 919,
+        "15": 923,
+        "18": 927,
+        "19": 931,
+        "20": 935,
+        "21": 939,
+        "23": 943,
+        "24": 947,
+        "25": 951,
+        "26": 955,
+        "27": 959,
+        "28": 963,
+        "30": 971,
+        "31": 975
+      },
+      "digest": "cf6be205c7f467330d818104a8cfff355eccea301578b0923b144055a06cba70",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D05",
+      "config": {
+        "geometry": [
+          "wave8",
+          1,
+          2
+        ]
+      },
+      "cycles": 1058,
+      "scratch": 1705,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "D",
+      "name": "D06",
+      "config": {
+        "geometry": [
+          "wave8",
+          1,
+          1
+        ]
+      },
+      "cycles": 1297,
+      "scratch": 2077,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "D",
+      "name": "D07",
+      "config": {
+        "geometry": [
+          "wave16",
+          1,
+          8
+        ]
+      },
+      "cycles": 992,
+      "scratch": 1462,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5808,
+        "alu": 11460,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 980,
+      "final_gather_by_block": {
+        "1": 895,
+        "4": 903,
+        "5": 907,
+        "10": 911,
+        "13": 915,
+        "14": 919,
+        "15": 923,
+        "18": 927,
+        "19": 931,
+        "20": 935,
+        "21": 939,
+        "23": 943,
+        "24": 947,
+        "25": 951,
+        "26": 955,
+        "27": 959,
+        "28": 963,
+        "30": 976,
+        "31": 980
+      },
+      "digest": "cd43feb038db6a61950c1fde26c8079a0cf0933691805c97a4fd090da61fee73",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D08",
+      "config": {
+        "geometry": [
+          "wave16",
+          1,
+          2
+        ]
+      },
+      "cycles": 1085,
+      "scratch": 1775,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "D",
+      "name": "D09",
+      "config": {
+        "geometry": [
+          "wave16",
+          1,
+          1
+        ]
+      },
+      "cycles": 1378,
+      "scratch": 2045,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "D",
+      "name": "D10",
+      "config": {
+        "geometry": [
+          "morton",
+          1,
+          8
+        ]
+      },
+      "cycles": 987,
+      "scratch": 1482,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5808,
+        "alu": 11460,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 975,
+      "final_gather_by_block": {
+        "1": 895,
+        "4": 903,
+        "5": 907,
+        "10": 911,
+        "13": 915,
+        "14": 919,
+        "15": 923,
+        "18": 927,
+        "19": 931,
+        "20": 935,
+        "21": 939,
+        "23": 943,
+        "24": 947,
+        "25": 951,
+        "26": 955,
+        "27": 959,
+        "28": 963,
+        "30": 970,
+        "31": 975
+      },
+      "digest": "531a2ab37588d8dee55c5a2144a3c0e073a92986e9e5a49cd1672120261badf6",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D11",
+      "config": {
+        "geometry": [
+          "morton",
+          1,
+          2
+        ]
+      },
+      "cycles": 1003,
+      "scratch": 1440,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1889,
+        "flow": 944,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 991,
+      "final_gather_by_block": {
+        "1": 904,
+        "4": 908,
+        "5": 912,
+        "10": 916,
+        "13": 920,
+        "14": 924,
+        "15": 928,
+        "18": 932,
+        "19": 936,
+        "20": 940,
+        "21": 944,
+        "23": 949,
+        "24": 960,
+        "25": 964,
+        "26": 968,
+        "27": 972,
+        "28": 976,
+        "30": 987,
+        "31": 991
+      },
+      "digest": "5f5be8dafc468b1a148ecc3528066102f76c2580c4256c5322c732e8bc2104a2",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D12",
+      "config": {
+        "geometry": [
+          "morton",
+          1,
+          1
+        ]
+      },
+      "cycles": 1068,
+      "scratch": 1642,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "D",
+      "name": "D13",
+      "config": {
+        "geometry": [
+          "gray",
+          1,
+          8
+        ]
+      },
+      "cycles": 997,
+      "scratch": 1473,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5795,
+        "alu": 11564,
+        "store": 32
+      },
+      "capacity_lower_bound": 966,
+      "last_gather": 978,
+      "final_gather_by_block": {
+        "1": 895,
+        "4": 903,
+        "5": 907,
+        "10": 911,
+        "13": 915,
+        "14": 919,
+        "15": 923,
+        "18": 927,
+        "19": 931,
+        "20": 935,
+        "21": 939,
+        "23": 947,
+        "24": 943,
+        "25": 951,
+        "26": 955,
+        "27": 960,
+        "28": 964,
+        "30": 969,
+        "31": 978
+      },
+      "digest": "bf7474a4d3dbb5d0274bb70749ae3d1b0c4e98b82a439062f325d7c1403a114c",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D14",
+      "config": {
+        "geometry": [
+          "gray",
+          1,
+          2
+        ]
+      },
+      "cycles": 1014,
+      "scratch": 1570,
+      "status": "scratch-rejected"
+    },
+    {
+      "arm": "D",
+      "name": "D15",
+      "config": {
+        "geometry": [
+          "gray",
+          1,
+          1
+        ]
+      },
+      "cycles": 990,
+      "scratch": 1489,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5806,
+        "alu": 11476,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 976,
+      "final_gather_by_block": {
+        "1": 893,
+        "4": 901,
+        "5": 909,
+        "10": 925,
+        "13": 921,
+        "14": 917,
+        "15": 913,
+        "18": 961,
+        "19": 957,
+        "20": 972,
+        "21": 976,
+        "23": 965,
+        "24": 941,
+        "25": 945,
+        "26": 953,
+        "27": 949,
+        "28": 937,
+        "30": 933,
+        "31": 929
+      },
+      "digest": "43c6efd6756cebc2e75ae1fe956c21a59a4661dd45b5ab2f2af2cb67c178f780",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D16",
+      "config": {
+        "geometry": [
+          "bitreverse",
+          1,
+          8
+        ]
+      },
+      "cycles": 988,
+      "scratch": 1488,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5804,
+        "alu": 11492,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 976,
+      "final_gather_by_block": {
+        "1": 893,
+        "4": 901,
+        "5": 905,
+        "10": 909,
+        "13": 921,
+        "14": 917,
+        "15": 929,
+        "18": 925,
+        "19": 937,
+        "20": 933,
+        "21": 941,
+        "23": 949,
+        "24": 945,
+        "25": 957,
+        "26": 953,
+        "27": 965,
+        "28": 961,
+        "30": 969,
+        "31": 976
+      },
+      "digest": "c3bf63a296056201d6a017b9fceb78b1bb76107efa665c64320a711974d946c2",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D17",
+      "config": {
+        "geometry": [
+          "bitreverse",
+          1,
+          2
+        ]
+      },
+      "cycles": 1003,
+      "scratch": 1456,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1886,
+        "flow": 947,
+        "valu": 5805,
+        "alu": 11484,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 991,
+      "final_gather_by_block": {
+        "1": 905,
+        "4": 901,
+        "5": 921,
+        "10": 909,
+        "13": 945,
+        "14": 937,
+        "15": 969,
+        "18": 933,
+        "19": 961,
+        "20": 917,
+        "21": 953,
+        "23": 973,
+        "24": 925,
+        "25": 957,
+        "26": 949,
+        "27": 977,
+        "28": 941,
+        "30": 965,
+        "31": 991
+      },
+      "digest": "ad6ff0b2b928843e15db8badd076355f12442f4f53124d39bc70eb03abea97e4",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "D",
+      "name": "D18",
+      "config": {
+        "geometry": [
+          "bitreverse",
+          1,
+          1
+        ]
+      },
+      "cycles": 998,
+      "scratch": 1464,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1884,
+        "flow": 949,
+        "valu": 5801,
+        "alu": 11516,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 982,
+      "final_gather_by_block": {
+        "1": 946,
+        "4": 910,
+        "5": 954,
+        "10": 930,
+        "13": 962,
+        "14": 938,
+        "15": 978,
+        "18": 926,
+        "19": 966,
+        "20": 918,
+        "21": 958,
+        "23": 974,
+        "24": 902,
+        "25": 950,
+        "26": 934,
+        "27": 970,
+        "28": 922,
+        "30": 942,
+        "31": 982
+      },
+      "digest": "854aa0e31f7949276955c901c7ee4116e5166aeec21c008c80a916ffdb142f40",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "E",
+      "name": "E01",
+      "config": {
+        "event": {
+          "order": "native",
+          "start": 0
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "f280cd4aa2f8527134255ac6435548aa8af9edbf7db99bf6a63c644a84c30233",
+      "smoke_cases": 3,
+      "event": {
+        "order": "native",
+        "start": 0,
+        "chain_edges": 20166,
+        "moved_jobs": 72,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E02",
+      "config": {
+        "event": {
+          "order": "native",
+          "start": 853
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3,
+      "event": {
+        "order": "native",
+        "start": 853,
+        "chain_edges": 20166,
+        "moved_jobs": 0,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E03",
+      "config": {
+        "event": {
+          "order": "reverse",
+          "start": 0
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "ece0f8eeeb7c1360bf89757980854ff9e5c00d0a0371a6bbca664e3d31533193",
+      "smoke_cases": 3,
+      "event": {
+        "order": "reverse",
+        "start": 0,
+        "chain_edges": 20166,
+        "moved_jobs": 80,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E04",
+      "config": {
+        "event": {
+          "order": "reverse",
+          "start": 853
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3,
+      "event": {
+        "order": "reverse",
+        "start": 853,
+        "chain_edges": 20166,
+        "moved_jobs": 0,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E05",
+      "config": {
+        "event": {
+          "order": "tail",
+          "start": 0
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "6fd592b6d02a122415e0f0c9415fb3a08ecc9b18376bd211f87c33d10698a374",
+      "smoke_cases": 3,
+      "event": {
+        "order": "tail",
+        "start": 0,
+        "chain_edges": 20166,
+        "moved_jobs": 124,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E06",
+      "config": {
+        "event": {
+          "order": "tail",
+          "start": 853
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3,
+      "event": {
+        "order": "tail",
+        "start": 853,
+        "chain_edges": 20166,
+        "moved_jobs": 0,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E07",
+      "config": {
+        "event": {
+          "order": "short",
+          "start": 0
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "b4dd60c27a304524d63a7a86c86356939411d6bfcd363f9e575018ac58a2e43e",
+      "smoke_cases": 3,
+      "event": {
+        "order": "short",
+        "start": 0,
+        "chain_edges": 20166,
+        "moved_jobs": 73,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E08",
+      "config": {
+        "event": {
+          "order": "short",
+          "start": 853
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3,
+      "event": {
+        "order": "short",
+        "start": 853,
+        "chain_edges": 20166,
+        "moved_jobs": 0,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E09",
+      "config": {
+        "event": {
+          "order": "block",
+          "start": 0
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "4c0f79d7256655dd117a28a3d3f76fc6bef4de3a5b0f0c2b9d95c7b2334ca035",
+      "smoke_cases": 3,
+      "event": {
+        "order": "block",
+        "start": 0,
+        "chain_edges": 20166,
+        "moved_jobs": 116,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E10",
+      "config": {
+        "event": {
+          "order": "block",
+          "start": 853
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3,
+      "event": {
+        "order": "block",
+        "start": 853,
+        "chain_edges": 20166,
+        "moved_jobs": 0,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E11",
+      "config": {
+        "event": {
+          "order": "reverse-block",
+          "start": 0
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "05450631878944cdcf59339f3c98df48d7f12132129f9c98ea418d9d274be08b",
+      "smoke_cases": 3,
+      "event": {
+        "order": "reverse-block",
+        "start": 0,
+        "chain_edges": 20166,
+        "moved_jobs": 72,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    },
+    {
+      "arm": "E",
+      "name": "E12",
+      "config": {
+        "event": {
+          "order": "reverse-block",
+          "start": 853
+        }
+      },
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3,
+      "event": {
+        "order": "reverse-block",
+        "start": 853,
+        "chain_edges": 20166,
+        "moved_jobs": 0,
+        "cycles": 981,
+        "scope": "least timing for this fixed capacity-chain event graph"
+      }
+    }
+  ],
+  "reserved_attempts": [
+    {
+      "arm": "control",
+      "name": "original-native",
+      "at": 1789420674.6436872
+    },
+    {
+      "arm": "control",
+      "name": "isolated-native",
+      "at": 1789420675.2220664
+    },
+    {
+      "arm": "control",
+      "name": "published980-replay",
+      "at": 1789420676.1834297
+    },
+    {
+      "arm": "control",
+      "name": "event-toy",
+      "at": 1789420676.9662914
+    },
+    {
+      "arm": "A",
+      "name": "A01",
+      "at": 1789420677.264148
+    },
+    {
+      "arm": "A",
+      "name": "A02",
+      "at": 1789420678.3352675
+    },
+    {
+      "arm": "A",
+      "name": "A03",
+      "at": 1789420679.3786018
+    },
+    {
+      "arm": "A",
+      "name": "A04",
+      "at": 1789420680.5323377
+    },
+    {
+      "arm": "A",
+      "name": "A05",
+      "at": 1789420681.6371021
+    },
+    {
+      "arm": "A",
+      "name": "A06",
+      "at": 1789420682.722476
+    },
+    {
+      "arm": "A",
+      "name": "A07",
+      "at": 1789420683.857533
+    },
+    {
+      "arm": "A",
+      "name": "A08",
+      "at": 1789420684.9663439
+    },
+    {
+      "arm": "A",
+      "name": "A09",
+      "at": 1789420686.0719502
+    },
+    {
+      "arm": "A",
+      "name": "A10",
+      "at": 1789420687.195799
+    },
+    {
+      "arm": "A",
+      "name": "A11",
+      "at": 1789420688.267302
+    },
+    {
+      "arm": "A",
+      "name": "A12",
+      "at": 1789420689.4245484
+    },
+    {
+      "arm": "A",
+      "name": "A13",
+      "at": 1789420690.5470593
+    },
+    {
+      "arm": "A",
+      "name": "A14",
+      "at": 1789420691.6465852
+    },
+    {
+      "arm": "A",
+      "name": "A15",
+      "at": 1789420692.8346086
+    },
+    {
+      "arm": "A",
+      "name": "A16",
+      "at": 1789420693.9770203
+    },
+    {
+      "arm": "A",
+      "name": "A17",
+      "at": 1789420695.0759432
+    },
+    {
+      "arm": "A",
+      "name": "A18",
+      "at": 1789420696.2542558
+    },
+    {
+      "arm": "A",
+      "name": "A19",
+      "at": 1789420697.3717387
+    },
+    {
+      "arm": "A",
+      "name": "A20",
+      "at": 1789420698.4800625
+    },
+    {
+      "arm": "A",
+      "name": "A21",
+      "at": 1789420699.584024
+    },
+    {
+      "arm": "A",
+      "name": "A22",
+      "at": 1789420700.772944
+    },
+    {
+      "arm": "A",
+      "name": "A23",
+      "at": 1789420701.9305038
+    },
+    {
+      "arm": "A",
+      "name": "A24",
+      "at": 1789420703.044364
+    },
+    {
+      "arm": "B",
+      "name": "B01",
+      "at": 1789420704.2434454
+    },
+    {
+      "arm": "B",
+      "name": "B02",
+      "at": 1789420705.4432282
+    },
+    {
+      "arm": "B",
+      "name": "B03",
+      "at": 1789420706.608062
+    },
+    {
+      "arm": "B",
+      "name": "B04",
+      "at": 1789420707.7177303
+    },
+    {
+      "arm": "B",
+      "name": "B05",
+      "at": 1789420708.8791842
+    },
+    {
+      "arm": "B",
+      "name": "B06",
+      "at": 1789420709.304647
+    },
+    {
+      "arm": "B",
+      "name": "B07",
+      "at": 1789420709.9077196
+    },
+    {
+      "arm": "B",
+      "name": "B08",
+      "at": 1789420711.300455
+    },
+    {
+      "arm": "B",
+      "name": "B09",
+      "at": 1789420712.652988
+    },
+    {
+      "arm": "B",
+      "name": "B10",
+      "at": 1789420714.0625165
+    },
+    {
+      "arm": "B",
+      "name": "B11",
+      "at": 1789420715.5665917
+    },
+    {
+      "arm": "B",
+      "name": "B12",
+      "at": 1789420716.9767308
+    },
+    {
+      "arm": "C",
+      "name": "C01",
+      "at": 1789420718.3530066
+    },
+    {
+      "arm": "C",
+      "name": "C02",
+      "at": 1789420719.8244634
+    },
+    {
+      "arm": "C",
+      "name": "C03",
+      "at": 1789420720.970734
+    },
+    {
+      "arm": "C",
+      "name": "C04",
+      "at": 1789420722.0442872
+    },
+    {
+      "arm": "C",
+      "name": "C05",
+      "at": 1789420723.2539036
+    },
+    {
+      "arm": "C",
+      "name": "C06",
+      "at": 1789420724.3600292
+    },
+    {
+      "arm": "C",
+      "name": "C07",
+      "at": 1789420725.5195835
+    },
+    {
+      "arm": "C",
+      "name": "C08",
+      "at": 1789420726.762173
+    },
+    {
+      "arm": "D",
+      "name": "D01",
+      "at": 1789420727.8584812
+    },
+    {
+      "arm": "D",
+      "name": "D02",
+      "at": 1789420729.0249078
+    },
+    {
+      "arm": "D",
+      "name": "D03",
+      "at": 1789420730.2035441
+    },
+    {
+      "arm": "D",
+      "name": "D04",
+      "at": 1789420730.7674248
+    },
+    {
+      "arm": "D",
+      "name": "D05",
+      "at": 1789420731.8313947
+    },
+    {
+      "arm": "D",
+      "name": "D06",
+      "at": 1789420732.3173976
+    },
+    {
+      "arm": "D",
+      "name": "D07",
+      "at": 1789420732.8694224
+    },
+    {
+      "arm": "D",
+      "name": "D08",
+      "at": 1789420734.000627
+    },
+    {
+      "arm": "D",
+      "name": "D09",
+      "at": 1789420734.4597647
+    },
+    {
+      "arm": "D",
+      "name": "D10",
+      "at": 1789420735.116707
+    },
+    {
+      "arm": "D",
+      "name": "D11",
+      "at": 1789420736.3266327
+    },
+    {
+      "arm": "D",
+      "name": "D12",
+      "at": 1789420737.5027492
+    },
+    {
+      "arm": "D",
+      "name": "D13",
+      "at": 1789420737.9373956
+    },
+    {
+      "arm": "D",
+      "name": "D14",
+      "at": 1789420739.153316
+    },
+    {
+      "arm": "D",
+      "name": "D15",
+      "at": 1789420739.5879543
+    },
+    {
+      "arm": "D",
+      "name": "D16",
+      "at": 1789420740.7959623
+    },
+    {
+      "arm": "D",
+      "name": "D17",
+      "at": 1789420741.9880335
+    },
+    {
+      "arm": "D",
+      "name": "D18",
+      "at": 1789420743.1135807
+    },
+    {
+      "arm": "E",
+      "name": "E01",
+      "at": 1789420744.274331
+    },
+    {
+      "arm": "E",
+      "name": "E02",
+      "at": 1789420745.3643765
+    },
+    {
+      "arm": "E",
+      "name": "E03",
+      "at": 1789420746.4220967
+    },
+    {
+      "arm": "E",
+      "name": "E04",
+      "at": 1789420747.5756927
+    },
+    {
+      "arm": "E",
+      "name": "E05",
+      "at": 1789420748.6543841
+    },
+    {
+      "arm": "E",
+      "name": "E06",
+      "at": 1789420749.7200017
+    },
+    {
+      "arm": "E",
+      "name": "E07",
+      "at": 1789420750.8023412
+    },
+    {
+      "arm": "E",
+      "name": "E08",
+      "at": 1789420751.9684787
+    },
+    {
+      "arm": "E",
+      "name": "E09",
+      "at": 1789420753.0520704
+    },
+    {
+      "arm": "E",
+      "name": "E10",
+      "at": 1789420754.1294587
+    },
+    {
+      "arm": "E",
+      "name": "E11",
+      "at": 1789420755.227992
+    },
+    {
+      "arm": "E",
+      "name": "E12",
+      "at": 1789420756.3109593
+    }
+  ],
+  "rejected_scratch_sizes": [
+    1540,
+    1571,
+    1925,
+    1705,
+    2077,
+    1775,
+    2045,
+    1642,
+    1570
+  ],
+  "limitations": [
+    "No candidate strictly improved native981; no combinations opened.",
+    "No below980 candidate; full winner gates not run.",
+    "Tensor coefficients are not CSE-shared with pre-existing cache broadcasts/pair differences.",
+    "Temporary code and physical programs reside in /tmp; repository receipt preserves their provenance and results."
+  ],
+  "budgets_closed": true,
+  "solver_restarted": false,
+  "production_changed": false,
+  "committed": false,
+  "pushed": false
+}

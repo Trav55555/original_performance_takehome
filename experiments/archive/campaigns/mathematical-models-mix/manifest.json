@@ -1,0 +1,536 @@
+{
+  "schema": 1,
+  "campaign": "mathematical-models-mix",
+  "classification": "workspace-preserved-reexecution-unverified",
+  "capture_date": "2026-09-15",
+  "repository_head_at_capture": "7b39e3fd902ddc6374888326d23c0fec023d25a2",
+  "archive": {
+    "path": "workspace.tar.gz",
+    "sha256": "3e459a2b534563a21d17916e9778bacb27e16eb226dd602fab3cc9eccfcf39bd",
+    "bytes": 3188442
+  },
+  "members": {
+    "reference/frozen_problem.py": {
+      "sha256": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+      "bytes": 19826,
+      "origin": "/home/travers/projects/original_performance_takehome/tests/frozen_problem.py"
+    },
+    "workspace/artifacts/A09+A21/config.json": {
+      "sha256": "771f5e8ed883a04eef3080f0aa8f0ebfe00d43d4944619f5d7bf826f1ef3be42",
+      "bytes": 43,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+A21/config.json"
+    },
+    "workspace/artifacts/A09+A21/logical.json": {
+      "sha256": "58ce95313453fce41f19ce9a062086a21983bd118dc85e74b789b7660281091e",
+      "bytes": 432869,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+A21/logical.json"
+    },
+    "workspace/artifacts/A09+A21/program.json": {
+      "sha256": "77a5a9f51a84ce3bf88f1c1c66af63dcf1ff9499826b56e032b12f25ee63d2b0",
+      "bytes": 538482,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+A21/program.json"
+    },
+    "workspace/artifacts/A09+A21/result.json": {
+      "sha256": "87c385ec9ff104615267202d97988f3e8ac471dd330a9e8f12bf65d1b13f6813",
+      "bytes": 792,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+A21/result.json"
+    },
+    "workspace/artifacts/A09+D01+E01/config.json": {
+      "sha256": "ae5ad44b937f4ce9eeb51b7990a14ecd06f2af33460f9ad3db83f02cf925cb35",
+      "bytes": 98,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01+E01/config.json"
+    },
+    "workspace/artifacts/A09+D01+E01/logical.json": {
+      "sha256": "bf05b2253221bdbd908cf51b0a6117e5cf6d428dc055efb2209fcd7bb854ad6f",
+      "bytes": 432367,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01+E01/logical.json"
+    },
+    "workspace/artifacts/A09+D01+E01/program.json": {
+      "sha256": "3c82a76f7c9047bd046e181c8acf87f6c3dffc909e59a3b6004d9e145ca30672",
+      "bytes": 538397,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01+E01/program.json"
+    },
+    "workspace/artifacts/A09+D01+E01/result.json": {
+      "sha256": "44fc67139d2f8c824c71bc6105477c0dec1e71921eb59e97ae396a3063a84572",
+      "bytes": 1079,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01+E01/result.json"
+    },
+    "workspace/artifacts/A09+D01/config.json": {
+      "sha256": "ea2c4c96be30baa18fadab931d6a8540cbef1aedd7e11f960992e9fe09fb00e2",
+      "bytes": 56,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01/config.json"
+    },
+    "workspace/artifacts/A09+D01/logical.json": {
+      "sha256": "cbd30f1166dea1478da3eb96b288b740be8b16b752f5dd119058c0bc4498b37a",
+      "bytes": 432367,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01/logical.json"
+    },
+    "workspace/artifacts/A09+D01/program.json": {
+      "sha256": "7f0a753f212ffeee55e95535ef9fa6ce9cf8487aed0146cdb59723c892914d9c",
+      "bytes": 538397,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01/program.json"
+    },
+    "workspace/artifacts/A09+D01/result.json": {
+      "sha256": "b7fc64a6b67bd915f7c5b63f2aca1087cd1bc6c0b9329e1d797fd0e7c938be04",
+      "bytes": 805,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A09+D01/result.json"
+    },
+    "workspace/artifacts/A18+C02+D01/config.json": {
+      "sha256": "c89adbb7ff4fd09d5afbf9491ae49b9cd5da98b49eef3f73e76c0bf5752292eb",
+      "bytes": 110,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+D01/config.json"
+    },
+    "workspace/artifacts/A18+C02+D01/logical.json": {
+      "sha256": "f2c434c6cd4d9d22f176bfb82bb2fe852dc6cdd81313e7711cd101ee1ce9a0d9",
+      "bytes": 432557,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+D01/logical.json"
+    },
+    "workspace/artifacts/A18+C02+D01/program.json": {
+      "sha256": "d855a1394704488dfb35260aea94c94bfa4fd71e9785d2c4ae35bd2ce0b6edb8",
+      "bytes": 539813,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+D01/program.json"
+    },
+    "workspace/artifacts/A18+C02+D01/result.json": {
+      "sha256": "8551e393c9e0b9747e35d72db95506aa403dd95c552c8cdb988cbe9c828caf70",
+      "bytes": 903,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+D01/result.json"
+    },
+    "workspace/artifacts/A18+C02+E01/config.json": {
+      "sha256": "99d076d82ba028ebdbd5af46cdaa9dc4e62b92164ae98da5ba0f71f32cfe84a4",
+      "bytes": 123,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+E01/config.json"
+    },
+    "workspace/artifacts/A18+C02+E01/logical.json": {
+      "sha256": "732325474e5a41fe7edb83c8d31572a9010d9fb518b069b136bf6661cfdc3acc",
+      "bytes": 432445,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+E01/logical.json"
+    },
+    "workspace/artifacts/A18+C02+E01/program.json": {
+      "sha256": "70f8ee1324c1553e89b0f4b2b395a5c11af5e28a08b3caae8cb285250225f706",
+      "bytes": 539247,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+E01/program.json"
+    },
+    "workspace/artifacts/A18+C02+E01/result.json": {
+      "sha256": "5779bcf56451743c652e2284e927029fa0e3eaec6387fae51d28b537c03d9b33",
+      "bytes": 1104,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02+E01/result.json"
+    },
+    "workspace/artifacts/A18+C02/config.json": {
+      "sha256": "5aef2db21bc58c7ad79be32957ee743d4a8ed4cc7c79909b28902583729be4b2",
+      "bytes": 81,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02/config.json"
+    },
+    "workspace/artifacts/A18+C02/logical.json": {
+      "sha256": "f084406588301d751563301c021182dafc9d6d36febe19f5703435773119bedd",
+      "bytes": 432445,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02/logical.json"
+    },
+    "workspace/artifacts/A18+C02/program.json": {
+      "sha256": "906823bc3da22ddc2a2e01097c8354f358d179901f4b189e83aa5a3f0f11feda",
+      "bytes": 539245,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02/program.json"
+    },
+    "workspace/artifacts/A18+C02/result.json": {
+      "sha256": "689991f620bce0923fc9ad45ba245db75691ef7a700c3b8180e4661e17e12383",
+      "bytes": 829,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18+C02/result.json"
+    },
+    "workspace/artifacts/A18/config.json": {
+      "sha256": "ef8ff9018d7a70ee272b18e6e49a3cdfadf3c8eb2658246a6c5d31f67a0dc96f",
+      "bytes": 27,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18/config.json"
+    },
+    "workspace/artifacts/A18/logical.json": {
+      "sha256": "788fe1af613ab52706215dc8a35051078a357f801508afd6ce9cbec81f096290",
+      "bytes": 432547,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18/logical.json"
+    },
+    "workspace/artifacts/A18/program.json": {
+      "sha256": "2b34b56ae50fb390d10c83c1ff588176d43790cddf019b94341de1ad45b8ae1c",
+      "bytes": 539343,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18/program.json"
+    },
+    "workspace/artifacts/A18/result.json": {
+      "sha256": "9105fd0b3294a886ab9f4c9d94f9721cbeb3feb6247ce42e52bcc9e0bf99d356",
+      "bytes": 722,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/A18/result.json"
+    },
+    "workspace/artifacts/C02+C06/config.json": {
+      "sha256": "6afc5d7f4676f926f0c3da49074d03324992367cdc6451edd59b4679b5f390f6",
+      "bytes": 64,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+C06/config.json"
+    },
+    "workspace/artifacts/C02+C06/logical.json": {
+      "sha256": "92cabb0012ccfcad0b5b9538af92effa1b15ad2cd84f799a727f601b8946ff5e",
+      "bytes": 432465,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+C06/logical.json"
+    },
+    "workspace/artifacts/C02+C06/program.json": {
+      "sha256": "da599361f1a2a8d9d67249c54cc83b6821ba2ebb5c6f1d2191fe8918890990da",
+      "bytes": 538048,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+C06/program.json"
+    },
+    "workspace/artifacts/C02+C06/result.json": {
+      "sha256": "aebb6b8a6f8da0db6331a113d151c4fd7b4c1c7078f10172f277e5770166f684",
+      "bytes": 812,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+C06/result.json"
+    },
+    "workspace/artifacts/C02+D01+E01/config.json": {
+      "sha256": "f906ba91a1a6a32776458a1a1c676ea4a2487864bc2aa65b65410258ce33ff4b",
+      "bytes": 125,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01+E01/config.json"
+    },
+    "workspace/artifacts/C02+D01+E01/logical.json": {
+      "sha256": "b2c689ada3653cd83c61e2fc3086374c5d43d028e90d2d4ebda8d8383549bbb6",
+      "bytes": 432403,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01+E01/logical.json"
+    },
+    "workspace/artifacts/C02+D01+E01/program.json": {
+      "sha256": "096f2b8133451681ced2c5f574b1c348055823ca96db58711f5f515c0e4547c0",
+      "bytes": 538116,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01+E01/program.json"
+    },
+    "workspace/artifacts/C02+D01+E01/result.json": {
+      "sha256": "686f5329fc8b224afba0d2e174a1289bd12da1b7278eb09e1341a2c86ebdddc9",
+      "bytes": 1106,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01+E01/result.json"
+    },
+    "workspace/artifacts/C02+D01/config.json": {
+      "sha256": "9537bb2f39f70a7a6c36cbe77e78fd067ca34ba7bd3e092834a1c323bb78aa6e",
+      "bytes": 83,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01/config.json"
+    },
+    "workspace/artifacts/C02+D01/logical.json": {
+      "sha256": "a5c44e293e27b3c206f01fe9ec14688934d39fc6d0bc65c949b2e34a1fdd18d2",
+      "bytes": 432403,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01/logical.json"
+    },
+    "workspace/artifacts/C02+D01/program.json": {
+      "sha256": "5aef868ef8de47bab895e556582cc9420bb0d8877bb7a565d4b356634c2395a1",
+      "bytes": 538116,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01/program.json"
+    },
+    "workspace/artifacts/C02+D01/result.json": {
+      "sha256": "d943c6da2b0834f4b16cc73e9d28e6099bf2cc49fdf355a86c7678e128a5fcc9",
+      "bytes": 831,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02+D01/result.json"
+    },
+    "workspace/artifacts/C02/config.json": {
+      "sha256": "6f8db0656cc6a6750918a9421cfd78e615282532a39a6b58139d38f79549805a",
+      "bytes": 54,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02/config.json"
+    },
+    "workspace/artifacts/C02/logical.json": {
+      "sha256": "f348de83dd8f44695129e488ce89477b647e1e3a2a750cc57589567ac2b6c8e1",
+      "bytes": 432273,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02/logical.json"
+    },
+    "workspace/artifacts/C02/program.json": {
+      "sha256": "1d3c5f03ea54493137f96dd13b55e3766535da75ed7c94a2ed8e4c9d9a58ebe8",
+      "bytes": 537833,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02/program.json"
+    },
+    "workspace/artifacts/C02/result.json": {
+      "sha256": "d688d7567d926a610174bb7d081022f59c9bb77360730d3f53251b74ef1168be",
+      "bytes": 749,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/C02/result.json"
+    },
+    "workspace/artifacts/D01/config.json": {
+      "sha256": "7b4b51babc4973f781997d76d023459c48c8dee4211818f6e09d857f73014e37",
+      "bytes": 29,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/D01/config.json"
+    },
+    "workspace/artifacts/D01/logical.json": {
+      "sha256": "bcfb4547accbab8c25e9d2e7be154f634db4884772b50803e43f7eb3818acf49",
+      "bytes": 432359,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/D01/logical.json"
+    },
+    "workspace/artifacts/D01/program.json": {
+      "sha256": "598eb8b2dd26bba43716172a3ab5438bdfd2a78e4ccccdd307804d6abc21b5ab",
+      "bytes": 538072,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/D01/program.json"
+    },
+    "workspace/artifacts/D01/result.json": {
+      "sha256": "4d94e035e8ff437189180a1fbcb38c1f482bd4cb77e631f983d6f677d76dded6",
+      "bytes": 724,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/D01/result.json"
+    },
+    "workspace/artifacts/E01/config.json": {
+      "sha256": "0bf89778b803fac4f375af0ed35fdff56f9b054cf036810c2e60b28cdd181a5b",
+      "bytes": 42,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/E01/config.json"
+    },
+    "workspace/artifacts/E01/logical.json": {
+      "sha256": "9cef9bc610fa40d50da2df528a05858543bfc817587fba5542750582e00ac02d",
+      "bytes": 432229,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/E01/logical.json"
+    },
+    "workspace/artifacts/E01/program.json": {
+      "sha256": "f280cd4aa2f8527134255ac6435548aa8af9edbf7db99bf6a63c644a84c30233",
+      "bytes": 537796,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/E01/program.json"
+    },
+    "workspace/artifacts/E01/result.json": {
+      "sha256": "6ae931f02463bddade774a091011880bb83c1ad9bb360afe80543e40aefc3bb2",
+      "bytes": 901,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/E01/result.json"
+    },
+    "workspace/artifacts/S+A16+A21+E01/config.json": {
+      "sha256": "9dc900b8c0986fd9ab5195f607c5294e03e0457c21fb3db245b3fe10b2a19bbb",
+      "bytes": 100,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21+E01/config.json"
+    },
+    "workspace/artifacts/S+A16+A21+E01/logical.json": {
+      "sha256": "834f0735c034bf2878859f3c5ae5e429b5609a98a85145572074f0994f6079be",
+      "bytes": 432591,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21+E01/logical.json"
+    },
+    "workspace/artifacts/S+A16+A21+E01/program.json": {
+      "sha256": "ba445db54f585c9fed139899a3b757b46d032ba457bdbff6d97e050ac1922144",
+      "bytes": 538873,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21+E01/program.json"
+    },
+    "workspace/artifacts/S+A16+A21+E01/result.json": {
+      "sha256": "c7b072a3a5ed5d0d632b4698bd5c1fd499449f89a2426ff9411231bb0d8ff798",
+      "bytes": 1085,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21+E01/result.json"
+    },
+    "workspace/artifacts/S+A16+A21/config.json": {
+      "sha256": "5cca4f76a9fc2aba6574e65b4b2460035939646b69718136fcd74b888034cad9",
+      "bytes": 58,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21/config.json"
+    },
+    "workspace/artifacts/S+A16+A21/logical.json": {
+      "sha256": "50cf913d5cfc944fbfe46ea5eb03e7fe7f108052d9855bf724908f71379c1e0f",
+      "bytes": 432591,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21/logical.json"
+    },
+    "workspace/artifacts/S+A16+A21/program.json": {
+      "sha256": "8ccbac487218797c1276a49b658e19eb10a7c1b4d3d2d75a815eb7cf5f7d3c72",
+      "bytes": 538872,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21/program.json"
+    },
+    "workspace/artifacts/S+A16+A21/result.json": {
+      "sha256": "858070eb571e9d43672b937fcf9b25ee3a54a09df441e80bbb4a694a92a05763",
+      "bytes": 822,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16+A21/result.json"
+    },
+    "workspace/artifacts/S+A16/config.json": {
+      "sha256": "4508090f9e623cf6deba61b4d66016e6152195c332baa9a7a0103f3e3e75adeb",
+      "bytes": 42,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16/config.json"
+    },
+    "workspace/artifacts/S+A16/logical.json": {
+      "sha256": "1337d77be7d5dc60b770238a4ec57bc92fb282d672a6c5da65b2648592b97ee9",
+      "bytes": 432336,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16/logical.json"
+    },
+    "workspace/artifacts/S+A16/program.json": {
+      "sha256": "208bbf6ae0161bf8d42d10c40c6e7b639003c0eac52169ff701d467a2e421676",
+      "bytes": 538533,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16/program.json"
+    },
+    "workspace/artifacts/S+A16/result.json": {
+      "sha256": "b51a0815ab9dfaea880c4afd04a6a169c84a400ca43156a586b7d75e149ed928",
+      "bytes": 797,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A16/result.json"
+    },
+    "workspace/artifacts/S+A18+C02/config.json": {
+      "sha256": "a8319f8ccb20a8c1fb8d8ab5472dfccc79e169e1356bd26e23521a38c7b652b5",
+      "bytes": 96,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A18+C02/config.json"
+    },
+    "workspace/artifacts/S+A18+C02/logical.json": {
+      "sha256": "06ba7c0dbf22b7549fc80d357c421c86a9b82da65569e7b690f56ddcd7f2fbf8",
+      "bytes": 432380,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A18+C02/logical.json"
+    },
+    "workspace/artifacts/S+A18+C02/program.json": {
+      "sha256": "7f11e2dbe94f5e6d55248c959890a82f7e13c5b429ba9350b465fae07497abc3",
+      "bytes": 538638,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A18+C02/program.json"
+    },
+    "workspace/artifacts/S+A18+C02/result.json": {
+      "sha256": "e99e7b705ab1ae723cab346ce66ea52e667172fe25cf5ec2f0cc43daac0f5c95",
+      "bytes": 859,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/S+A18+C02/result.json"
+    },
+    "workspace/artifacts/native/config.json": {
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/native/config.json"
+    },
+    "workspace/artifacts/native/logical.json": {
+      "sha256": "507e562dcde1382a0562a1ff287b892149a9ca7abb333b083ff0d31809643acc",
+      "bytes": 432229,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/native/logical.json"
+    },
+    "workspace/artifacts/native/program.json": {
+      "sha256": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "bytes": 537796,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/native/program.json"
+    },
+    "workspace/artifacts/native/result.json": {
+      "sha256": "32f2050d60bde666a4840007d62acf8625bb7ec84d22971f6c71e1442a64096e",
+      "bytes": 110,
+      "origin": "/tmp/perf-math-mix.X7KVbp/artifacts/native/result.json"
+    },
+    "workspace/attempts.jsonl": {
+      "sha256": "f94b097dfbfc08a4139b07b86af7a1da79b9c991e65214252ab5ccbfe1d2b2fd",
+      "bytes": 5816,
+      "origin": "/tmp/perf-math-mix.X7KVbp/attempts.jsonl"
+    },
+    "workspace/audit.json": {
+      "sha256": "0ead14d18e0abeab77efc50ba25d80b52ac2ca1fa219a00d3356507ddf7c46ef",
+      "bytes": 505,
+      "origin": "/tmp/perf-math-mix.X7KVbp/audit.json"
+    },
+    "workspace/audit.py": {
+      "sha256": "483685588f130f818e4246fcb3b97f618f40ab9fbc6f2db5498567e2586009db",
+      "bytes": 3217,
+      "origin": "/tmp/perf-math-mix.X7KVbp/audit.py"
+    },
+    "workspace/baseline_plan.json": {
+      "sha256": "47658ff1592a3cf825ff89586aad90c4b522baf09a55c44b00a07366c656894e",
+      "bytes": 1098,
+      "origin": "/tmp/perf-math-mix.X7KVbp/baseline_plan.json"
+    },
+    "workspace/event.py": {
+      "sha256": "e49e413fe9960031c9f9c7d2498515aba4c5db8612847513a6e6bb68e8e0012c",
+      "bytes": 3137,
+      "origin": "/tmp/perf-math-mix.X7KVbp/event.py"
+    },
+    "workspace/kernel_checks.py": {
+      "sha256": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+      "bytes": 2169,
+      "origin": "/tmp/perf-math-mix.X7KVbp/kernel_checks.py"
+    },
+    "workspace/kernel_compiler.py": {
+      "sha256": "ff455dcf29e15284d73cc0df1f663fa1afc0f3021c426d622abe1a2943cacc3e",
+      "bytes": 33912,
+      "origin": "/tmp/perf-math-mix.X7KVbp/kernel_compiler.py"
+    },
+    "workspace/kernel_lookahead.py": {
+      "sha256": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+      "bytes": 6165,
+      "origin": "/tmp/perf-math-mix.X7KVbp/kernel_lookahead.py"
+    },
+    "workspace/kernel_retime.py": {
+      "sha256": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+      "bytes": 13480,
+      "origin": "/tmp/perf-math-mix.X7KVbp/kernel_retime.py"
+    },
+    "workspace/manifest.json": {
+      "sha256": "39edb4956fb3bc708ac4b94652d06496c7f41978b1087260c75b9b9b402f23c6",
+      "bytes": 1579,
+      "origin": "/tmp/perf-math-mix.X7KVbp/manifest.json"
+    },
+    "workspace/math_variants.py": {
+      "sha256": "4463041715c668db1c4870a30960fc59c976b725f6fc7b2bb6aa28695fe95869",
+      "bytes": 4700,
+      "origin": "/tmp/perf-math-mix.X7KVbp/math_variants.py"
+    },
+    "workspace/mix.py": {
+      "sha256": "2fc27a844434239e92579f5689525a9af5b3bd08d3771d3613e88d92cb55ef3f",
+      "bytes": 7798,
+      "origin": "/tmp/perf-math-mix.X7KVbp/mix.py"
+    },
+    "workspace/original/kernel_compiler.py": {
+      "sha256": "05bf9808fa54d0cc71437b57c3af74df8666e2db80251193c50050fb3a163921",
+      "bytes": 32009,
+      "origin": "/tmp/perf-math-mix.X7KVbp/original/kernel_compiler.py"
+    },
+    "workspace/prior_controls.py": {
+      "sha256": "efa97f64268abe5575761c10fedc6c6990a286b95ef409eb6a93c9309baa8706",
+      "bytes": 11237,
+      "origin": "/tmp/perf-math-mix.X7KVbp/prior_controls.py"
+    },
+    "workspace/prior_results.jsonl": {
+      "sha256": "d9928ff1eeb35aef1178e65bd30be82216d0bd5dd5e6238e202678ed5627b8a6",
+      "bytes": 43032,
+      "origin": "/tmp/perf-math-mix.X7KVbp/prior_results.jsonl"
+    },
+    "workspace/problem.py": {
+      "sha256": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+      "bytes": 19826,
+      "origin": "/tmp/perf-math-mix.X7KVbp/problem.py"
+    },
+    "workspace/program.md": {
+      "sha256": "c3161fe8b729548403d210fa9c788ea677e178854909de0dbee2ab349758f5a8",
+      "bytes": 5676,
+      "origin": "/tmp/perf-math-mix.X7KVbp/program.md"
+    },
+    "workspace/program_lint.json": {
+      "sha256": "ce1b9ca9f93d164679914d6cc8bef43ce4b05ec32b7760b28640033206101584",
+      "bytes": 8018,
+      "origin": "/tmp/perf-math-mix.X7KVbp/program_lint.json"
+    },
+    "workspace/protected_sources.json": {
+      "sha256": "063f0e4cba2a391025d863cfd51cce66fcca3e233acfbb16713badc0a05686c3",
+      "bytes": 924,
+      "origin": "/tmp/perf-math-mix.X7KVbp/protected_sources.json"
+    },
+    "workspace/pure_checks.json": {
+      "sha256": "566949f7c95478eff345a03956d473b09d9c59f593392e55d2e38a4058283861",
+      "bytes": 48,
+      "origin": "/tmp/perf-math-mix.X7KVbp/pure_checks.json"
+    },
+    "workspace/research.py": {
+      "sha256": "e73c7b67da84aaeecaee5c4ff6d052166e4c5e1a1ed29da6ca6e066f9d6eb905",
+      "bytes": 6205,
+      "origin": "/tmp/perf-math-mix.X7KVbp/research.py"
+    },
+    "workspace/research_sources.json": {
+      "sha256": "20a85ff5f5fb6bf702d236c02b733b302771b19be7cb5069eca384c9fbdcaef6",
+      "bytes": 1249,
+      "origin": "/tmp/perf-math-mix.X7KVbp/research_sources.json"
+    },
+    "workspace/results.jsonl": {
+      "sha256": "56cd99f36cb82a61053ee69a1892a66efd4485b9c531951847b8c46f8da86333",
+      "bytes": 75415,
+      "origin": "/tmp/perf-math-mix.X7KVbp/results.jsonl"
+    },
+    "workspace/results_lint.json": {
+      "sha256": "2dee0e741c18b58c2eae7c9b99a72f60e2080afd274240a59e199b2713dd2215",
+      "bytes": 6931,
+      "origin": "/tmp/perf-math-mix.X7KVbp/results_lint.json"
+    },
+    "workspace/run.log": {
+      "sha256": "183259ee5fb32300aae5c1c658238aaa060d5cf41f88c77c19d64689204e2093",
+      "bytes": 9367,
+      "origin": "/tmp/perf-math-mix.X7KVbp/run.log"
+    },
+    "workspace/screen_result.json": {
+      "sha256": "bea54fcf4a8d03b29a6c4c95f016798830154e7bc8f3a06d251f19571fc82b6b",
+      "bytes": 124123,
+      "origin": "/tmp/perf-math-mix.X7KVbp/screen_result.json"
+    },
+    "workspace/selection.json": {
+      "sha256": "1fe91c6661463a06b004224b1fe309b9771cf0453b896bfdd2453ddb218bb616",
+      "bytes": 354,
+      "origin": "/tmp/perf-math-mix.X7KVbp/selection.json"
+    }
+  },
+  "records": {
+    "records/protocol.md": {
+      "sha256": "c3161fe8b729548403d210fa9c788ea677e178854909de0dbee2ab349758f5a8",
+      "bytes": 5676,
+      "origin": "/home/travers/projects/original_performance_takehome/experiments/mathematical_models_mix_program.md"
+    },
+    "records/receipt.json": {
+      "sha256": "c05b808eab2146cf376a39bb903a3c14b860c91db22106602da6479292045a00",
+      "bytes": 272907,
+      "origin": "/home/travers/projects/original_performance_takehome/experiments/mathematical_models_mix_receipt.json"
+    },
+    "records/report.md": {
+      "sha256": "17d5aa2e8bfad6ecdeab6f262a2dc49d5d248b1acb514af7c5e351ad3af81a3c",
+      "bytes": 8324,
+      "origin": "/home/travers/projects/original_performance_takehome/experiments/mathematical_models_mix_results.md"
+    }
+  },
+  "exclusions": [
+    "Python bytecode/cache directories",
+    "External paths referenced by captured drivers; no dependency-closure or full-search replay claim"
+  ],
+  "limits": "Captured paths and source guards are historical, not rewritten. No search/solver restarted. Member hashes establish capture integrity, not correctness of the original experiment or complete dependency closure."
+}

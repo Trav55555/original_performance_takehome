@@ -65,6 +65,8 @@ Former root-level notes now live in [docs/history](../docs/history/README.md): [
 
 ## Artifact availability
 
+The [preserved campaign collection](archive/campaigns/README.md) now includes final-hash ordering, mathematical models, model combinations and slope/select. It preserves 336 archive members plus 12 raw record copies. Saved F08 replay is verified; complete historical search reexecution is not. The index documents exact contents, exclusions and verification commands.
+
 The promotion source and maintained verifiers reproduce production without `/tmp` research workspaces. Other reports may preserve only decisions and provenance while referring to temporary drivers, graphs or timing files. A receipt is not necessarily a complete executable archive.
 
 At the documentation review on 2026-09-15, the local checkout also contained 58 untracked research files under this directory. They were left untouched and are not part of a fresh clone. To inspect local availability without starting an experiment:
@@ -74,4 +76,4 @@ git ls-files experiments/
 git ls-files --others --exclude-standard experiments/
 ```
 
-Archiving those files requires a separate selection and provenance check. Do not bulk-add them, hide them with a broad ignore rule, or delete them as part of navigation cleanup.
+The selected campaign collection copies a subset of those records without changing or removing the originals. Remaining records still require a separate selection and provenance check. Do not bulk-add them, hide them with a broad ignore rule, or delete them as part of navigation cleanup.

@@ -53,6 +53,8 @@ For a new result, preserve both a decision and a receipt. The decision explains 
 
 The [979 evidence directory](../../experiments/promotion_979_evidence/) and [receipt](../../experiments/promotion_979_receipt.json) preserve the published campaign. Current compiler source and standalone verifiers reproduce production without the original temporary driver.
 
+The [selected campaign archives](../../experiments/archive/campaigns/README.md) preserve final-hash, mathematical-model and slope/select evidence. Hash checks cover their captured files, and a separate saved-program replay checks F08. That is not full search rediscovery. The collection identifies workspace captures whose reexecution remains unverified.
+
 Other reports point to `/tmp` drivers and graphs that may not survive. The [research catalog](search-and-research.md#local-only-records) explicitly identifies untracked local records. A fresh clone does not contain them. Summarizing their findings in this wiki is not the same as archiving all their artifacts.
 
 Reports and receipts describe their creation-time state. A statement that no commit occurred may be followed by a later published promotion. An old status observation that a solver was running may be followed by an OOM closure. Preserve the original record; link its successor from the maintained index or history.

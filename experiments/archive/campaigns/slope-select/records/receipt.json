@@ -1,0 +1,5433 @@
+{
+  "status": "completed-no-incumbent",
+  "workspace": "/tmp/perf-slope-select.SzgnoH",
+  "local_head": "d3544dc",
+  "production": {
+    "cycles": 980,
+    "scratch": 1465,
+    "changed": false
+  },
+  "native_control": {
+    "cycles": 981,
+    "scratch": 1465
+  },
+  "research_sources": {
+    "baseline_plan.json": "47658ff1592a3cf825ff89586aad90c4b522baf09a55c44b00a07366c656894e",
+    "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+    "kernel_compiler.py": "ff455dcf29e15284d73cc0df1f663fa1afc0f3021c426d622abe1a2943cacc3e",
+    "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+    "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+    "linear_coefficients.py": "770549c5ddefa6c71113eed4296aad7b00ac5d863c7656a497b971c77a24c5b5",
+    "math_variants.py": "0e9b2c0a24da320961e4ba540c1c6994449526d8af35052656932069191864e0",
+    "original/kernel_compiler.py": "05bf9808fa54d0cc71437b57c3af74df8666e2db80251193c50050fb3a163921",
+    "prior_screen_result.json": "bea54fcf4a8d03b29a6c4c95f016798830154e7bc8f3a06d251f19571fc82b6b",
+    "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "program.md": "d77d613aab0ca8392d4b217a4cb0a280bc427bbcbdc2e124f38a7e17b46b84cd",
+    "proofs.py": "1cc35eb85b031671d3658b2fbb1b0a7cd158a4fed5845948f57cc59a637e4943",
+    "protected_sources.json": "063f0e4cba2a391025d863cfd51cce66fcca3e233acfbb16713badc0a05686c3",
+    "research.py": "e188d9680ec909437396abae2b729f463103b66b597df2776fc9905ee8cff676",
+    "run.py": "714fdc7a0a6d432a477b06e3dfcc2c3270ec42bb49e1cdc78df40c54da9e0f70",
+    "selection.json": "1b23111e4cb6c25d9c4dd9081a1124bea94e6134fa8bd5246a19bae3baa3e7a6"
+  },
+  "protected_sources": {
+    "kernel_compiler.py": "05bf9808fa54d0cc71437b57c3af74df8666e2db80251193c50050fb3a163921",
+    "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+    "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+    "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+    "kernel_optimizer.py": "3aae1aa8a9bb1cd795112f38db945e88d364db989406c01419a4cfc233119cb5",
+    "kernel_refinement.py": "920bd96385b30879b4c37469d20535827f18112b490b7d91fafe51f16aed5de3",
+    "perf_takehome.py": "aee377d80dd468868ec2ea22c0a823d54b484c602707750cb8f5b98e19f2c3b9",
+    "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "tests/frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "tests/submission_tests.py": "11c57cc999da93acb41201191073cd657ddffa87635359b3157c6e177c18ea0a"
+  },
+  "manifest": {
+    "status": "closed",
+    "caps": {
+      "candidate": 16,
+      "control": 4,
+      "validation": 2
+    },
+    "solver_queries": 0,
+    "previous_budgets_reopened": false
+  },
+  "selection": [
+    {
+      "name": "B30-tensor-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B30-tensor-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      }
+    },
+    {
+      "name": "B30-tensor-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B30-tensor-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      }
+    },
+    {
+      "name": "B30-slope-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B30-slope-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      }
+    },
+    {
+      "name": "B30-slope-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B30-slope-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-tensor-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-tensor-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-tensor-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-tensor-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-slope-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-slope-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-slope-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      }
+    },
+    {
+      "name": "B31-slope-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "arm": "control",
+      "name": "symbolic-and-guards",
+      "at": 1789426793.3124545
+    },
+    {
+      "arm": "control",
+      "name": "original-native",
+      "at": 1789426793.331286
+    },
+    {
+      "arm": "control",
+      "name": "isolated-native",
+      "at": 1789426793.9370875
+    },
+    {
+      "arm": "control",
+      "name": "published980-replay",
+      "at": 1789426794.8639238
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O0-structural",
+      "at": 1789426795.6777263
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O0-algebraic",
+      "at": 1789426796.8629699
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O1-structural",
+      "at": 1789426798.0744317
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O1-algebraic",
+      "at": 1789426799.418834
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O0-structural",
+      "at": 1789426800.7317421
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O0-algebraic",
+      "at": 1789426801.9827936
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O1-structural",
+      "at": 1789426803.219789
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O1-algebraic",
+      "at": 1789426804.5752425
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O0-structural",
+      "at": 1789426805.8387587
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O0-algebraic",
+      "at": 1789426807.1350012
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O1-structural",
+      "at": 1789426808.4187975
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O1-algebraic",
+      "at": 1789426809.7177029
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O0-structural",
+      "at": 1789426810.9832447
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O0-algebraic",
+      "at": 1789426812.2741485
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O1-structural",
+      "at": 1789426813.6150522
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O1-algebraic",
+      "at": 1789426814.8745847
+    }
+  ],
+  "recorded_results": [
+    {
+      "arm": "control",
+      "name": "symbolic-and-guards",
+      "status": "passed",
+      "symbolic_corner_checks": 128,
+      "all_eight_lanes_checked": true,
+      "wrong_slope_rejected": true,
+      "cross_axis_coefficient_identity": true,
+      "reversed_tensor_new_scalar_ops": {
+        "structural": 3,
+        "algebraic": 2
+      },
+      "overscratch_pre_lower": [
+        1537,
+        1545
+      ],
+      "zero_budget_pre_construct": true
+    },
+    {
+      "arm": "control",
+      "name": "original-native",
+      "status": "passed",
+      "cycles": 981,
+      "scratch": 1465,
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3
+    },
+    {
+      "arm": "control",
+      "name": "isolated-native",
+      "config": {},
+      "cycles": 981,
+      "scratch": 1465,
+      "status": "smoke-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11524,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 969
+      },
+      "shared_coefficients": 0,
+      "digest": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+      "smoke_cases": 3,
+      "native_tiles": {
+        "30": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "31": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        }
+      }
+    },
+    {
+      "arm": "control",
+      "name": "published980-replay",
+      "status": "passed",
+      "cycles": 980,
+      "scratch": 1465,
+      "digest": "c17788082bd3757c95f02bd743582ff1acd3f55c56e3326d9fc72e65da7ba5bc",
+      "execution_cases": 8,
+      "corruption_rejected": true
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 984,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5802,
+        "alu": 11534,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "shared_coefficients": 4,
+      "digest": "a437c12b90d395aa1ebb2a82d3a1bfe9184f7c9d9f97298f4bfd28be92a742e7",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 944,
+        "final_engine": "valu",
+        "base_cycle": 943,
+        "slope_cycle": 913,
+        "slope_engine": "valu",
+        "bits_ready": [
+          912,
+          927
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 944,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": 1
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 984,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5802,
+        "alu": 11534,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "shared_coefficients": 7,
+      "digest": "a437c12b90d395aa1ebb2a82d3a1bfe9184f7c9d9f97298f4bfd28be92a742e7",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 944,
+        "final_engine": "valu",
+        "base_cycle": 943,
+        "slope_cycle": 913,
+        "slope_engine": "valu",
+        "bits_ready": [
+          912,
+          927
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 944,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "mixed",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                10,
+                4294967295
+              ],
+              [
+                12,
+                4294967295
+              ],
+              [
+                14,
+                1
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                74,
+                0
+              ],
+              [
+                72,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": 1
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5802,
+        "alu": 11535,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 968,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 968
+      },
+      "shared_coefficients": 3,
+      "digest": "05a1e7afebd21a2a6317ff411301db8128d4209f3965b4243669afc81cda8b71",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 929,
+        "final_engine": "valu",
+        "base_cycle": 928,
+        "slope_cycle": 928,
+        "slope_engine": "valu",
+        "bits_ready": [
+          928,
+          912
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          17
+        ],
+        "final_operands_ready": 929,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": -14,
+      "prior_exact_reproduction": true
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-tensor-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5802,
+        "alu": 11534,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 968,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 968
+      },
+      "shared_coefficients": 7,
+      "digest": "5fc97b327bc2e485a1d471fffb50bf09d34926e83fbd69bed2cee8deaa4d3286",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 929,
+        "final_engine": "valu",
+        "base_cycle": 928,
+        "slope_cycle": 928,
+        "slope_engine": "valu",
+        "bits_ready": [
+          928,
+          912
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          17
+        ],
+        "final_operands_ready": 929,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "mixed",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                10,
+                4294967295
+              ],
+              [
+                12,
+                4294967295
+              ],
+              [
+                14,
+                1
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                74,
+                0
+              ],
+              [
+                72,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": -14
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 985,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11542,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 973,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 969,
+        "31": 973
+      },
+      "shared_coefficients": 3,
+      "digest": "da24705e7c3363622604acaa7961767b3046b7722c851f2fd810ec5a5a27fab0",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 944,
+        "final_engine": "valu",
+        "base_cycle": 943,
+        "slope_cycle": 913,
+        "slope_engine": "flow",
+        "bits_ready": [
+          912,
+          928
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 944,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": 1
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 985,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11542,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 973,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 969,
+        "31": 973
+      },
+      "shared_coefficients": 7,
+      "digest": "da24705e7c3363622604acaa7961767b3046b7722c851f2fd810ec5a5a27fab0",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 944,
+        "final_engine": "valu",
+        "base_cycle": 943,
+        "slope_cycle": 913,
+        "slope_engine": "flow",
+        "bits_ready": [
+          912,
+          928
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 944,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "second-slope",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                10,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                25,
+                0
+              ],
+              [
+                29,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": 1
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1473,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11533,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 968,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 968
+      },
+      "shared_coefficients": 5,
+      "digest": "957fe594203c67b7bcb53c662010112211916a755a981a02ef1883f20126305b",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 943,
+        "final_engine": "valu",
+        "base_cycle": 928,
+        "slope_cycle": 942,
+        "slope_engine": "flow",
+        "bits_ready": [
+          928,
+          912
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          15
+        ],
+        "final_operands_ready": 943,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": 0
+    },
+    {
+      "arm": "candidate",
+      "name": "B30-slope-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1473,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11533,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 968,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 968
+      },
+      "shared_coefficients": 7,
+      "digest": "957fe594203c67b7bcb53c662010112211916a755a981a02ef1883f20126305b",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 943,
+        "final_engine": "valu",
+        "base_cycle": 928,
+        "slope_cycle": 942,
+        "slope_engine": "flow",
+        "bits_ready": [
+          928,
+          912
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          15
+        ],
+        "final_operands_ready": 943,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "second-slope",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                12,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              74,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": 0
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 984,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5802,
+        "alu": 11534,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "shared_coefficients": 4,
+      "digest": "4a29987bd912671c80737a01fbb9029cdbc80ba90ead919b754c0cffe9c8c645",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 945,
+        "final_engine": "valu",
+        "base_cycle": 944,
+        "slope_cycle": 920,
+        "slope_engine": "valu",
+        "bits_ready": [
+          920,
+          933
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 945,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": 1
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 984,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5802,
+        "alu": 11534,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 972,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 968,
+        "31": 972
+      },
+      "shared_coefficients": 7,
+      "digest": "4a29987bd912671c80737a01fbb9029cdbc80ba90ead919b754c0cffe9c8c645",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 945,
+        "final_engine": "valu",
+        "base_cycle": 944,
+        "slope_cycle": 920,
+        "slope_engine": "valu",
+        "bits_ready": [
+          920,
+          933
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 945,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "mixed",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                10,
+                4294967295
+              ],
+              [
+                12,
+                4294967295
+              ],
+              [
+                14,
+                1
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                74,
+                0
+              ],
+              [
+                72,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": 1
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5803,
+        "alu": 11527,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "shared_coefficients": 3,
+      "digest": "208bbf6ae0161bf8d42d10c40c6e7b639003c0eac52169ff701d467a2e421676",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 932,
+        "final_engine": "valu",
+        "base_cycle": 931,
+        "slope_cycle": 931,
+        "slope_engine": "valu",
+        "bits_ready": [
+          931,
+          920
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          17
+        ],
+        "final_operands_ready": 932,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": -12,
+      "prior_exact_reproduction": true
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-tensor-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "tensor",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 944,
+        "valu": 5803,
+        "alu": 11526,
+        "store": 32
+      },
+      "capacity_lower_bound": 968,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "shared_coefficients": 7,
+      "digest": "2c9f1b650e916cdade860c6a67d22feba998c80b1815bc0bbc9d8656af14431b",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 932,
+        "final_engine": "valu",
+        "base_cycle": 931,
+        "slope_cycle": 931,
+        "slope_engine": "valu",
+        "bits_ready": [
+          931,
+          920
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          17
+        ],
+        "final_operands_ready": 932,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "mixed",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                10,
+                4294967295
+              ],
+              [
+                12,
+                4294967295
+              ],
+              [
+                14,
+                1
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                74,
+                0
+              ],
+              [
+                72,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": -12
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O0-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5802,
+        "alu": 11526,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "shared_coefficients": 3,
+      "digest": "bf5e7bea709766be5b7e43fe39572a1ecc3b5aa2edf741c02902833e156353b6",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 943,
+        "final_engine": "valu",
+        "base_cycle": 942,
+        "slope_cycle": 922,
+        "slope_engine": "flow",
+        "bits_ready": [
+          920,
+          932
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 943,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": -1
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O0-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            0
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1481,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5802,
+        "alu": 11526,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "shared_coefficients": 7,
+      "digest": "bf5e7bea709766be5b7e43fe39572a1ecc3b5aa2edf741c02902833e156353b6",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 943,
+        "final_engine": "valu",
+        "base_cycle": 942,
+        "slope_cycle": 922,
+        "slope_engine": "flow",
+        "bits_ready": [
+          920,
+          932
+        ],
+        "coefficients_ready": [
+          14,
+          14,
+          17,
+          17
+        ],
+        "final_operands_ready": 943,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "second-slope",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                10,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                25,
+                0
+              ],
+              [
+                29,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": -1
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O1-structural",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "structural",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1473,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5801,
+        "alu": 11525,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "shared_coefficients": 5,
+      "digest": "803860efdea5d59eafff0da1e7b319f11a235c368bbc8d783423f8d2cc8cc6c3",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 940,
+        "final_engine": "valu",
+        "base_cycle": 931,
+        "slope_cycle": 939,
+        "slope_engine": "flow",
+        "bits_ready": [
+          931,
+          920
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          15
+        ],
+        "final_operands_ready": 940,
+        "coefficient_recipes": []
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": -4
+    },
+    {
+      "arm": "candidate",
+      "name": "B31-slope-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            31,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1473,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5801,
+        "alu": 11525,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 969,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 965,
+        "31": 969
+      },
+      "shared_coefficients": 7,
+      "digest": "803860efdea5d59eafff0da1e7b319f11a235c368bbc8d783423f8d2cc8cc6c3",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 940,
+        "final_engine": "valu",
+        "base_cycle": 931,
+        "slope_cycle": 939,
+        "slope_engine": "flow",
+        "bits_ready": [
+          931,
+          920
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          15
+        ],
+        "final_operands_ready": 940,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "second-slope",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                12,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              74,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 944,
+        "final_engine": "flow",
+        "first_bit_ready": 920,
+        "last_bit_ready": 931,
+        "final_operands_ready": 944
+      },
+      "tile_cycle_delta": -4
+    }
+  ],
+  "screen": {
+    "status": "completed",
+    "budget_closed": true,
+    "elapsed": 22.809167596977204,
+    "rows": [
+      {
+        "arm": "candidate",
+        "name": "B30-tensor-O0-structural",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 984,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5802,
+          "alu": 11534,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 972,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 968,
+          "31": 972
+        },
+        "shared_coefficients": 4,
+        "digest": "a437c12b90d395aa1ebb2a82d3a1bfe9184f7c9d9f97298f4bfd28be92a742e7",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 944,
+          "final_engine": "valu",
+          "base_cycle": 943,
+          "slope_cycle": 913,
+          "slope_engine": "valu",
+          "bits_ready": [
+            912,
+            927
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 944,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": 1
+      },
+      {
+        "arm": "candidate",
+        "name": "B30-tensor-O0-algebraic",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 984,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5802,
+          "alu": 11534,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 972,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 968,
+          "31": 972
+        },
+        "shared_coefficients": 7,
+        "digest": "a437c12b90d395aa1ebb2a82d3a1bfe9184f7c9d9f97298f4bfd28be92a742e7",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 944,
+          "final_engine": "valu",
+          "base_cycle": 943,
+          "slope_cycle": 913,
+          "slope_engine": "valu",
+          "bits_ready": [
+            912,
+            927
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 944,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "mixed",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  10,
+                  4294967295
+                ],
+                [
+                  12,
+                  4294967295
+                ],
+                [
+                  14,
+                  1
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  74,
+                  0
+                ],
+                [
+                  72,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": 1
+      },
+      {
+        "arm": "candidate",
+        "name": "B30-tensor-O1-structural",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5802,
+          "alu": 11535,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 968,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 964,
+          "31": 968
+        },
+        "shared_coefficients": 3,
+        "digest": "05a1e7afebd21a2a6317ff411301db8128d4209f3965b4243669afc81cda8b71",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 929,
+          "final_engine": "valu",
+          "base_cycle": 928,
+          "slope_cycle": 928,
+          "slope_engine": "valu",
+          "bits_ready": [
+            928,
+            912
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            17
+          ],
+          "final_operands_ready": 929,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": -14,
+        "prior_exact_reproduction": true
+      },
+      {
+        "arm": "candidate",
+        "name": "B30-tensor-O1-algebraic",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5802,
+          "alu": 11534,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 968,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 964,
+          "31": 968
+        },
+        "shared_coefficients": 7,
+        "digest": "5fc97b327bc2e485a1d471fffb50bf09d34926e83fbd69bed2cee8deaa4d3286",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 929,
+          "final_engine": "valu",
+          "base_cycle": 928,
+          "slope_cycle": 928,
+          "slope_engine": "valu",
+          "bits_ready": [
+            928,
+            912
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            17
+          ],
+          "final_operands_ready": 929,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "mixed",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  10,
+                  4294967295
+                ],
+                [
+                  12,
+                  4294967295
+                ],
+                [
+                  14,
+                  1
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  74,
+                  0
+                ],
+                [
+                  72,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": -14
+      },
+      {
+        "arm": "candidate",
+        "name": "B30-slope-O0-structural",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 985,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5800,
+          "alu": 11542,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 973,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 969,
+          "31": 973
+        },
+        "shared_coefficients": 3,
+        "digest": "da24705e7c3363622604acaa7961767b3046b7722c851f2fd810ec5a5a27fab0",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 944,
+          "final_engine": "valu",
+          "base_cycle": 943,
+          "slope_cycle": 913,
+          "slope_engine": "flow",
+          "bits_ready": [
+            912,
+            928
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 944,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": 1
+      },
+      {
+        "arm": "candidate",
+        "name": "B30-slope-O0-algebraic",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 985,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5800,
+          "alu": 11542,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 973,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 969,
+          "31": 973
+        },
+        "shared_coefficients": 7,
+        "digest": "da24705e7c3363622604acaa7961767b3046b7722c851f2fd810ec5a5a27fab0",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 944,
+          "final_engine": "valu",
+          "base_cycle": 943,
+          "slope_cycle": 913,
+          "slope_engine": "flow",
+          "bits_ready": [
+            912,
+            928
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 944,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "second-slope",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  10,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  25,
+                  0
+                ],
+                [
+                  29,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": 1
+      },
+      {
+        "arm": "candidate",
+        "name": "B30-slope-O1-structural",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1473,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5800,
+          "alu": 11533,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 968,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 964,
+          "31": 968
+        },
+        "shared_coefficients": 5,
+        "digest": "957fe594203c67b7bcb53c662010112211916a755a981a02ef1883f20126305b",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 943,
+          "final_engine": "valu",
+          "base_cycle": 928,
+          "slope_cycle": 942,
+          "slope_engine": "flow",
+          "bits_ready": [
+            928,
+            912
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            15
+          ],
+          "final_operands_ready": 943,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": 0
+      },
+      {
+        "arm": "candidate",
+        "name": "B30-slope-O1-algebraic",
+        "config": {
+          "tiles": [
+            [
+              30,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1473,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5800,
+          "alu": 11533,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 968,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 964,
+          "31": 968
+        },
+        "shared_coefficients": 7,
+        "digest": "957fe594203c67b7bcb53c662010112211916a755a981a02ef1883f20126305b",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 943,
+          "final_engine": "valu",
+          "base_cycle": 928,
+          "slope_cycle": 942,
+          "slope_engine": "flow",
+          "bits_ready": [
+            928,
+            912
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            15
+          ],
+          "final_operands_ready": 943,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "second-slope",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  12,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                74,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 943,
+          "final_engine": "flow",
+          "first_bit_ready": 912,
+          "last_bit_ready": 928,
+          "final_operands_ready": 943
+        },
+        "tile_cycle_delta": 0
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-tensor-O0-structural",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 984,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5802,
+          "alu": 11534,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 972,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 968,
+          "31": 972
+        },
+        "shared_coefficients": 4,
+        "digest": "4a29987bd912671c80737a01fbb9029cdbc80ba90ead919b754c0cffe9c8c645",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 945,
+          "final_engine": "valu",
+          "base_cycle": 944,
+          "slope_cycle": 920,
+          "slope_engine": "valu",
+          "bits_ready": [
+            920,
+            933
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 945,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": 1
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-tensor-O0-algebraic",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 984,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5802,
+          "alu": 11534,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 972,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 968,
+          "31": 972
+        },
+        "shared_coefficients": 7,
+        "digest": "4a29987bd912671c80737a01fbb9029cdbc80ba90ead919b754c0cffe9c8c645",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 945,
+          "final_engine": "valu",
+          "base_cycle": 944,
+          "slope_cycle": 920,
+          "slope_engine": "valu",
+          "bits_ready": [
+            920,
+            933
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 945,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "mixed",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  10,
+                  4294967295
+                ],
+                [
+                  12,
+                  4294967295
+                ],
+                [
+                  14,
+                  1
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  74,
+                  0
+                ],
+                [
+                  72,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": 1
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-tensor-O1-structural",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5803,
+          "alu": 11527,
+          "store": 32
+        },
+        "capacity_lower_bound": 968,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 965,
+          "31": 969
+        },
+        "shared_coefficients": 3,
+        "digest": "208bbf6ae0161bf8d42d10c40c6e7b639003c0eac52169ff701d467a2e421676",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 932,
+          "final_engine": "valu",
+          "base_cycle": 931,
+          "slope_cycle": 931,
+          "slope_engine": "valu",
+          "bits_ready": [
+            931,
+            920
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            17
+          ],
+          "final_operands_ready": 932,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": -12,
+        "prior_exact_reproduction": true
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-tensor-O1-algebraic",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "tensor",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 944,
+          "valu": 5803,
+          "alu": 11526,
+          "store": 32
+        },
+        "capacity_lower_bound": 968,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 965,
+          "31": 969
+        },
+        "shared_coefficients": 7,
+        "digest": "2c9f1b650e916cdade860c6a67d22feba998c80b1815bc0bbc9d8656af14431b",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 932,
+          "final_engine": "valu",
+          "base_cycle": 931,
+          "slope_cycle": 931,
+          "slope_engine": "valu",
+          "bits_ready": [
+            931,
+            920
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            17
+          ],
+          "final_operands_ready": 932,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "mixed",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  10,
+                  4294967295
+                ],
+                [
+                  12,
+                  4294967295
+                ],
+                [
+                  14,
+                  1
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  74,
+                  0
+                ],
+                [
+                  72,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": -12
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-slope-O0-structural",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5802,
+          "alu": 11526,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 965,
+          "31": 969
+        },
+        "shared_coefficients": 3,
+        "digest": "bf5e7bea709766be5b7e43fe39572a1ecc3b5aa2edf741c02902833e156353b6",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 943,
+          "final_engine": "valu",
+          "base_cycle": 942,
+          "slope_cycle": 922,
+          "slope_engine": "flow",
+          "bits_ready": [
+            920,
+            932
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 943,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": -1
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-slope-O0-algebraic",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              0
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1481,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5802,
+          "alu": 11526,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 965,
+          "31": 969
+        },
+        "shared_coefficients": 7,
+        "digest": "bf5e7bea709766be5b7e43fe39572a1ecc3b5aa2edf741c02902833e156353b6",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 943,
+          "final_engine": "valu",
+          "base_cycle": 942,
+          "slope_cycle": 922,
+          "slope_engine": "flow",
+          "bits_ready": [
+            920,
+            932
+          ],
+          "coefficients_ready": [
+            14,
+            14,
+            17,
+            17
+          ],
+          "final_operands_ready": 943,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "second-slope",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  10,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  25,
+                  0
+                ],
+                [
+                  29,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": -1
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-slope-O1-structural",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "structural",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1473,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5801,
+          "alu": 11525,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 965,
+          "31": 969
+        },
+        "shared_coefficients": 5,
+        "digest": "803860efdea5d59eafff0da1e7b319f11a235c368bbc8d783423f8d2cc8cc6c3",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 940,
+          "final_engine": "valu",
+          "base_cycle": 931,
+          "slope_cycle": 939,
+          "slope_engine": "flow",
+          "bits_ready": [
+            931,
+            920
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            15
+          ],
+          "final_operands_ready": 940,
+          "coefficient_recipes": []
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": -4
+      },
+      {
+        "arm": "candidate",
+        "name": "B31-slope-O1-algebraic",
+        "config": {
+          "tiles": [
+            [
+              31,
+              14,
+              0,
+              1
+            ]
+          ],
+          "shape": "slope",
+          "sharing": "algebraic",
+          "share": true
+        },
+        "cycles": 981,
+        "scratch": 1473,
+        "status": "screen-passed",
+        "counts": {
+          "load": 1888,
+          "flow": 945,
+          "valu": 5801,
+          "alu": 11525,
+          "store": 32
+        },
+        "capacity_lower_bound": 967,
+        "last_gather": 969,
+        "final_gather_by_block": {
+          "1": 888,
+          "4": 896,
+          "5": 904,
+          "10": 908,
+          "13": 912,
+          "14": 916,
+          "15": 920,
+          "18": 924,
+          "19": 928,
+          "20": 932,
+          "21": 936,
+          "23": 940,
+          "24": 944,
+          "25": 948,
+          "26": 952,
+          "27": 956,
+          "28": 960,
+          "30": 965,
+          "31": 969
+        },
+        "shared_coefficients": 7,
+        "digest": "803860efdea5d59eafff0da1e7b319f11a235c368bbc8d783423f8d2cc8cc6c3",
+        "smoke_cases": 3,
+        "pattern_cases": 5,
+        "tile": {
+          "final_cycle": 940,
+          "final_engine": "valu",
+          "base_cycle": 931,
+          "slope_cycle": 939,
+          "slope_engine": "flow",
+          "bits_ready": [
+            931,
+            920
+          ],
+          "coefficients_ready": [
+            14,
+            17,
+            14,
+            15
+          ],
+          "final_operands_ready": 940,
+          "coefficient_recipes": [
+            {
+              "label": "horizontal",
+              "form": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                "-",
+                [
+                  33,
+                  0
+                ],
+                [
+                  37,
+                  0
+                ]
+              ],
+              "new_scalar_ops": 1,
+              "choice": 0
+            },
+            {
+              "label": "vertical",
+              "form": [
+                [
+                  10,
+                  1
+                ],
+                [
+                  14,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                72,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            },
+            {
+              "label": "second-slope",
+              "form": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  12,
+                  4294967295
+                ]
+              ],
+              "recipe": [
+                74,
+                0
+              ],
+              "new_scalar_ops": 0,
+              "choice": 0
+            }
+          ]
+        },
+        "native_tile": {
+          "final_cycle": 944,
+          "final_engine": "flow",
+          "first_bit_ready": 920,
+          "last_bit_ready": 931,
+          "final_operands_ready": 944
+        },
+        "tile_cycle_delta": -4
+      }
+    ],
+    "best": {
+      "arm": "candidate",
+      "name": "B30-slope-O1-algebraic",
+      "config": {
+        "tiles": [
+          [
+            30,
+            14,
+            0,
+            1
+          ]
+        ],
+        "shape": "slope",
+        "sharing": "algebraic",
+        "share": true
+      },
+      "cycles": 981,
+      "scratch": 1473,
+      "status": "screen-passed",
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5800,
+        "alu": 11533,
+        "store": 32
+      },
+      "capacity_lower_bound": 967,
+      "last_gather": 968,
+      "final_gather_by_block": {
+        "1": 888,
+        "4": 896,
+        "5": 904,
+        "10": 908,
+        "13": 912,
+        "14": 916,
+        "15": 920,
+        "18": 924,
+        "19": 928,
+        "20": 932,
+        "21": 936,
+        "23": 940,
+        "24": 944,
+        "25": 948,
+        "26": 952,
+        "27": 956,
+        "28": 960,
+        "30": 964,
+        "31": 968
+      },
+      "shared_coefficients": 7,
+      "digest": "957fe594203c67b7bcb53c662010112211916a755a981a02ef1883f20126305b",
+      "smoke_cases": 3,
+      "pattern_cases": 5,
+      "tile": {
+        "final_cycle": 943,
+        "final_engine": "valu",
+        "base_cycle": 928,
+        "slope_cycle": 942,
+        "slope_engine": "flow",
+        "bits_ready": [
+          928,
+          912
+        ],
+        "coefficients_ready": [
+          14,
+          17,
+          14,
+          15
+        ],
+        "final_operands_ready": 943,
+        "coefficient_recipes": [
+          {
+            "label": "horizontal",
+            "form": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              "-",
+              [
+                33,
+                0
+              ],
+              [
+                37,
+                0
+              ]
+            ],
+            "new_scalar_ops": 1,
+            "choice": 0
+          },
+          {
+            "label": "vertical",
+            "form": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              72,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          },
+          {
+            "label": "second-slope",
+            "form": [
+              [
+                8,
+                1
+              ],
+              [
+                12,
+                4294967295
+              ]
+            ],
+            "recipe": [
+              74,
+              0
+            ],
+            "new_scalar_ops": 0,
+            "choice": 0
+          }
+        ]
+      },
+      "native_tile": {
+        "final_cycle": 943,
+        "final_engine": "flow",
+        "first_bit_ready": 912,
+        "last_bit_ready": 928,
+        "final_operands_ready": 943
+      },
+      "tile_cycle_delta": 0
+    },
+    "conditional_verification": null,
+    "solver_queries": 0,
+    "production_changed": false,
+    "full_incumbent_gates_run": false
+  },
+  "audit": {
+    "status": "passed",
+    "reservations": 20,
+    "candidate_seed_executions": 48,
+    "candidate_pattern_executions": 80,
+    "control_successful_executions": 14,
+    "expected_corrupt_execution_failures": 1,
+    "sources_unchanged": true,
+    "physical_capacity_address_pause_checks": 17,
+    "shape_pairs": [
+      {
+        "block": 30,
+        "order": 0,
+        "sharing": "structural",
+        "slope_minus_tensor_cycles": 1,
+        "slope_minus_tensor_scratch": 0
+      },
+      {
+        "block": 30,
+        "order": 0,
+        "sharing": "algebraic",
+        "slope_minus_tensor_cycles": 1,
+        "slope_minus_tensor_scratch": 0
+      },
+      {
+        "block": 30,
+        "order": 1,
+        "sharing": "structural",
+        "slope_minus_tensor_cycles": 0,
+        "slope_minus_tensor_scratch": -8
+      },
+      {
+        "block": 30,
+        "order": 1,
+        "sharing": "algebraic",
+        "slope_minus_tensor_cycles": 0,
+        "slope_minus_tensor_scratch": -8
+      },
+      {
+        "block": 31,
+        "order": 0,
+        "sharing": "structural",
+        "slope_minus_tensor_cycles": -3,
+        "slope_minus_tensor_scratch": 0
+      },
+      {
+        "block": 31,
+        "order": 0,
+        "sharing": "algebraic",
+        "slope_minus_tensor_cycles": -3,
+        "slope_minus_tensor_scratch": 0
+      },
+      {
+        "block": 31,
+        "order": 1,
+        "sharing": "structural",
+        "slope_minus_tensor_cycles": 0,
+        "slope_minus_tensor_scratch": -8
+      },
+      {
+        "block": 31,
+        "order": 1,
+        "sharing": "algebraic",
+        "slope_minus_tensor_cycles": 0,
+        "slope_minus_tensor_scratch": -8
+      }
+    ],
+    "reuse_pairs": [
+      {
+        "block": 30,
+        "shape": "tensor",
+        "order": 0,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": 0,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      },
+      {
+        "block": 30,
+        "shape": "tensor",
+        "order": 1,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": -1,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      },
+      {
+        "block": 30,
+        "shape": "slope",
+        "order": 0,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": 0,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      },
+      {
+        "block": 30,
+        "shape": "slope",
+        "order": 1,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": 0,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      },
+      {
+        "block": 31,
+        "shape": "tensor",
+        "order": 0,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": 0,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      },
+      {
+        "block": 31,
+        "shape": "tensor",
+        "order": 1,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": -1,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      },
+      {
+        "block": 31,
+        "shape": "slope",
+        "order": 0,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": 0,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      },
+      {
+        "block": 31,
+        "shape": "slope",
+        "order": 1,
+        "cycles_delta": 0,
+        "scratch_delta": 0,
+        "engine_deltas": {
+          "alu": 0,
+          "valu": 0,
+          "load": 0,
+          "store": 0,
+          "flow": 0
+        }
+      }
+    ],
+    "store_diagnostics": {
+      "native": {
+        "address_high_water": 1465,
+        "store_cycle_by_block": {
+          "0": 947,
+          "1": 963,
+          "2": 962,
+          "3": 962,
+          "4": 963,
+          "5": 966,
+          "6": 964,
+          "7": 965,
+          "8": 965,
+          "9": 967,
+          "10": 966,
+          "11": 967,
+          "12": 968,
+          "13": 968,
+          "14": 969,
+          "15": 969,
+          "16": 970,
+          "17": 970,
+          "18": 971,
+          "19": 971,
+          "20": 972,
+          "21": 972,
+          "22": 973,
+          "23": 973,
+          "24": 974,
+          "25": 974,
+          "26": 975,
+          "27": 975,
+          "28": 976,
+          "29": 980,
+          "30": 977,
+          "31": 980
+        },
+        "last_stores": [
+          29,
+          31
+        ]
+      },
+      "B30-tensor-O0-structural": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 946,
+          "1": 959,
+          "2": 959,
+          "3": 962,
+          "4": 963,
+          "5": 965,
+          "6": 963,
+          "7": 967,
+          "8": 965,
+          "9": 966,
+          "10": 966,
+          "11": 967,
+          "12": 968,
+          "13": 968,
+          "14": 969,
+          "15": 969,
+          "16": 970,
+          "17": 970,
+          "18": 971,
+          "19": 971,
+          "20": 972,
+          "21": 972,
+          "22": 973,
+          "23": 973,
+          "24": 974,
+          "25": 974,
+          "26": 975,
+          "27": 975,
+          "28": 976,
+          "29": 982,
+          "30": 979,
+          "31": 983
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B30-tensor-O0-algebraic": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 946,
+          "1": 959,
+          "2": 959,
+          "3": 962,
+          "4": 963,
+          "5": 965,
+          "6": 963,
+          "7": 967,
+          "8": 965,
+          "9": 966,
+          "10": 966,
+          "11": 967,
+          "12": 968,
+          "13": 968,
+          "14": 969,
+          "15": 969,
+          "16": 970,
+          "17": 970,
+          "18": 971,
+          "19": 971,
+          "20": 972,
+          "21": 972,
+          "22": 973,
+          "23": 973,
+          "24": 974,
+          "25": 974,
+          "26": 975,
+          "27": 975,
+          "28": 976,
+          "29": 982,
+          "30": 979,
+          "31": 983
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B30-tensor-O1-structural": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 950,
+          "1": 962,
+          "2": 964,
+          "3": 963,
+          "4": 963,
+          "5": 967,
+          "6": 965,
+          "7": 966,
+          "8": 966,
+          "9": 967,
+          "10": 968,
+          "11": 968,
+          "12": 969,
+          "13": 969,
+          "14": 970,
+          "15": 970,
+          "16": 971,
+          "17": 971,
+          "18": 972,
+          "19": 972,
+          "20": 973,
+          "21": 973,
+          "22": 974,
+          "23": 974,
+          "24": 975,
+          "25": 975,
+          "26": 976,
+          "27": 976,
+          "28": 977,
+          "29": 980,
+          "30": 977,
+          "31": 979
+        },
+        "last_stores": [
+          29
+        ]
+      },
+      "B30-tensor-O1-algebraic": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 950,
+          "1": 962,
+          "2": 964,
+          "3": 963,
+          "4": 963,
+          "5": 967,
+          "6": 965,
+          "7": 966,
+          "8": 966,
+          "9": 967,
+          "10": 968,
+          "11": 968,
+          "12": 969,
+          "13": 969,
+          "14": 970,
+          "15": 970,
+          "16": 971,
+          "17": 971,
+          "18": 972,
+          "19": 972,
+          "20": 973,
+          "21": 973,
+          "22": 974,
+          "23": 974,
+          "24": 975,
+          "25": 975,
+          "26": 976,
+          "27": 976,
+          "28": 977,
+          "29": 980,
+          "30": 977,
+          "31": 979
+        },
+        "last_stores": [
+          29
+        ]
+      },
+      "B30-slope-O0-structural": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 947,
+          "1": 959,
+          "2": 958,
+          "3": 958,
+          "4": 963,
+          "5": 961,
+          "6": 962,
+          "7": 962,
+          "8": 963,
+          "9": 965,
+          "10": 964,
+          "11": 964,
+          "12": 966,
+          "13": 965,
+          "14": 966,
+          "15": 967,
+          "16": 967,
+          "17": 968,
+          "18": 969,
+          "19": 968,
+          "20": 969,
+          "21": 970,
+          "22": 970,
+          "23": 971,
+          "24": 971,
+          "25": 972,
+          "26": 972,
+          "27": 973,
+          "28": 973,
+          "29": 980,
+          "30": 981,
+          "31": 984
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B30-slope-O0-algebraic": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 947,
+          "1": 959,
+          "2": 958,
+          "3": 958,
+          "4": 963,
+          "5": 961,
+          "6": 962,
+          "7": 962,
+          "8": 963,
+          "9": 965,
+          "10": 964,
+          "11": 964,
+          "12": 966,
+          "13": 965,
+          "14": 966,
+          "15": 967,
+          "16": 967,
+          "17": 968,
+          "18": 969,
+          "19": 968,
+          "20": 969,
+          "21": 970,
+          "22": 970,
+          "23": 971,
+          "24": 971,
+          "25": 972,
+          "26": 972,
+          "27": 973,
+          "28": 973,
+          "29": 980,
+          "30": 981,
+          "31": 984
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B30-slope-O1-structural": {
+        "address_high_water": 1473,
+        "store_cycle_by_block": {
+          "0": 945,
+          "1": 956,
+          "2": 957,
+          "3": 958,
+          "4": 962,
+          "5": 962,
+          "6": 966,
+          "7": 965,
+          "8": 965,
+          "9": 967,
+          "10": 966,
+          "11": 967,
+          "12": 968,
+          "13": 968,
+          "14": 969,
+          "15": 969,
+          "16": 970,
+          "17": 970,
+          "18": 971,
+          "19": 971,
+          "20": 972,
+          "21": 972,
+          "22": 973,
+          "23": 973,
+          "24": 974,
+          "25": 974,
+          "26": 975,
+          "27": 975,
+          "28": 976,
+          "29": 980,
+          "30": 977,
+          "31": 979
+        },
+        "last_stores": [
+          29
+        ]
+      },
+      "B30-slope-O1-algebraic": {
+        "address_high_water": 1473,
+        "store_cycle_by_block": {
+          "0": 945,
+          "1": 956,
+          "2": 957,
+          "3": 958,
+          "4": 962,
+          "5": 962,
+          "6": 966,
+          "7": 965,
+          "8": 965,
+          "9": 967,
+          "10": 966,
+          "11": 967,
+          "12": 968,
+          "13": 968,
+          "14": 969,
+          "15": 969,
+          "16": 970,
+          "17": 970,
+          "18": 971,
+          "19": 971,
+          "20": 972,
+          "21": 972,
+          "22": 973,
+          "23": 973,
+          "24": 974,
+          "25": 974,
+          "26": 975,
+          "27": 975,
+          "28": 976,
+          "29": 980,
+          "30": 977,
+          "31": 979
+        },
+        "last_stores": [
+          29
+        ]
+      },
+      "B31-tensor-O0-structural": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 938,
+          "1": 951,
+          "2": 956,
+          "3": 959,
+          "4": 963,
+          "5": 965,
+          "6": 963,
+          "7": 967,
+          "8": 965,
+          "9": 966,
+          "10": 966,
+          "11": 967,
+          "12": 968,
+          "13": 968,
+          "14": 969,
+          "15": 969,
+          "16": 970,
+          "17": 970,
+          "18": 971,
+          "19": 971,
+          "20": 972,
+          "21": 972,
+          "22": 973,
+          "23": 973,
+          "24": 974,
+          "25": 974,
+          "26": 975,
+          "27": 975,
+          "28": 976,
+          "29": 982,
+          "30": 979,
+          "31": 983
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B31-tensor-O0-algebraic": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 938,
+          "1": 951,
+          "2": 956,
+          "3": 959,
+          "4": 963,
+          "5": 965,
+          "6": 963,
+          "7": 967,
+          "8": 965,
+          "9": 966,
+          "10": 966,
+          "11": 967,
+          "12": 968,
+          "13": 968,
+          "14": 969,
+          "15": 969,
+          "16": 970,
+          "17": 970,
+          "18": 971,
+          "19": 971,
+          "20": 972,
+          "21": 972,
+          "22": 973,
+          "23": 973,
+          "24": 974,
+          "25": 974,
+          "26": 975,
+          "27": 975,
+          "28": 976,
+          "29": 982,
+          "30": 979,
+          "31": 983
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B31-tensor-O1-structural": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 944,
+          "1": 962,
+          "2": 964,
+          "3": 965,
+          "4": 964,
+          "5": 966,
+          "6": 965,
+          "7": 966,
+          "8": 967,
+          "9": 967,
+          "10": 968,
+          "11": 968,
+          "12": 969,
+          "13": 969,
+          "14": 970,
+          "15": 970,
+          "16": 971,
+          "17": 971,
+          "18": 972,
+          "19": 972,
+          "20": 973,
+          "21": 973,
+          "22": 974,
+          "23": 974,
+          "24": 975,
+          "25": 975,
+          "26": 976,
+          "27": 976,
+          "28": 977,
+          "29": 979,
+          "30": 977,
+          "31": 980
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B31-tensor-O1-algebraic": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 944,
+          "1": 962,
+          "2": 964,
+          "3": 965,
+          "4": 964,
+          "5": 965,
+          "6": 966,
+          "7": 966,
+          "8": 967,
+          "9": 967,
+          "10": 968,
+          "11": 968,
+          "12": 969,
+          "13": 969,
+          "14": 970,
+          "15": 970,
+          "16": 971,
+          "17": 971,
+          "18": 972,
+          "19": 972,
+          "20": 973,
+          "21": 973,
+          "22": 974,
+          "23": 974,
+          "24": 975,
+          "25": 975,
+          "26": 976,
+          "27": 976,
+          "28": 977,
+          "29": 979,
+          "30": 977,
+          "31": 980
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B31-slope-O0-structural": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 945,
+          "1": 956,
+          "2": 959,
+          "3": 959,
+          "4": 963,
+          "5": 964,
+          "6": 963,
+          "7": 966,
+          "8": 965,
+          "9": 965,
+          "10": 966,
+          "11": 967,
+          "12": 967,
+          "13": 968,
+          "14": 968,
+          "15": 969,
+          "16": 969,
+          "17": 970,
+          "18": 970,
+          "19": 971,
+          "20": 971,
+          "21": 972,
+          "22": 972,
+          "23": 973,
+          "24": 973,
+          "25": 974,
+          "26": 974,
+          "27": 975,
+          "28": 975,
+          "29": 979,
+          "30": 977,
+          "31": 980
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B31-slope-O0-algebraic": {
+        "address_high_water": 1481,
+        "store_cycle_by_block": {
+          "0": 945,
+          "1": 956,
+          "2": 959,
+          "3": 959,
+          "4": 963,
+          "5": 964,
+          "6": 963,
+          "7": 966,
+          "8": 965,
+          "9": 965,
+          "10": 966,
+          "11": 967,
+          "12": 967,
+          "13": 968,
+          "14": 968,
+          "15": 969,
+          "16": 969,
+          "17": 970,
+          "18": 970,
+          "19": 971,
+          "20": 971,
+          "21": 972,
+          "22": 972,
+          "23": 973,
+          "24": 973,
+          "25": 974,
+          "26": 974,
+          "27": 975,
+          "28": 975,
+          "29": 979,
+          "30": 977,
+          "31": 980
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B31-slope-O1-structural": {
+        "address_high_water": 1473,
+        "store_cycle_by_block": {
+          "0": 944,
+          "1": 961,
+          "2": 960,
+          "3": 963,
+          "4": 964,
+          "5": 963,
+          "6": 964,
+          "7": 965,
+          "8": 965,
+          "9": 967,
+          "10": 966,
+          "11": 966,
+          "12": 967,
+          "13": 968,
+          "14": 968,
+          "15": 969,
+          "16": 969,
+          "17": 970,
+          "18": 970,
+          "19": 971,
+          "20": 971,
+          "21": 972,
+          "22": 972,
+          "23": 973,
+          "24": 973,
+          "25": 974,
+          "26": 974,
+          "27": 975,
+          "28": 975,
+          "29": 979,
+          "30": 977,
+          "31": 980
+        },
+        "last_stores": [
+          31
+        ]
+      },
+      "B31-slope-O1-algebraic": {
+        "address_high_water": 1473,
+        "store_cycle_by_block": {
+          "0": 944,
+          "1": 961,
+          "2": 960,
+          "3": 963,
+          "4": 964,
+          "5": 963,
+          "6": 964,
+          "7": 965,
+          "8": 965,
+          "9": 967,
+          "10": 966,
+          "11": 966,
+          "12": 967,
+          "13": 968,
+          "14": 968,
+          "15": 969,
+          "16": 969,
+          "17": 970,
+          "18": 970,
+          "19": 971,
+          "20": 971,
+          "21": 972,
+          "22": 972,
+          "23": 973,
+          "24": 973,
+          "25": 974,
+          "26": 974,
+          "27": 975,
+          "28": 975,
+          "29": 979,
+          "30": 977,
+          "31": 980
+        },
+        "last_stores": [
+          31
+        ]
+      }
+    },
+    "constructed_kernels_by_audit": 0,
+    "executed_kernels_by_audit": 0
+  },
+  "symbolic_checks": {
+    "symbolic_corner_checks": 128,
+    "all_eight_lanes_checked": true,
+    "wrong_slope_rejected": true,
+    "cross_axis_coefficient_identity": true,
+    "reversed_tensor_new_scalar_ops": {
+      "structural": 3,
+      "algebraic": 2
+    }
+  },
+  "distinct_candidate_programs": 10,
+  "unused_validation_slots": 2,
+  "all_budgets_closed": true,
+  "previous_budgets_reopened": false,
+  "solver_queries": 0,
+  "committed": false,
+  "pushed": false,
+  "full_winner_gates_run": false,
+  "new_source_code_hashes": {
+    "linear_coefficients.py": "770549c5ddefa6c71113eed4296aad7b00ac5d863c7656a497b971c77a24c5b5",
+    "math_variants.py": "0e9b2c0a24da320961e4ba540c1c6994449526d8af35052656932069191864e0",
+    "proofs.py": "1cc35eb85b031671d3658b2fbb1b0a7cd158a4fed5845948f57cc59a637e4943",
+    "run.py": "714fdc7a0a6d432a477b06e3dfcc2c3270ec42bb49e1cdc78df40c54da9e0f70",
+    "audit.py": "2b0e14d1884cb9eaac871658dee31a58f4dddba6de6a4d9f05010b976518d007"
+  },
+  "evidence_hashes": {
+    "program_lint.json": "37530e8c92b46e7b6a620c9b460d10cea4686a8d860f859fad1751b6076130ca",
+    "results_lint.json": "5eb80ec0cbe608b56a6b9cd2c822e9573e5375865c987a1989fdaecd7f4214bf",
+    "audit.json": "449654e658e02c270db0f74ecfd2c68474e587a03867b8ccd94ba5938589ae72",
+    "screen_result.json": "01b6f8bc731a4693bb6bc84f98b76085e1393d568b861fcefb2c3385944b1b33",
+    "results.jsonl": "96a5238ab77a9b6b9a31594ff1261e1b64e71a24c39e458d8c8cdba33396206b",
+    "pure_checks.json": "599b1d9b132a382bf2f9d64caeaa5640558df06dd89b107b47552774df426ad2",
+    "attempts.jsonl": "222debb7b2ff42252b4560922b2e6fb2c6d9b7e4e1d102a2ad77eb4c22480765",
+    "run.log": "230b5462fcede0cc5c4f7afae0c4d95345b9096923c4a96b8a1bd7f97eb5f85d",
+    "research_sources.json": "6964ed49cff9c3c6803d9eea73af87450c73d985fa4d75755191b862ca96f590",
+    "manifest.json": "f706e8b27a7e5d066670c32e414059543f9d9dd9027b3dab108924e96d0fb20e",
+    "selection.json": "1b23111e4cb6c25d9c4dd9081a1124bea94e6134fa8bd5246a19bae3baa3e7a6",
+    "prior_screen_result.json": "bea54fcf4a8d03b29a6c4c95f016798830154e7bc8f3a06d251f19571fc82b6b",
+    "protected_sources.json": "063f0e4cba2a391025d863cfd51cce66fcca3e233acfbb16713badc0a05686c3",
+    "baseline_plan.json": "47658ff1592a3cf825ff89586aad90c4b522baf09a55c44b00a07366c656894e",
+    "program.md": "d77d613aab0ca8392d4b217a4cb0a280bc427bbcbdc2e124f38a7e17b46b84cd",
+    "artifacts/B31-slope-O1-algebraic/program.json": "803860efdea5d59eafff0da1e7b319f11a235c368bbc8d783423f8d2cc8cc6c3",
+    "artifacts/B31-slope-O1-algebraic/logical.json": "beb154e8b427f677affd329f760b7fec63f2dfe54f9b48fc42dcae6178ac8f4c",
+    "artifacts/B31-slope-O1-algebraic/result.json": "a053095475729ba9d8286a0a76bb6f6793d4e0c7efd09865767a5023eeb26116",
+    "artifacts/B31-slope-O1-algebraic/config.json": "01fa397948f5f6385ecd5f28fba426d309503adc39a966e068b64996ea684f19",
+    "artifacts/B31-slope-O1-structural/program.json": "803860efdea5d59eafff0da1e7b319f11a235c368bbc8d783423f8d2cc8cc6c3",
+    "artifacts/B31-slope-O1-structural/logical.json": "beb154e8b427f677affd329f760b7fec63f2dfe54f9b48fc42dcae6178ac8f4c",
+    "artifacts/B31-slope-O1-structural/result.json": "7ecf1d675072df7357375a738b9db56b1a84162e68a050d75afbbc47f4996f12",
+    "artifacts/B31-slope-O1-structural/config.json": "373286bcc0ac036e253200a7f209983f18cf81e1d1e15a65de8a72612195cc78",
+    "artifacts/B31-slope-O0-algebraic/program.json": "bf5e7bea709766be5b7e43fe39572a1ecc3b5aa2edf741c02902833e156353b6",
+    "artifacts/B31-slope-O0-algebraic/logical.json": "3f9938187245530712da059a6c180faca1dc00e79d589b369530f24e8ada0025",
+    "artifacts/B31-slope-O0-algebraic/result.json": "08d1996190f443ac82e1bfce21beffcc03d9d649f31f79c073e1a06eb59f6ab3",
+    "artifacts/B31-slope-O0-algebraic/config.json": "95ecf9b5ee798c5c683b368411e4a4d010cf74fc20f66198be285ac2afded82f",
+    "artifacts/B31-slope-O0-structural/program.json": "bf5e7bea709766be5b7e43fe39572a1ecc3b5aa2edf741c02902833e156353b6",
+    "artifacts/B31-slope-O0-structural/logical.json": "3f9938187245530712da059a6c180faca1dc00e79d589b369530f24e8ada0025",
+    "artifacts/B31-slope-O0-structural/result.json": "0a1075e3588dc8df6fea46debe1f1f84a04bf28cde1681ffe1d4ddf01843f0a5",
+    "artifacts/B31-slope-O0-structural/config.json": "a809e40b5e741d858b5849db7e9b613e4e2f66856dec1f541bfc5e072fae4d0d",
+    "artifacts/B31-tensor-O1-algebraic/program.json": "2c9f1b650e916cdade860c6a67d22feba998c80b1815bc0bbc9d8656af14431b",
+    "artifacts/B31-tensor-O1-algebraic/logical.json": "3c8afa291b6928e3128caf89d54dd7f4f1c91cec62ed57089c9b5bac8090511d",
+    "artifacts/B31-tensor-O1-algebraic/result.json": "8e494eb93f78c3e3bf6011ae28d3c3af4c7c65d7e49df05ec617c0af42971a3c",
+    "artifacts/B31-tensor-O1-algebraic/config.json": "43b0716192c16773a520422b353d2c7b9da5dbc0ba4dc44984ba240eb02fbc72",
+    "artifacts/B31-tensor-O1-structural/program.json": "208bbf6ae0161bf8d42d10c40c6e7b639003c0eac52169ff701d467a2e421676",
+    "artifacts/B31-tensor-O1-structural/logical.json": "1337d77be7d5dc60b770238a4ec57bc92fb282d672a6c5da65b2648592b97ee9",
+    "artifacts/B31-tensor-O1-structural/result.json": "201d372e7cf331d16e59a9dd3970d2338b5a301ce03924d0e9659c143ff527ca",
+    "artifacts/B31-tensor-O1-structural/config.json": "1d75cdd3274874263fff9912033f77ded47d1ae5dd5f00d210c79124af902811",
+    "artifacts/B31-tensor-O0-algebraic/program.json": "4a29987bd912671c80737a01fbb9029cdbc80ba90ead919b754c0cffe9c8c645",
+    "artifacts/B31-tensor-O0-algebraic/logical.json": "59cb27a374855a88cdf09a6ff298c70dff3ac25ee98118fef505c42eff4a3692",
+    "artifacts/B31-tensor-O0-algebraic/result.json": "2707b868c20a02855bba19065958bf1cbf99d118ed015be49715b2fed3de4ad1",
+    "artifacts/B31-tensor-O0-algebraic/config.json": "341baf53eced7e46d4056a2ae5dea387b217a31291958fc9dbd97929b70f8a43",
+    "artifacts/B31-tensor-O0-structural/program.json": "4a29987bd912671c80737a01fbb9029cdbc80ba90ead919b754c0cffe9c8c645",
+    "artifacts/B31-tensor-O0-structural/logical.json": "59cb27a374855a88cdf09a6ff298c70dff3ac25ee98118fef505c42eff4a3692",
+    "artifacts/B31-tensor-O0-structural/result.json": "c8a4f128fad50bcb25ebfdf4a58e1539db1dabf70e774b4977788d60907d4d5e",
+    "artifacts/B31-tensor-O0-structural/config.json": "3f446025d1d1e3d5df2bda23859ccbb70cca21962efff34b28ba3c937a13c31b",
+    "artifacts/B30-slope-O1-algebraic/program.json": "957fe594203c67b7bcb53c662010112211916a755a981a02ef1883f20126305b",
+    "artifacts/B30-slope-O1-algebraic/logical.json": "090aa297caab8a8bdb5411a80f48fdaffcfc145fa976b0b4990aa64d6e5e92b9",
+    "artifacts/B30-slope-O1-algebraic/result.json": "87762501190f2cc9cf80e0cd75f6d8322e51098c97c84c0c49474dcb2552887d",
+    "artifacts/B30-slope-O1-algebraic/config.json": "89e6ab35df9800eb07f9e0c78930d5ea4991dbc3479a749f234276846161f57e",
+    "artifacts/B30-slope-O1-structural/program.json": "957fe594203c67b7bcb53c662010112211916a755a981a02ef1883f20126305b",
+    "artifacts/B30-slope-O1-structural/logical.json": "090aa297caab8a8bdb5411a80f48fdaffcfc145fa976b0b4990aa64d6e5e92b9",
+    "artifacts/B30-slope-O1-structural/result.json": "ba32bbd1f51ca4ecbe2111395c3676c5e23a9f095927cf5b926f5dd91dcc19b1",
+    "artifacts/B30-slope-O1-structural/config.json": "21295f84296498f256d3d7e7afcbf43935d2fbf82fb25137045b8192e3f36f8d",
+    "artifacts/B30-slope-O0-algebraic/program.json": "da24705e7c3363622604acaa7961767b3046b7722c851f2fd810ec5a5a27fab0",
+    "artifacts/B30-slope-O0-algebraic/logical.json": "e090738d38a4bd1d26e2442f9eb1eb3b939d7e53d9a3267e00ca682823cd5490",
+    "artifacts/B30-slope-O0-algebraic/result.json": "367b96c7f2bf297e8a106f897a25d1a30b5f9cfcb6a8a5b1e674278e12e24671",
+    "artifacts/B30-slope-O0-algebraic/config.json": "42aea4770d7ccc8aab6692895b5e875a5f8b306a3a6da22802dbacd944ee7e7f",
+    "artifacts/B30-slope-O0-structural/program.json": "da24705e7c3363622604acaa7961767b3046b7722c851f2fd810ec5a5a27fab0",
+    "artifacts/B30-slope-O0-structural/logical.json": "e090738d38a4bd1d26e2442f9eb1eb3b939d7e53d9a3267e00ca682823cd5490",
+    "artifacts/B30-slope-O0-structural/result.json": "328817d83b019ae4d50e372f66726ba686964eaa65ec5d8b5a982d40ac2a8116",
+    "artifacts/B30-slope-O0-structural/config.json": "26865e7aa396f81c704dc3459541442cba4392a2de922fb417da194250bb6e7a",
+    "artifacts/B30-tensor-O1-algebraic/program.json": "5fc97b327bc2e485a1d471fffb50bf09d34926e83fbd69bed2cee8deaa4d3286",
+    "artifacts/B30-tensor-O1-algebraic/logical.json": "eb1b085d076362c5ffa5103f2615081d544dc29ecddf4c5906409f38ee6c5111",
+    "artifacts/B30-tensor-O1-algebraic/result.json": "cdeb4f52a08f216b0298da9fefb496bca630f81bd01c7fc706f02ebcdf74e915",
+    "artifacts/B30-tensor-O1-algebraic/config.json": "b3857a5093c2a5739754bb616828b3425c83498948de53f5a1d4986381fde216",
+    "artifacts/B30-tensor-O1-structural/program.json": "05a1e7afebd21a2a6317ff411301db8128d4209f3965b4243669afc81cda8b71",
+    "artifacts/B30-tensor-O1-structural/logical.json": "e5a256b43f99da82fc961437117ca9916be3b5650f912db8ab5f12ad6f728d9f",
+    "artifacts/B30-tensor-O1-structural/result.json": "94cece0374560a6f3ff153305239dd910e7ee61ce700dd7ef1d2eb22cc06cb78",
+    "artifacts/B30-tensor-O1-structural/config.json": "94d5dd4dba4b3094066831bd97fef488e2a2b8577a7f4a2a63424e9e2b279b51",
+    "artifacts/B30-tensor-O0-algebraic/program.json": "a437c12b90d395aa1ebb2a82d3a1bfe9184f7c9d9f97298f4bfd28be92a742e7",
+    "artifacts/B30-tensor-O0-algebraic/logical.json": "e2509c4e733760c459e4b4686295d21ca332f7cd451a77eda6efc29feae5c72d",
+    "artifacts/B30-tensor-O0-algebraic/result.json": "96ce90806b77f88d2899bb0a8d221e025c6f2830e220f26b1aa9cabae2e948f3",
+    "artifacts/B30-tensor-O0-algebraic/config.json": "72f1cd8669363c96a5cc897d4b1bd1a93c753d0c241545bdd607edc82f33af3a",
+    "artifacts/B30-tensor-O0-structural/program.json": "a437c12b90d395aa1ebb2a82d3a1bfe9184f7c9d9f97298f4bfd28be92a742e7",
+    "artifacts/B30-tensor-O0-structural/logical.json": "e2509c4e733760c459e4b4686295d21ca332f7cd451a77eda6efc29feae5c72d",
+    "artifacts/B30-tensor-O0-structural/result.json": "fdb66c70be8df497b0db30fe785dc7ab0f8d1f61275c7333f7ef940b3fae7793",
+    "artifacts/B30-tensor-O0-structural/config.json": "6fe3235af2fbd957947fa191269fbc176b48970880b7a127e960545f0a383aa6",
+    "artifacts/native/program.json": "bdf346646f22ab959dbb61559148d1d99595e6ea08a2fcf9ed0624abf535f493",
+    "artifacts/native/logical.json": "507e562dcde1382a0562a1ff287b892149a9ca7abb333b083ff0d31809643acc",
+    "artifacts/native/result.json": "bea923013c877acec2044ec61a91f71794c4d2a9ffaff8e711503d33c4f40422",
+    "artifacts/native/config.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  "report_hashes": {
+    "slope_select_results.md": "114e606e9749d03ec3a7ca93f93a5876b1ff1819e5d5cb6c685972036503b55d",
+    "slope_select_program.md": "d77d613aab0ca8392d4b217a4cb0a280bc427bbcbdc2e124f38a7e17b46b84cd"
+  },
+  "artifact_limit": "Full runnable experimental sources/programs remain in the temporary workspace; this receipt is not a self-contained reproducer."
+}

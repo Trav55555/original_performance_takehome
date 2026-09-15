@@ -61,6 +61,8 @@ These screens did not authorize broad materialization sweeps, every tensor site,
 
 ## Local-only records
 
+A later [selected archive](../../experiments/archive/campaigns/README.md) preserves copies of the final-hash, mathematical-model and slope/select records, plus available workspace artifacts. It documents replay limits and excludes unrelated research. The original paths below remain local provenance labels.
+
 The following paths existed in the local checkout at the 2026-09-15 documentation review but were untracked. They are plain-text provenance labels, deliberately not broken fresh-clone links. This wiki preserves a summary, not their full evidence or runnable archive. Published corroborating reports are linked above where available.
 
 | Local record under `experiments/` | Subject and closure |
@@ -77,7 +79,7 @@ The following paths existed in the local checkout at the 2026-09-15 documentatio
 | `slope_select_*` | Sixteen-case coefficient/select experiment |
 | `finalhash_order_*` | Selected 979 pilot before production promotion |
 
-Some drivers, symbolic probes, scheduling-literature audits and physical programs survive only in temporary workspaces named by those records. Reconstructing the exact experiment may be impossible after those files disappear. Archival selection remains separate work; this documentation does not add, delete or alter those untracked files.
+Some drivers, symbolic probes, scheduling-literature audits and physical programs survive only in temporary workspaces named by those records. Reconstructing the exact experiment may be impossible after those files disappear. The selected archive does not capture every temporary dependency. Further archival selection remains separate work; this documentation does not add, delete or alter those original untracked files.
 
 ## Sources that informed the work
 
