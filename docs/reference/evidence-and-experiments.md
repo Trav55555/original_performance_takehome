@@ -33,7 +33,7 @@ Useful controls in this project included:
 - Corrupted hash constants and swapped selector branches.
 - Injected and naturally occurring scratch overflow, rejected before lowering.
 - An exhausted budget rejected before candidate construction.
-- A valid 980-cycle program rejected by the new 979 performance gate.
+- A valid 980-cycle program rejected by both the earlier 979 and current 975 performance gates.
 - A small scheduling example that really becomes shorter while moving an operation later.
 - Named simulator, input-generation and reference entry points blocked during source-only construction.
 
@@ -51,7 +51,7 @@ For a new result, preserve both a decision and a receipt. The decision explains 
 
 ## Artifact availability and historical status
 
-The [979 evidence directory](../../experiments/promotion_979_evidence/) and [receipt](../../experiments/promotion_979_receipt.json) preserve the published campaign. Current compiler source and standalone verifiers reproduce production without the original temporary driver.
+The [975 evidence manifest](../../experiments/promotion_975_evidence/manifest.json) records the verified commit, commands and source/artifact hashes. Adjacent raw logs preserve the completed compiler, optimizer, supplementary and submission results. The [979 evidence directory](../../experiments/promotion_979_evidence/) and [receipt](../../experiments/promotion_979_receipt.json) remain unchanged historical records. Current compiler source and standalone verifiers reproduce production without the temporary workspaces.
 
 The [campaign code collection](../../experiments/archive/campaigns/README.md) preserves final-hash, mathematical-model and slope/select sources, reports and protocols. It does not include generated graphs, saved programs or replay tooling. The source files match their historical capture bytes, but the collection is not a self-contained experiment reproduction.
 

@@ -2,7 +2,7 @@
 
 [Home and setup](../README.md#build-and-run) · [Architecture](architecture.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
 
-This guide describes the published `2c4705b` verification baseline, not unverified working-tree experiments. Run commands from the repository root, in the environment installed from `requirements.txt`, with Python assertions enabled. That release must execute in at most **979 cycles** and use at most **1536 scratch words**. The promoted result uses 1463 words.
+This guide describes the verified `1df789d` release. Run commands from the repository root, in the environment installed from `requirements.txt`, with Python assertions enabled. The release must execute in at most **975 cycles** and use at most **1536 scratch words**. The verified result uses 1469 words.
 
 ## Choose the check before starting a build
 
@@ -11,13 +11,13 @@ This guide describes the published `2c4705b` verification baseline, not unverifi
 | `git diff --exit-code 5452f74 -- tests/ problem.py` | Test/simulator integrity against the frozen upstream checkpoint | None |
 | `python scripts/verify_justify.py` | Small executable scheduling examples, missing dependencies, budget and reservation failures | None |
 | `python tests/submission_tests.py` | The nine unchanged official correctness/speed tests | One cold build in a fresh process |
-| `python scripts/verify_retry.py --max-cycles 979` | 100 generated inputs, five patterns, nine other shapes, three other-shape ceilings, pause/store hazards and a corruption control | One cold build, plus fallback cases |
+| `python scripts/verify_retry.py --max-cycles 975` | 100 generated inputs, five patterns, nine other shapes, three other-shape ceilings, pause/store hazards and a corruption control | One cold build, plus fallback cases |
 | `python scripts/verify_optimizer.py` | Retiming round trips, fresh allocation, dependency/lane mutations, scratch rejection, budget guards and slower controls | One cold build, plus control construction |
 | `python scripts/verify_compiler.py` | Public builder, 100 full-width inputs, independent lane checks, fallbacks, historical controls, cache isolation and source-only reproduction | One local cold build plus two isolated cold rebuilds |
 
-The submission suite's historical speed thresholds are looser than 979. Passing it alone is not a current performance promotion gate. `verify_retry.py` also retains a standalone default of 980; pass `--max-cycles 979` explicitly.
+The submission suite's historical speed thresholds are looser than 975. Passing it alone is not a current performance promotion gate. Both `verify_retry.py` and `verify_compiler.py` now enforce 975 by default.
 
-Cold discovery took about 16 minutes per process on the verification host. The compiler verifier needs three such discoveries when started cold, plus its other checks. These are planning estimates from recorded measurements, not portable runtime guarantees. Other verifiers also spend time constructing controls.
+Cold discovery took 14.5 to 15.7 minutes per process in the full compiler verifier. Its complete run, including three discoveries and the other checks, took about 45 minutes 49 seconds. These are planning estimates from recorded measurements, not portable runtime guarantees. Other verifiers also spend time constructing controls.
 
 Every command starts a separate Python process and therefore a separate compiler cache. Running all commands in succession repeats discovery. The inexpensive scheduling check does not replace the full-kernel gates.
 
@@ -31,11 +31,11 @@ A saved timing replay can validate that selected program. It cannot demonstrate 
 
 ## What the published evidence covers
 
-The [979 promotion report](../experiments/promotion_979_results.md), [receipt](../experiments/promotion_979_receipt.json) and [evidence directory](../experiments/promotion_979_evidence/) preserve the completed campaign. It included the public builder, two isolated builds at hash seeds 0 and 17, failure-sensitive controls and checks of source hashes between stages.
+The [975 report](../experiments/startup_ancestry_candidate_results.md) and [evidence manifest](../experiments/promotion_975_evidence/manifest.json) record the completed checks. Submission, supplementary and optimizer verifiers passed. The full compiler verifier ran against a clean archive of commit `1df789d`; its two isolated source-only rebuilds at hash seeds 0 and 17 reproduced the public program digest. Named runtime-data, reference and solver entry points were blocked during those rebuilds.
 
-That campaign's combined driver took 2941.31 seconds. It reused a warm in-process compilation between some checks. Running the standalone commands above separately is not the same timed procedure. The original combined driver remains a temporary-workspace artifact; the maintained standalone verifiers reproduce the compiler checks without that driver.
+The [raw compiler result](../experiments/promotion_975_evidence/compiler-verification.json) records a 944.77-second local cold build, followed by isolated builds of 880.23 and 868.39 seconds. Its `cold_seconds` field is genuinely cold. A warm call took 3.8 ms. Source hashes were checked against the retained snapshot and committed revision when the logs were preserved.
 
-The compiler verifier's `cold_seconds` field measures the build call in that process. In the combined promotion driver it was a warm call. Use `public_build.json` for the recorded genuinely cold public build.
+The earlier [979 campaign](../experiments/promotion_979_results.md) used a combined driver and different cache reuse. Its 2941.31-second timing and warm `cold_seconds` field describe that historical run, not the current standalone verifier.
 
 The supported contract is root-starting traversal and final values, with non-output memory preserved. Neither these checks nor the reports establish general non-root/final-index equivalence or global optimality. An attempted independent subagent review failed before work; the execution evidence is not a claim of independent code review.
 

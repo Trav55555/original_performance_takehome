@@ -44,13 +44,15 @@ Sources: [startup experiments](../../experiments/load_gap_results.md), [promotio
 
 **Production, after a successful research tie.** Right-justify instructions within a horizon, derive a new order, then insert them forward at their earliest legal positions. Some instructions must move later to change how resource slots are shared.
 
-The current implementation preserves each graph's native engine assignments and exact lane dependencies. It tests native and dependence-tail tie orders. Allocation is a separate subsequent gate.
+The current implementation preserves each graph's native engine assignments and exact lane dependencies. It tests native, dependence-tail and startup-ancestry orders. Allocation is a separate subsequent gate.
 
 On the unchanged experimental native graph, one pass moved 8587 jobs earlier and 955 later, closing the load hole at cycle 965 and improving complete execution from 981 to 980. Extra passes did not improve cycles and sometimes increased scratch. Combining one pass with final-hash rewriting later produced 979/1463 through automatic discovery.
 
 This differs from compaction that retains broader original-cycle order. The [ALNS RCPSP example](https://alns.readthedocs.io/en/latest/examples/resource_constrained_project_scheduling_problem.html) illustrates right-then-left justification for resource-constrained project scheduling. Our ISA adaptation additionally needs lane, pause and physical allocation checks; its numerical results do not transfer from that example.
 
-Sources: [resource-order pilot](../../experiments/resource_order_results.md), [production scheduler](../../kernel_justify.py), [979 promotion](../../experiments/promotion_979_results.md).
+The startup-ancestry order later reached 975/1469. It boosts the ancestry of the first 26 logical gathers by forty priority cycles during forward insertion. Gathers start at 55 rather than 61 and finish at 964 rather than 968, despite two empty gather cycles near startup. This is separate from the earlier native scheduler's temporary first-gather bias.
+
+Sources: [resource-order pilot](../../experiments/resource_order_results.md), [production scheduler](../../kernel_justify.py), [979 promotion](../../experiments/promotion_979_results.md), [975 verification](../../experiments/startup_ancestry_candidate_results.md).
 
 ## Event graphs, geometric priorities and deadlines
 
@@ -78,4 +80,4 @@ For jobs forced into a window by optimistic release `r` and remaining tail `q`, 
 
 A suffix UNSAT result applies only with its prefix, engines, graph and other declared constraints fixed. A necessary-window admission is not a jointly executable schedule. The default compiler uses old preflight machinery to rank a seed for global justification, not to prove that global justification is feasible or impossible.
 
-Sources: [early scheduling bounds](../../experiments/scheduling_bounds_results.md), [current counts](../../experiments/promotion_979_results.md), local bound/certificate records listed in [search research](search-and-research.md).
+Sources: [early scheduling bounds](../../experiments/scheduling_bounds_results.md), [current counts](../../experiments/startup_ancestry_candidate_results.md), local bound/certificate records listed in [search research](search-and-research.md).

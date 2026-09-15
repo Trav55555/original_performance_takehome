@@ -1,6 +1,6 @@
 # Anthropic's original performance take-home
 
-**975-cycle candidate, 1,469 scratch words, no solver queries.** The public builder passed the unchanged frozen nine-test suite; an exact-digest replay passed 100 full-width inputs and five asymmetric patterns. Full isolated source-only promotion gates remain outstanding; see the [candidate report](experiments/startup_ancestry_candidate_results.md). The last fully promoted result is the [979-cycle compiler](experiments/promotion_979_results.md).
+**975 cycles, 1,469 scratch words, no solver queries.** All verification passed for `1df789d`, including the unchanged nine-test submission suite and two isolated source-only rebuilds with identical program digests. See the [verification report](experiments/startup_ancestry_candidate_results.md) and [preserved evidence](experiments/promotion_975_evidence/manifest.json).
 
 This repo optimizes Anthropic's original performance take-home. The benchmark uses a height-10 tree with 2,047 nodes, a batch of 256 inputs and 16 rounds. It runs on one core with eight SIMD lanes and a 1,536-word scratch limit.
 
@@ -12,7 +12,7 @@ The startup-ancestry scheduler saves four cycles while using six more scratch wo
 |---|---|
 | Build and check the current result | [Setup below](#build-and-run), [verification commands and costs](docs/verification.md) |
 | Understand the current code | [Architecture and module map](docs/architecture.md) |
-| Follow the whole project | [147,734 → 979 history and milestone ledger](docs/performance-progression.md) |
+| Follow the whole project | [147,734 → 975 history and milestone ledger](docs/performance-progression.md) |
 | Look up a technique or research result | [Technique and research wiki](docs/reference/README.md) |
 | Inspect reports and raw evidence | [Experiment index](experiments/README.md) |
 
@@ -31,7 +31,7 @@ python -m pip install -r requirements.txt
 python tests/submission_tests.py
 ```
 
-Expect the first build to take about 16 minutes on the host used for verification. The three measured cold builds took 15.9 to 16.0 minutes; a cached build took about 6.5 ms. There is no disk cache, so each new Python process starts over. Within a process, the compiler caches immutable tuples and gives each builder its own mutable instruction bundles.
+Expect the first build to take about 15 to 16 minutes on the host used for verification. The compiler verifier's three cold builds took 14.5 to 15.7 minutes; a cached build took about 3.8 ms. There is no disk cache, so each new Python process starts over. Within a process, the compiler caches immutable tuples and gives each builder its own mutable instruction bundles.
 
 Run the additional checks with:
 
@@ -51,17 +51,17 @@ The compiler searches for cache choices and arithmetic replacements for lookup s
 
 All choices come from generated graphs and measured schedule costs. The compiler reads no saved configurations, timing tables, physical programs or runtime input values. Each new schedule gets a fresh scratch allocation. Setup, constants, broadcasts, loads, stores and the final pause all count toward execution time.
 
-The successful candidate build used 1,963 score entries. The limit is 4,096, including at most twelve backward/forward schedules. Reconstruction checks add compilation work beyond that score count. If the search cannot find a legal result at or below 975 cycles, compilation fails rather than returning a slower kernel.
+The verified build used 1,963 score entries. The limit is 4,096, including at most twelve backward/forward schedules. Reconstruction checks add compilation work beyond that score count. If the search cannot find a legal result at or below 975 cycles, compilation fails rather than returning a slower kernel.
 
 The machine has two load slots, six vector-arithmetic slots and one flow slot per cycle. Caching replaces gathers with selection work; arithmetic selectors move work from flow to arithmetic. Fewer instructions on one engine can mean more contention on another. Only the complete schedule decides whether a change helps.
 
 The [previous 980-cycle compiler](experiments/promotion_980_results.md) used Z3 to repair a 32-cycle native suffix with 527 free issue-time variables. The current path uses no solver. The old exact workers remain available with a 2 GiB address-space cap and no wall-clock or CPU deadline.
 
-An earlier selected-timing experiment reached 980 cycles with 1,449 words. The current compiler is faster but uses 14 more words than that separate experiment. That saved timing is not an input to production discovery.
+An earlier selected-timing experiment reached 980 cycles with 1,449 words. The current compiler is faster but uses 20 more words than that separate experiment. That saved timing is not an input to production discovery.
 
 ### What is verified
 
-The 975 candidate has two public source builds, including the frozen suite, plus exact-digest replay checks; the full promotion suite has not run. For the promoted 979 release, verification through `KernelBuilder` passed:
+The submission, supplementary, optimizer and full compiler verifiers passed for the 975-cycle implementation. Verification through `KernelBuilder` covered:
 
 - All nine frozen submission tests, 100 generated inputs, 100 full-width inputs, five asymmetric patterns and nine other root-starting shapes.
 - Lane-ownership and dependency checks, plus mutations that introduce missing dependencies, duplicate lanes, corrupted constants and swapped selector branches.
@@ -69,7 +69,7 @@ The 975 candidate has two public source builds, including the frozen suite, plus
 - Explicit-override fallback, isolation between cached program copies, scheduler hazards and co-issued pause/store completion.
 - Three non-benchmark performance ceilings and two source-only rebuilds at hash seeds 0 and 17.
 
-The promoted 979-cycle performance gate rejected an executed 980-cycle control. The native 981-cycle control and the older 1,041, 1,042, 1,052, 1,076 and 1,082 controls also ran as expected.
+The 975-cycle performance gate rejected executed 980, 1,041, 1,042, 1,052, 1,076 and 1,082 controls. The native 981-cycle control also ran as expected.
 
 `tests/` and `problem.py` are unchanged. The kernel assumes root-starting traversals and writes final values only, not indices. It preserves all other memory. These checks do not establish support for non-root starts or arbitrary dimensions.
 
@@ -77,7 +77,7 @@ The current instruction stream has a capacity-only lower bound of 967 cycles. Th
 
 ## From 147,734 to 975 cycles
 
-The recorded scalar baseline is 147,734 cycles. The candidate is a roughly 152× speedup in simulated execution. The [full illustrated history](docs/performance-progression.md) covers the upstream starter, January vectorization and scheduling, and September compiler research through the last promotion. The later 1,303 → 979 promoted phase saved 324 cycles, or 24.9% of execution time. The new scheduling candidate saves another four cycles; the [979 report](experiments/promotion_979_results.md) remains the latest complete promotion evidence.
+The recorded scalar baseline is 147,734 cycles. The current result is a roughly 152× speedup in simulated execution. The [full illustrated history](docs/performance-progression.md) covers the upstream starter, January vectorization and scheduling, and September compiler research. The later 1,303 → 975 phase saved 328 cycles, or 25.2% of execution time. The [975 report](experiments/startup_ancestry_candidate_results.md) records the latest verification.
 
 | Cycles | Main changes |
 |---|---|
@@ -120,7 +120,7 @@ The [Algorithmica follow-up](experiments/algorithmica_followup_results.md) recor
 
 Anthropic's original take-home allowed four hours. After Claude Opus 4 surpassed most human results, Anthropic switched to a two-hour version starting at 18,532 cycles, 7.97 times faster than the slow baseline. This repo uses that version's extra instructions and debugging tools, with the starter code reset to the slow baseline. Anthropic changed the starting point again after Opus 4.5.
 
-Anthropic reported these model results using the 18,532-cycle starting point. The run lengths differ, and this repo's 975-cycle candidate is not a two-hour attempt.
+Anthropic reported these model results using the 18,532-cycle starting point. The run lengths differ, and this repo's 975-cycle result is not a two-hour attempt.
 
 | Cycles | Reported run |
 |---:|---|

@@ -1,0 +1,53 @@
+{
+  "verified_commit": "1df789daa0a64f2559d0a1ad4cfe6ed92651e9b9",
+  "status": "passed",
+  "scope": "Existing submission, supplementary, optimizer and compiler verification; compiler run in git archive snapshot, with two isolated source-only rebuilds.",
+  "program_digest": "861864c85979d75993f9e07187b6bde2035b9d4085b9f6d2acb81622ad67138b",
+  "cycles": 975,
+  "scratch": 1469,
+  "solver_queries": 0,
+  "compiler_hash_seed_order": [
+    0,
+    17
+  ],
+  "source_sha256": {
+    "perf_takehome.py": "aee377d80dd468868ec2ea22c0a823d54b484c602707750cb8f5b98e19f2c3b9",
+    "problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "kernel_checks.py": "926e98144a3f693bbeaf8ef47ea05d21ba33a8dbc6c2cb1fd7d76e6487eb5e3b",
+    "kernel_compiler.py": "05be962fdcf0dcf4ec450640c0d00fd3eddcf9b0df86cd111827759f106eec08",
+    "kernel_justify.py": "a4faf6166af24d5dd9359c55dafb669d2768285618a57aa3284749ed54fc94cf",
+    "kernel_lookahead.py": "2cd5978e21e29296a560d448754a2663dad143d6d60f399a5b49420663a78752",
+    "kernel_optimizer.py": "08d791bfefe1d20ddf60f0762155c3d13457304ad73b9bcbf92decafec2dce28",
+    "kernel_refinement.py": "a6510d8dcae9824b19c6d154411ac22f356a92d3dcfea54a3151621572bacaad",
+    "kernel_retime.py": "f31d748a13bc7dfdd169e696982944f08bdc593ac74658b40bcdc8d61ca22bb3",
+    "scripts/verify_compiler.py": "d5c8ee53d035a322d2e89207533aa202380789fe406b2dbc9db768ef196d55c9",
+    "scripts/verify_optimizer.py": "02dd6cd9c42e7233cb4a85136f36a0067f22d65392e8e67c3b29746d01e5ba56",
+    "scripts/verify_retry.py": "b549c1a64fac6c44409da5d44cb7c78abb84cd3d6f13a51de81bc952568738c0",
+    "scripts/verify_justify.py": "de5b33ec2a58e6cef9d2846ad60c5f9096e3ecb73d39bb35b3d68dd08a9d78b8",
+    "tests/frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+    "tests/submission_tests.py": "11c57cc999da93acb41201191073cd657ddffa87635359b3157c6e177c18ea0a"
+  },
+  "artifact_sha256": {
+    "compiler-verification.json": "109148a4062639cb52ec09ed2edec882ddf76d3427996f6f61152dbc1747f381",
+    "compiler-verification.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compiler.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verification.started": "1ff127ef847aecccdd2d3da27e8517a25a18d3630278f38b86ed7fef7c2fa519",
+    "verification.finished": "58fdf79cafac84e8a6ee1fdbc71ae81c54a6e50a8a2aa1bdd78c8a53d308a287",
+    "verified_commit.txt": "72b86cca6e7d968e18e6a5b26754d37ce2fa93281d7637180772ea80cdcb7132",
+    "public-build.json": "64e4d3fc9d5f7531feb7d0ad1f4ac416662bdc3dbfc5acd29635bd531f1aecce",
+    "optimizer.log": "436931bd624152ba29d21a274f80688bed123939fd0209e72d58b94ba62cb56e",
+    "optimizer.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "retry.log": "29614e708197f8d3d6f844d39a9e295b06a804dd8e52f71d897edcfa54e91b94",
+    "retry.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "submission.log": "9f655d2cefbf29f710093fc6e59dba10d18fa5fc264cbdf62e9209b4eed430d4",
+    "submission.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "commands": [
+    "python tests/submission_tests.py",
+    "python scripts/verify_retry.py --max-cycles 975",
+    "python scripts/verify_optimizer.py",
+    "python scripts/verify_compiler.py"
+  ],
+  "python_executable": "/tmp/perf-five-arms/solver-env/bin/python",
+  "provenance_note": "Logs copied byte-for-byte after completion. Source hashes checked against the retained full-verifier snapshot, committed revision and current checkout at documentation update. Other runs used the working checkout; no independent code review or formal proof is claimed."
+}

@@ -1,10 +1,10 @@
-# Full performance history: 147,734 to 979 cycles
+# Full performance history: 147,734 to 975 cycles
 
 [Home](../README.md) · [Architecture](architecture.md) · [Technique wiki](reference/README.md) · [Experiment index](../experiments/README.md)
 
-The project began with a scalar starter whose recorded baseline is **147,734 cycles**. Published production now executes in **979 cycles / 1,463 scratch words**, with zero solver queries. That is 146,755 fewer simulated cycles, about 151 times faster than the recorded starter. The later 1,303 → 979 phase saved 324 cycles, or 24.9% of execution time.
+The project began with a scalar starter whose recorded baseline is **147,734 cycles**. Published production now executes in **975 cycles / 1,469 scratch words**, with zero solver queries. That is 146,759 fewer simulated cycles, about 152 times faster than the recorded starter. The later 1,303 → 975 phase saved 328 cycles, or 25.2% of execution time.
 
-This history covers the upstream setup, January vectorization and manual scheduling, the automatic scheduler, and the September compiler/research work through the 979 promotion. It does not treat every experiment as a production release.
+This history covers the upstream setup, January vectorization and manual scheduling, the automatic scheduler, and the September compiler/research work through the 975 verification. It does not treat every experiment as a production release.
 
 ```text
 147734 → 4294   SIMD, retained walker state, batching and load overlap
@@ -19,9 +19,10 @@ This history covers the upstream setup, January vectorization and manual schedul
   1041 →  981   Cache neighborhoods and joint selector balancing
    981 →  980   Small, exact, allocation-checked suffix repair
    980 →  979   Solver-free reordering plus a shorter final hash path
+   979 →  975   Startup ancestry priority during forward insertion
 ```
 
-The diagram follows selected milestones, not a monotonic record of every attempted change. January counts come from contemporaneous commit messages and the session log; they were not rerun for this documentation update. Later reports state their own execution, allocation and promotion gates. The current result has the [full 979 promotion evidence](../experiments/promotion_979_results.md). Schematics below are not measured timings unless explicitly labeled.
+The diagram follows selected milestones, not a monotonic record of every attempted change. January counts come from contemporaneous commit messages and the session log; they were not rerun for this documentation update. Later reports state their own execution, allocation and promotion gates. The current result has the [completed 975 verification evidence](../experiments/startup_ancestry_candidate_results.md). Schematics below are not measured timings unless explicitly labeled.
 
 ## Milestone ledger
 
@@ -51,8 +52,9 @@ Dates are Git author dates. They locate saved work, not hours spent optimizing. 
 | Sep 11–13 | [Published discovery trace](../experiments/promotion_980_evidence/progress.jsonl) | 1037 → 981 | Varies | Experimental cache/selector milestones, later automatically rediscovered |
 | Sep 13 | [168e0f2](https://github.com/Trav55555/original_performance_takehome/commit/168e0f2) | 980 | 1465 | [Exact-repair production promotion](../experiments/promotion_980_results.md); distinct from experimental 980/1449 |
 | Sep 14 | [0067321](https://github.com/Trav55555/original_performance_takehome/commit/0067321) | 980 | 1483 | [Solver-free research tie](../experiments/resource_order_results.md), not a new production result |
-| Sep 14 | [2c4705b](https://github.com/Trav55555/original_performance_takehome/commit/2c4705b) | 979 | 1463 | [Current source-only production promotion](../experiments/promotion_979_results.md) |
+| Sep 14 | [2c4705b](https://github.com/Trav55555/original_performance_takehome/commit/2c4705b) | 979 | 1463 | [Solver-free production promotion](../experiments/promotion_979_results.md) |
 | Sep 14–15 | `988dd9b`, `960f4c3` | 979 | 1463 | README updates only; no new performance result |
+| Sep 15 | [1df789d](https://github.com/Trav55555/original_performance_takehome/commit/1df789d) | 975 | 1469 | [Startup ancestry priority; published as candidate, then fully verified](../experiments/startup_ancestry_candidate_results.md) |
 
 Each retained compiler milestone supersedes the preceding retained implementation. Experimental rows do not. Missing scratch measurements are left blank in substance rather than inferred from the machine limit. [Production reports](../experiments/README.md#production-promotion-records) connect later promotions to verification receipts.
 
@@ -610,9 +612,25 @@ The build used 1959 scores under a 4096 limit and made zero solver queries. It r
 
 Sources: [resource-order pilot](../experiments/resource_order_results.md), [979 promotion](../experiments/promotion_979_results.md), [receipt](../experiments/promotion_979_receipt.json) and [automatic discovery trace](../experiments/promotion_979_evidence/discovery_progress.jsonl). The earlier selected final-hash pilot is cataloged as local-only evidence in the wiki; it is not a fresh-clone dependency.
 
+## 979 → 975: advance the gather startup
+
+The third backward/forward order gives the dependency ancestry of the first 26 logical gathers a forty-cycle priority boost during forward insertion. Dependencies and native engine assignments stay fixed. Discovery tests this order alongside native and dependence-tail orders, then selects the final-hash rewrite for block 31 alone.
+
+| Measured event | 979 release | 975 release |
+|---|---:|---:|
+| First gather issue | 61 | 55 |
+| Last gather issue | 968 | 964 |
+| Empty gather cycles inside that interval | None | 67, 68 |
+| Final store and pause issue | 978 | 974 |
+| Scratch words | 1463 | 1469 |
+
+Instruction counts are unchanged. The earlier start more than offsets the two empty gather cycles. Blocks 30 and 31 both store at cycle 974. Automatic discovery used 1963 score entries, and two isolated source-only rebuilds reproduced the same program digest. The submission, supplementary, optimizer and full compiler verifiers all passed.
+
+Source: [975 verification report and preserved logs](../experiments/startup_ancestry_candidate_results.md).
+
 ## Current endpoint and what remains unknown
 
-Commit `2c4705b` published **979 cycles / 1463 scratch words** on September 14. The following README commits documented that result without changing its program. The older 979 solver OOM remains unknown for its own graph and constraints. It is not retroactively a successful query, and it does not conflict with the later constructive result.
+Commit `1df789d` published **975 cycles / 1469 scratch words** as a candidate on September 15. The remaining verification completed that day against the committed sources. The older 979 solver OOM remains unknown for its own graph and constraints. It is not retroactively a successful query, and it does not conflict with the later constructive results.
 
 The capacity-only bound for the current instruction stream remains 967. No global optimum or real-hardware speedup has been established. Earlier "final" results and scoped lower bounds remain historical evidence, not current limits.
 

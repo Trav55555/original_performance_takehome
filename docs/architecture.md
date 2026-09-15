@@ -2,7 +2,7 @@
 
 [Home](../README.md) · [Verification](verification.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
 
-This map describes the [979-cycle source release at `2c4705b`](https://github.com/Trav55555/original_performance_takehome/tree/2c4705b73038b723b1021ff65943d54b5d1fe842). Unverified working-tree changes are outside this reference baseline. Historical prototypes and fixed-configuration controls are not its default execution path.
+This map describes the verified [975-cycle source release at `1df789d`](https://github.com/Trav55555/original_performance_takehome/tree/1df789daa0a64f2559d0a1ad4cfe6ed92651e9b9). Historical prototypes and fixed-configuration controls are not its default execution path.
 
 ## Start at the public entry point
 
@@ -36,7 +36,7 @@ The legacy generator remains necessary for fallback behavior and historical cont
 | [`kernel_compiler.py`](../kernel_compiler.py) | `_IR`, `_build_ir`, native `_schedule`, lifetime `_allocate`, instruction `_lower`, `CompiledKernel`, `compile_benchmark` |
 | [`kernel_optimizer.py`](../kernel_optimizer.py) | Immutable `Plan`, schedule/allocation `Cost`, memoized `Discovery`, cache/profile neighborhoods and score budget |
 | [`kernel_refinement.py`](../kernel_refinement.py) | `candidates`, `finish`, `justify_finals`; late selector/final-hash choices and orchestration |
-| [`kernel_justify.py`](../kernel_justify.py) | One fixed-engine backward/forward `schedule`, under native or dependence-tail tie order |
+| [`kernel_justify.py`](../kernel_justify.py) | One fixed-engine backward/forward `schedule`, under native, dependence-tail or startup-ancestry order |
 | [`kernel_retime.py`](../kernel_retime.py) | Lane-job graph capture/validation, necessary-window preflight and fresh retiming allocation; also retained exact-solver tools |
 | [`kernel_checks.py`](../kernel_checks.py) | `lane_identity`, an independent check of physical scratch ownership |
 | [`kernel_lookahead.py`](../kernel_lookahead.py) | Bounded engine-choice forecasts used by native scheduling; not an unrestricted global reorderer |
@@ -58,9 +58,11 @@ Do not confuse compiler scoring with simulator execution. Discovery scores gener
 
 `Discovery.cache_plan` searches cache toggles, a bounded swap neighborhood, arithmetic profiles and coupled cache/profile alternatives. `finish` adds final-hash and late-selector proposals. Its necessary-window preflight ranks a refinement seed; admission is not proof of global scheduling feasibility.
 
-`justify_finals` tries two orders on that seed, derives the two latest output blocks from the better legal schedule, then tries their singleton and paired final-hash rewrites. That is at most eight schedule scores. `reserve_schedule` checks the combined 4096-score budget before constructing each new proposal. The promoted build used 1959 scores.
+`justify_finals` tries three orders on that seed, derives the two latest output blocks from the best legal schedule, then tries their singleton and paired final-hash rewrites. That is at most twelve schedule scores. `reserve_schedule` checks the combined 4096-score budget before constructing each new proposal. The verified build used 1963 scores.
 
-`kernel_retime.lower` validates times, rebuilds lifetimes and allocates. If scratch exceeds 1536 words, it returns no program before calling the instruction lowerer. A feasible result must also pass lane ownership. `finish` raises if its finite search cannot meet 979 cycles; there is no silent slower fallback for the default benchmark.
+The startup order uses the dependence-tail backward pass, then gives the ancestry of the first 26 logical gathers a forty-cycle priority boost during forward insertion. This changes ordering, not dependencies or engine assignments. The selected final-hash rewrite is block 31 alone.
+
+`kernel_retime.lower` validates times, rebuilds lifetimes and allocates. If scratch exceeds 1536 words, it returns no program before calling the instruction lowerer. A feasible result must also pass lane ownership. `finish` raises if its finite search cannot meet 975 cycles; there is no silent slower fallback for the default benchmark.
 
 ## What remains of exact solving
 

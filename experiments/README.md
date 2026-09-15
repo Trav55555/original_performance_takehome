@@ -4,11 +4,11 @@
 
 ## Current production
 
-The normal builder discovers **979 cycles / 1463 scratch words**, with zero solver queries. The implementation was published in commit [`2c4705b`](https://github.com/Trav55555/original_performance_takehome/commit/2c4705b73038b723b1021ff65943d54b5d1fe842).
+The normal builder discovers **975 cycles / 1469 scratch words**, with zero solver queries. Commit [`1df789d`](https://github.com/Trav55555/original_performance_takehome/commit/1df789daa0a64f2559d0a1ad4cfe6ed92651e9b9) published the implementation as a candidate; all outstanding verification subsequently passed.
 
-- [Promotion report](promotion_979_results.md): result, discovery method and verification scope.
-- [Receipt](promotion_979_receipt.json): source hashes, program digest and measurements.
-- [Detailed evidence](promotion_979_evidence/): build records, test outputs, guard checks and the original protocol.
+- [Verification report](startup_ancestry_candidate_results.md): result, scheduling method and completed checks.
+- [Evidence manifest](promotion_975_evidence/manifest.json): verified commit, source hashes, artifact hashes and commands.
+- [Raw evidence](promotion_975_evidence/): public-build record, compiler results, submission/supplementary/optimizer logs and exit markers.
 
 The compiler does not read this directory during default discovery. Research results, experimental controls and production inputs are different things.
 
@@ -30,7 +30,8 @@ The [milestone ledger](../docs/performance-progression.md#milestone-ledger) is t
 | `0accd81` | 1052 / 1457 | [Technique integration](technique_promotion_results.md) | 1041 promotion |
 | `5691617` | 1041 / 1458 | [Startup-policy integration](startup_promotion_results.md) | 980 promotion |
 | `168e0f2` | 980 / 1465 | [Exact suffix-repair compiler](promotion_980_results.md), [receipt](promotion_980_receipt.json), [evidence](promotion_980_evidence/) | 979 promotion |
-| `2c4705b` | 979 / 1463 | [Solver-free compiler](promotion_979_results.md) | Current |
+| `2c4705b` | 979 / 1463 | [Solver-free compiler](promotion_979_results.md) | 975 verification |
+| `1df789d` | 975 / 1469 | [Startup ancestry scheduling](startup_ancestry_candidate_results.md), [evidence](promotion_975_evidence/manifest.json) | Current |
 
 ## Completed research by phase
 

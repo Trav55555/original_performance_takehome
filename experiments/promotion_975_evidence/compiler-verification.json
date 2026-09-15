@@ -1,0 +1,166 @@
+{
+  "cycles": 975,
+  "scratch": 1469,
+  "cache_sites": [
+    [
+      0,
+      15
+    ],
+    [
+      2,
+      15
+    ],
+    [
+      3,
+      15
+    ],
+    [
+      5,
+      4
+    ],
+    [
+      6,
+      4
+    ],
+    [
+      6,
+      15
+    ],
+    [
+      7,
+      4
+    ],
+    [
+      7,
+      15
+    ],
+    [
+      8,
+      4
+    ],
+    [
+      8,
+      15
+    ],
+    [
+      9,
+      4
+    ],
+    [
+      9,
+      15
+    ],
+    [
+      10,
+      4
+    ],
+    [
+      11,
+      4
+    ],
+    [
+      11,
+      15
+    ],
+    [
+      12,
+      4
+    ],
+    [
+      12,
+      15
+    ],
+    [
+      13,
+      4
+    ],
+    [
+      14,
+      4
+    ],
+    [
+      16,
+      15
+    ],
+    [
+      17,
+      4
+    ],
+    [
+      17,
+      15
+    ],
+    [
+      22,
+      4
+    ],
+    [
+      22,
+      15
+    ],
+    [
+      23,
+      4
+    ],
+    [
+      25,
+      4
+    ],
+    [
+      27,
+      4
+    ],
+    [
+      29,
+      15
+    ],
+    [
+      30,
+      4
+    ]
+  ],
+  "search_evaluations": 1963,
+  "cold_seconds": 944.7698729922995,
+  "warm_seconds": 0.003817903809249401,
+  "fresh_processes": [
+    {
+      "seconds": 880.2275416338816,
+      "cycles": 975,
+      "scratch": 1469,
+      "evaluations": 1963,
+      "solver_queries": 0,
+      "digest": "861864c85979d75993f9e07187b6bde2035b9d4085b9f6d2acb81622ad67138b",
+      "max_rss_kib": 246252,
+      "source_only": true
+    },
+    {
+      "seconds": 868.3919740491547,
+      "cycles": 975,
+      "scratch": 1469,
+      "evaluations": 1963,
+      "solver_queries": 0,
+      "digest": "861864c85979d75993f9e07187b6bde2035b9d4085b9f6d2acb81622ad67138b",
+      "max_rss_kib": 246252,
+      "source_only": true
+    }
+  ],
+  "full_width_inputs": 100,
+  "explicit_override_fallbacks": 3,
+  "legacy_cycles": 1082,
+  "previous_production_cycles": 1052,
+  "startup_prototype_cycles": 1042,
+  "executed_controls_rejected": [
+    1082,
+    1076,
+    1052,
+    1042,
+    1041
+  ],
+  "solver_queries": 0,
+  "digest": "861864c85979d75993f9e07187b6bde2035b9d4085b9f6d2acb81622ad67138b",
+  "lane_identity": true,
+  "dependency_mutation_rejected": true,
+  "flow_constant_mutation_rejected": true,
+  "selector_mutation_rejected": true,
+  "cached_program_isolation": true
+}
