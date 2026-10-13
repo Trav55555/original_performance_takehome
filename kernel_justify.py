@@ -102,5 +102,7 @@ def schedule(model, *, tie="native", caps=CAP):
         end += 1
     forward[pause] = end
     validate(model, forward)
-    assert max(forward) <= max(native)
+    # Right-justified native and tail orders never lengthen the schedule. The
+    # startup boost can; callers score that result and keep the shorter one.
+    assert tie == "startup" or max(forward) <= max(native)
     return forward

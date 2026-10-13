@@ -10,6 +10,7 @@ This guide describes the verified `1df789d` release. Run commands from the repos
 |---|---|---|
 | `git diff --exit-code 5452f74 -- tests/ problem.py` | Test/simulator integrity against the frozen upstream checkpoint | None |
 | `python scripts/verify_justify.py` | Small executable scheduling examples, missing dependencies, budget and reservation failures | None |
+| `python scripts/verify_random_graphs.py` | 300 random IR graphs through native and lookahead scheduling, allocation, lowering and all three justification orders, checked on the frozen simulator against an independent interpreter | None |
 | `python tests/submission_tests.py` | The nine unchanged official correctness/speed tests | One cold build in a fresh process |
 | `python scripts/verify_retry.py --max-cycles 975` | 100 generated inputs, five patterns, nine other shapes, three other-shape ceilings, pause/store hazards and a corruption control | One cold build, plus fallback cases |
 | `python scripts/verify_optimizer.py` | Retiming round trips, fresh allocation, dependency/lane mutations, scratch rejection, budget guards and slower controls | One cold build, plus control construction |
@@ -41,7 +42,7 @@ The supported contract is root-starting traversal and final values, with non-out
 
 ## Research and diagnostic scripts
 
-`scripts/` holds only the four verifiers above. Everything below is a retained historical tool, not a test suite.
+`scripts/` holds only the verifiers above. Everything below is a retained historical tool, not a test suite.
 
 | Files | Role and caution |
 |---|---|

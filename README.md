@@ -38,10 +38,11 @@ python scripts/verify_retry.py --max-cycles 975
 python scripts/verify_compiler.py
 python scripts/verify_optimizer.py
 python scripts/verify_justify.py
+python scripts/verify_random_graphs.py
 git diff --exit-code 5452f74 -- tests/ problem.py
 ```
 
-Each command starts a cold build except `verify_justify.py` and the `git diff`. `verify_compiler.py` runs two more isolated cold builds and takes about 46 minutes. The [verification guide](docs/verification.md) lists what each command covers.
+Each command starts a cold build except `verify_justify.py`, `verify_random_graphs.py` and the `git diff`, which take seconds. `verify_compiler.py` runs two more isolated cold builds and takes about 46 minutes. The [verification guide](docs/verification.md) lists what each command covers.
 
 ## How the compiler reaches 975
 
