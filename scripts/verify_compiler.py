@@ -5,7 +5,6 @@ No tests/simulator edits or temporary prototype imports. Cold subprocesses also
 check source-only operation, deterministic selection and bounded host build cost.
 """
 
-from collections import Counter
 from copy import deepcopy
 import hashlib
 import json
@@ -21,7 +20,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "tests"), str(ROOT / "scripts")]
 
-from frozen_problem import HASH_STAGES, Input, SCRATCH_SIZE, SLOT_LIMITS, Tree  # noqa: E402
+from frozen_problem import HASH_STAGES, Input, SCRATCH_SIZE, Tree  # noqa: E402
 from kernel_compiler import (  # noqa: E402
     _analyze_compiled,
     _compile_seed,
@@ -30,6 +29,7 @@ from kernel_compiler import (  # noqa: E402
     _lower,
     compile_benchmark,
 )
+from kernel_checks import lane_identity  # noqa: E402
 from perf_takehome import KernelBuilder  # noqa: E402
 from verify_retry import check_output  # noqa: E402
 
@@ -41,53 +41,6 @@ def performance_gate(kernel, tree, inp, *, pause=False):
     cycles = check_output(kernel, tree, inp, pause=pause)
     assert cycles <= MAX_CYCLES, (cycles, MAX_CYCLES)
     return cycles
-
-
-def lane_identity(ir, logical, addresses):
-    """Independent lane-owner simulation; reads occur before cycle-end writes."""
-    owner = {}
-    for cycle, bundle in enumerate(logical):
-        usage, writes = Counter(), {}
-        for i, engine, first, count in bundle:
-            op = ir.ops[i]
-            usage[engine] += count
-            partial = op.kind == "gather" or (op.kind == "binary" and engine == "alu")
-            reads = []
-            if partial:
-                for value, offset in op.args:
-                    reads.extend(
-                        (value, offset + lane) for lane in range(first, first + count)
-                    )
-            elif not (op.kind == "const_choice" and engine == "load"):
-                sizes = (
-                    [1, 8]
-                    if op.kind == "vstore"
-                    else [1]
-                    if op.kind in ("vload", "broadcast", "const_choice")
-                    else [8] * len(op.args)
-                )
-                for (value, offset), width in zip(op.args, sizes):
-                    reads.extend((value, offset + lane) for lane in range(width))
-            for value, lane in reads:
-                address = addresses[value] + lane
-                assert 0 <= address < SCRATCH_SIZE
-                assert owner.get(address) == (value, lane), (
-                    "lane identity",
-                    cycle,
-                    i,
-                    address,
-                )
-            if op.dst is not None:
-                lanes = (
-                    range(first, first + count) if partial else range(ir.widths[op.dst])
-                )
-                for lane in lanes:
-                    address = addresses[op.dst] + lane
-                    assert 0 <= address < SCRATCH_SIZE
-                    assert address not in writes, ("duplicate write", cycle, address)
-                    writes[address] = (op.dst, lane)
-        assert all(n <= SLOT_LIMITS[engine] for engine, n in usage.items())
-        owner.update(writes)
 
 
 def digest(instructions):
@@ -136,12 +89,12 @@ print(json.dumps({'seconds':time.monotonic()-start,
             "problem.py",
         ):
             shutil.copy2(ROOT / name, Path(directory) / name)
-        for seed, cwd in (("0", Path(directory)), ("17", Path(directory))):
+        for seed in ("0", "17"):
             env = dict(os.environ, PYTHONHASHSEED=seed, PYTHONDONTWRITEBYTECODE="1")
             env.pop("PYTHONPATH", None)
             result = subprocess.run(
                 [sys.executable, "-c", code],
-                cwd=cwd,
+                cwd=directory,
                 env=env,
                 capture_output=True,
                 text=True,
@@ -151,7 +104,7 @@ print(json.dumps({'seconds':time.monotonic()-start,
             assert row["digest"] == expected, row
             assert row["cycles"] <= MAX_CYCLES and row["scratch"] <= SCRATCH_SIZE
             assert row["evaluations"] <= MAX_EVALUATIONS and row["solver_queries"] == 0
-            row["source_only"] = cwd != ROOT
+            row["source_only"] = True
             rows.append(row)
     return rows
 

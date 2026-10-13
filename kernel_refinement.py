@@ -81,7 +81,6 @@ def candidates(discovery, best):
         for size in (1, 2):
             for subset in combinations(sites, size):
                 proposals.add(replace(seed.plan, selector_sites=tuple(sorted(subset))))
-        discovery.report("rewrite-seed", seed)
     return [discovery.evaluate(plan) for plan in sorted(proposals)]
 
 
@@ -126,7 +125,6 @@ def finish(discovery, best, target=975):
     if not eligible:
         raise RuntimeError("No admitted refinement seed within compiler budget")
     seed = eligible[0][1]
-    discovery.report("justification-seed", seed)
     result = justify_finals(discovery, seed.plan)
     if result.cost.cycles > target:
         raise RuntimeError(
@@ -148,7 +146,6 @@ def justify_finals(discovery, plan):
             times = schedule(model, tie=tie)
             program, words, logical, addresses = retime.lower(ir, model, times)
             cost = Cost(max(times) + 1, words, proposal)
-            discovery.report("justify-" + tie, cost)
             evaluated[key] = (
                 Result(cost, program, logical, addresses, ir, 0, 0, None)
                 if program is not None
@@ -181,5 +178,4 @@ def justify_finals(discovery, plan):
     best = min(legal, key=lambda r: r.cost.rank)
     assert best.cost.scratch <= SCRATCH_SIZE
     best.evaluations = discovery.evaluations
-    discovery.report("executable-justification", best.cost)
     return best

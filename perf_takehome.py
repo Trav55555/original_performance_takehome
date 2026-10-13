@@ -102,7 +102,7 @@ def _slot_rw(engine: str, slot: tuple) -> tuple[list[int], list[int]]:
 
 
 def _schedule_slots(
-    slots: list[tuple[str, tuple]], priority_weight: int = 100
+    slots: list[tuple[str, tuple]],
 ) -> list[dict[str, list[tuple]]]:
     """Schedule using source order, critical paths, and near-term load demand.
 
@@ -151,7 +151,7 @@ def _schedule_slots(
         # Favor prerequisites of imminent loads before the load engine goes idle.
         # This is a scheduling hint, not a relaxation of any dependency.
         load_urgency = max(0, load_horizon - load_distance[i])
-        return i - priority_weight * critical_path[i] - 300 * load_urgency, i
+        return i - 100 * critical_path[i] - 300 * load_urgency, i
 
     ready = [priority(i) for i, count in enumerate(pending) if count == 0]
     heapq.heapify(ready)
@@ -184,14 +184,9 @@ class KernelBuilder:
         self.scratch = {}
         self.scratch_debug = {}
         self.scratch_ptr = 0
-        self.const_map = {}
-        self.vconst_map = {}
 
     def debug_info(self):
         return DebugInfo(scratch_map=self.scratch_debug)
-
-    def add(self, engine, slot):
-        self.instrs.append({engine: [slot]})
 
     def alloc_scratch(self, name=None, length=1):
         addr = self.scratch_ptr
@@ -204,27 +199,6 @@ class KernelBuilder:
 
     def alloc_vec(self, name=None):
         return self.alloc_scratch(name, VLEN)
-
-    def scratch_const(self, val, name=None, slots=None):
-        if val not in self.const_map:
-            addr = self.alloc_scratch(name)
-            if slots is None:
-                self.add("load", ("const", addr, val))
-            else:
-                slots.append(("load", ("const", addr, val)))
-            self.const_map[val] = addr
-        return self.const_map[val]
-
-    def scratch_vconst(self, val, name=None, slots=None):
-        if val not in self.vconst_map:
-            scalar = self.scratch_const(val, slots=slots)
-            addr = self.alloc_vec(name)
-            if slots is None:
-                self.add("valu", ("vbroadcast", addr, scalar))
-            else:
-                slots.append(("valu", ("vbroadcast", addr, scalar)))
-            self.vconst_map[val] = addr
-        return self.vconst_map[val]
 
     def build_kernel(
         self,
@@ -310,13 +284,11 @@ class KernelBuilder:
             3 * (1 << level) + 5 for level in range(4, forest_height + 1)
         ]:
             const_addrs[val] = self.alloc_scratch(f"c_{val}")
-            self.const_map[val] = const_addrs[val]
 
         # Vector constants - allocate addresses
         vec_addrs = {}
         for val in [2, 4]:
             vec_addrs[val] = self.alloc_vec(f"v_{val}")
-            self.vconst_map[val] = vec_addrs[val]
 
         # Node preload addresses (scalars and vectors)
         PRELOAD_NODES = 15
@@ -340,12 +312,10 @@ class KernelBuilder:
             # val1 constant
             if val1 not in const_addrs:
                 const_addrs[val1] = self.alloc_scratch(f"c_{val1}")
-                self.const_map[val1] = const_addrs[val1]
             hash_scalar_addrs1.append(const_addrs[val1])
             if hi != len(HASH_STAGES) - 1:
                 if val1 not in vec_addrs:
                     vec_addrs[val1] = self.alloc_vec(f"v_{val1}")
-                    self.vconst_map[val1] = vec_addrs[val1]
                 hash_vec_addrs1.append(vec_addrs[val1])
             else:
                 hash_vec_addrs1.append(None)
@@ -355,18 +325,14 @@ class KernelBuilder:
                 mul_val = 1 + (1 << val3)
                 if mul_val not in const_addrs:
                     const_addrs[mul_val] = self.alloc_scratch(f"c_{mul_val}")
-                    self.const_map[mul_val] = const_addrs[mul_val]
                 if mul_val not in vec_addrs:
                     vec_addrs[mul_val] = self.alloc_vec(f"v_{mul_val}")
-                    self.vconst_map[mul_val] = vec_addrs[mul_val]
                 hash_mul_vec_addrs.append(vec_addrs[mul_val])
             else:
                 if val3 not in const_addrs:
                     const_addrs[val3] = self.alloc_scratch(f"c_{val3}")
-                    self.const_map[val3] = const_addrs[val3]
                 if val3 not in vec_addrs:
                     vec_addrs[val3] = self.alloc_vec(f"v_{val3}")
-                    self.vconst_map[val3] = vec_addrs[val3]
                 hash_vec_addrs3.append(vec_addrs[val3])
                 hash_mul_vec_addrs.append(None)
 
@@ -461,11 +427,6 @@ class KernelBuilder:
             node_vecs.extend(
                 reversed(node_vec_addrs[(1 << level) - 1 : (1 << (level + 1)) - 1])
             )
-
-        # Hash constant vectors
-        hash_vec_consts1 = hash_vec_addrs1
-        hash_vec_consts3 = hash_vec_addrs3
-        hash_mul_vecs = hash_mul_vec_addrs
 
         slots: list[tuple[str, tuple]] = list(init_slots)
         for block in range(blocks_per_round):
@@ -769,7 +730,7 @@ class KernelBuilder:
                         # Hash computation
                         hash_start = len(slots)
                         for hi, (op1, _val1, op2, op3, _val3) in enumerate(HASH_STAGES):
-                            mul_vec = hash_mul_vecs[hi]
+                            mul_vec = hash_mul_vec_addrs[hi]
                             if hi == len(HASH_STAGES) - 1:
                                 # Keep values encoded as actual_value XOR the final
                                 # hash constant; fold that constant into node values.
@@ -780,7 +741,7 @@ class KernelBuilder:
                                             op3,
                                             ctx["node"],
                                             val_vec,
-                                            hash_vec_consts3[hi],
+                                            hash_vec_addrs3[hi],
                                         ),
                                     )
                                 )
@@ -796,7 +757,7 @@ class KernelBuilder:
                                             val_vec,
                                             val_vec,
                                             mul_vec,
-                                            hash_vec_consts1[hi],
+                                            hash_vec_addrs1[hi],
                                         ),
                                     )
                                 )
@@ -808,7 +769,7 @@ class KernelBuilder:
                                             op1,
                                             ctx["tmp1"],
                                             val_vec,
-                                            hash_vec_consts1[hi],
+                                            hash_vec_addrs1[hi],
                                         ),
                                     )
                                 )
@@ -819,7 +780,7 @@ class KernelBuilder:
                                             op3,
                                             ctx["node"],
                                             val_vec,
-                                            hash_vec_consts3[hi],
+                                            hash_vec_addrs3[hi],
                                         ),
                                     )
                                 )

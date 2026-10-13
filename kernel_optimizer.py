@@ -49,9 +49,8 @@ def analyze(plan):
 
 
 class Discovery:
-    def __init__(self, observer=None):
+    def __init__(self):
         self.scores = {}
-        self.observer = observer
         self.seed_evaluations = 0
         self.schedule_reservations = set()
 
@@ -76,15 +75,10 @@ class Discovery:
             self.scores[plan] = analyze(plan)[0]
         return self.scores[plan]
 
-    def report(self, phase, cost):
-        if self.observer:
-            self.observer(phase, cost, self.evaluations)
-
     def cache_plan(self):
         seed = compiler._compile_seed()
         self.seed_evaluations = seed.evaluations
         best = self.evaluate(Plan(seed.cache_sites))
-        self.report("automatic-seed", best)
         universe = tuple(
             (b, r)
             for b in range(compiler._BATCH // VLEN)
@@ -101,7 +95,6 @@ class Discovery:
             candidate = min([best, *singles.values()], key=lambda r: r.rank)
             if candidate.cycles < best.cycles and candidate.feasible:
                 best = candidate
-                self.report("cache-toggle", best)
                 continue
             if swapped:
                 break
@@ -130,7 +123,6 @@ class Discovery:
             if candidate.cycles >= best.cycles or not candidate.feasible:
                 break
             best = candidate
-            self.report("cache-swap", best)
         profiles = [
             self.evaluate(replace(best.plan, pairs=(a, b)))
             for a in range(5)
@@ -154,5 +146,4 @@ class Discovery:
                 for s in universe
             )
         best = min([best, *profiles, *joint], key=lambda r: r.rank)
-        self.report("selector-cache-coupling", best)
         return best

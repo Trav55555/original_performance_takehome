@@ -26,8 +26,6 @@ def make_policy(
     horizon = 1
     width = 8
     per_cycle = 1
-    stats = {"forecasts": 0, "decisions": 0, "changed_choices": 0}
-    ir.lookahead_stats = stats
     last_cycle = -1
     used = 0
 
@@ -136,7 +134,6 @@ def make_policy(
             done_now = []
             touched = set()
             order = sorted(queue, key=key)[:width]
-        stats["forecasts"] += 1
         return (-gathers, -frontier)
 
     def policy(
@@ -160,16 +157,12 @@ def make_policy(
         if len(choices) < 2:
             return current
         used += 1
-        stats["decisions"] += 1
         ordered_choices = [current] + [e for e in choices if e != current]
         scores = [
             forecast(i, e, position, ordered, capacity, bundle, done, updates)
             for e in ordered_choices
         ]
         selected = min(range(len(scores)), key=lambda j: scores[j])
-        result = ordered_choices[selected]
-        if result != current:
-            stats["changed_choices"] += 1
-        return result
+        return ordered_choices[selected]
 
     return policy
