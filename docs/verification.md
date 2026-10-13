@@ -41,12 +41,11 @@ The supported contract is root-starting traversal and final values, with non-out
 
 ## Research and diagnostic scripts
 
-Only the named verifiers above are listed here as current verification entry points. The other scripts are retained tools, not a supported run-all test suite.
+`scripts/` holds only the four verifiers above. Everything below is a retained historical tool, not a test suite.
 
 | Files | Role and caution |
 |---|---|
-| `scripts/analyze_*.py`, `profiler.py`, `bottleneck_detector.py`, `visualize_schedule.py`, `value_reuse_profiler.py` | Historical analysis tools. Inspect their imports, shape assumptions and build calls before use; some construct a kernel. |
-| `scripts/breakthrough_experiments.py`, `scheduler_experiments.py`, `experiment_batching.py`, `validate_speculative.py` | Historical experimental drivers, not permission to start another search or evidence of current compatibility. |
+| [`experiments/archive/scripts/`](../experiments/archive/README.md#january-analysis-scripts) | January analysis tools and experimental drivers. They assume the old layout and source revision. Some construct a kernel. |
 | `experiments/baseline.py`, `batch_sweep.py`, `medium_tree_opt.py` | Early prototypes. See the [experiment index](../experiments/README.md#historical-prototypes-and-guides) for their original status. |
 | [`experiments/archive/`](../experiments/archive/README.md) | Historical root-level prototypes and sweep output, relocated without repairing or rerunning their algorithms. Not production entry points. |
 | [`tools/trace/`](../tools/trace/README.md) | Trace viewer and HTML asset. Run `python tools/trace/watch_trace.py` from the root to view an existing `trace.json`. Debug behavior must not change the measured kernel or oracle. |

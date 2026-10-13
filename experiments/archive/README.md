@@ -15,6 +15,17 @@ The following files were relocated from the repository root without changing the
 | [perf_takehome_experiment1.py](perf_takehome_experiment1.py) | Early standalone generator variant, not the public builder |
 | [radical_experiment.py](radical_experiment.py) | Exploratory scalar-node-storage prototype. Its opening claims are not validated conclusions. |
 
+## January analysis scripts
+
+These eleven files moved unchanged from `scripts/` to [`scripts/`](scripts/). They date from January 2026 and were not rerun after the move. Several insert an old absolute path or the working directory into `sys.path`, and three resolve the repository root as their parent's parent, which no longer points at the root.
+
+| File | Role |
+|---|---|
+| `analyze_bottleneck.py`, `analyze_graph.py`, `analyze_kernel.py` | One-off analyses of the January kernel |
+| `bottleneck_detector.py`, `profiler.py`, `visualize_schedule.py` | Engine-utilization and schedule-gap tools described in the [implementation guide](../../docs/history/implementation_guide.md) |
+| `value_reuse_profiler.py` | Recomputation finder for the January generator |
+| `breakthrough_experiments.py`, `scheduler_experiments.py`, `experiment_batching.py`, `validate_speculative.py` | Experimental drivers. They are not permission to start another search. |
+
 The [retry report](../retry_results.md) documents the old sweep's parameter bug. No behavior fixes were folded into this move. Other archived imports and commands also retain assumptions about the old layout and source revision.
 
 To reproduce historical behavior, first identify the relevant commit, required inputs and verification contract. Starting another search requires a new scope and budget. Use the [maintained verification guide](../../docs/verification.md) to check current production.

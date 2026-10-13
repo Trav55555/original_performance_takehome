@@ -247,7 +247,7 @@ The final solution uses a fundamentally different approach: **automatic list sch
 
 ### Session 7: Value Reuse Analysis
 
-Used `scripts/value_reuse_profiler.py` to systematically find recomputation patterns.
+Used `experiments/archive/scripts/value_reuse_profiler.py` to systematically find recomputation patterns.
 
 **Optimization Found**: Level 3 selection was computing `(idx-7)` twice:
 - First to extract bits 0,1 for vselects
@@ -354,12 +354,12 @@ At 92.1% of theoretical minimum, additional gains are marginal.
 
 Three tools in `scripts/` for understanding and optimizing VLIW kernels:
 
-### 1. Bottleneck Detector (`scripts/bottleneck_detector.py`)
+### 1. Bottleneck Detector (`experiments/archive/scripts/bottleneck_detector.py`)
 
 Determines whether kernel is VALU-bound, memory-bound, etc. and provides actionable recommendations.
 
 ```bash
-python scripts/bottleneck_detector.py
+python experiments/archive/scripts/bottleneck_detector.py
 ```
 
 Output:
@@ -369,15 +369,15 @@ Output:
 - Efficiency percentage
 - Specific recommendations based on bottleneck type
 
-### 2. Profiler (`scripts/profiler.py`)
+### 2. Profiler (`experiments/archive/scripts/profiler.py`)
 
 Per-cycle utilization breakdown with histograms and phase analysis.
 
 ```bash
-python scripts/profiler.py                    # Summary + init/drain phases
-python scripts/profiler.py --histogram        # Add utilization histograms
-python scripts/profiler.py --bubbles          # Find low-utilization cycles
-python scripts/profiler.py --phase steady     # Analyze middle section
+python experiments/archive/scripts/profiler.py                    # Summary + init/drain phases
+python experiments/archive/scripts/profiler.py --histogram        # Add utilization histograms
+python experiments/archive/scripts/profiler.py --bubbles          # Find low-utilization cycles
+python experiments/archive/scripts/profiler.py --phase steady     # Analyze middle section
 ```
 
 Output:
@@ -387,14 +387,14 @@ Output:
 - Drain phase breakdown (last 50 cycles)
 - Scheduling bubbles (cycles with VALU <= 3)
 
-### 3. Schedule Visualizer (`scripts/visualize_schedule.py`)
+### 3. Schedule Visualizer (`experiments/archive/scripts/visualize_schedule.py`)
 
 ASCII visualization of VLIW bundles showing gaps and patterns.
 
 ```bash
-python scripts/visualize_schedule.py --gaps           # Find contiguous low-util regions
-python scripts/visualize_schedule.py --start 0 --end 100  # Visualize cycle range
-python scripts/visualize_schedule.py --compact --all  # Full schedule, compact view
+python experiments/archive/scripts/visualize_schedule.py --gaps           # Find contiguous low-util regions
+python experiments/archive/scripts/visualize_schedule.py --start 0 --end 100  # Visualize cycle range
+python experiments/archive/scripts/visualize_schedule.py --compact --all  # Full schedule, compact view
 ```
 
 Output:
@@ -412,13 +412,13 @@ Output:
 ### Example Session
 
 ```bash
-$ python scripts/bottleneck_detector.py
+$ python experiments/archive/scripts/bottleneck_detector.py
 DIAGNOSIS: VALU-BOUND
 Theoretical minimum: 1212 cycles
 Actual: 1305 cycles
 Efficiency: 92.9%
 
-$ python scripts/visualize_schedule.py --gaps
+$ python experiments/archive/scripts/visualize_schedule.py --gaps
 Total gap cycles: 110
   Init phase (first 50): 30 cycles
   Drain phase (last 50): 46 cycles
