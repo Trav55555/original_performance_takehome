@@ -2,6 +2,7 @@
 """Failure-sensitive checks for the discovered compiler's repair boundary."""
 
 from copy import deepcopy
+from dataclasses import replace
 import json
 from pathlib import Path
 import random
@@ -12,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "scripts"), str(ROOT / "tests")]
 import kernel_compiler as compiler
 import kernel_retime as retime
-from kernel_optimizer import Discovery, MAX_EVALUATIONS, Plan, analyze
+from kernel_compiler import Plan, analyze
+from kernel_optimizer import Discovery, MAX_EVALUATIONS
 from kernel_justify import schedule
 from verify_compiler import performance_gate, MAX_CYCLES
 from frozen_problem import Tree, Input
@@ -61,7 +63,7 @@ def main():
             lower.assert_not_called()
     # A real, unmodified over-scratch graph must be rejected before lowering too.
     all_sites = tuple((b, r) for b in range(32) for r in (4, 15))
-    _, _, _, rejected_words = compiler._analyze_sites(all_sites)
+    rejected_words = analyze(Plan(all_sites))[0].scratch
     assert rejected_words > 1536
     with patch.object(
         compiler, "_lower", side_effect=AssertionError("forbidden lowering")
@@ -84,9 +86,8 @@ def main():
             assert "budget exhausted" in str(error)
         else:
             raise AssertionError("Evaluation budget bypassed")
-    pairs, final_blocks, selector_sites = compiled.parameters
     cost, (native_ir, native_logical, native_addresses) = analyze(
-        Plan(compiled.cache_sites, pairs, (), selector_sites)
+        replace(compiled.plan, final_blocks=())
     )
     assert cost.feasible and cost.cycles == 981
     kernel = KernelBuilder()
@@ -117,7 +118,7 @@ def main():
     }
     last = min(stores, key=lambda b: (-stores[b], b))
     _, (overflow_ir, overflow_logical, _) = analyze(
-        Plan(compiled.cache_sites, pairs, (last,), selector_sites)
+        replace(compiled.plan, final_blocks=(last,))
     )
     overflow_model = retime.capture(overflow_ir, overflow_logical)
     overflow_times = schedule(overflow_model, tie="tail")

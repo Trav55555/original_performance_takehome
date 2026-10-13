@@ -13,7 +13,8 @@ import kernel_compiler as compiler
 import kernel_refinement as refinement
 import kernel_retime as retime
 from kernel_justify import schedule
-from kernel_optimizer import Discovery, MAX_EVALUATIONS, Plan
+from kernel_compiler import Plan
+from kernel_optimizer import Discovery, MAX_EVALUATIONS
 from frozen_problem import Machine, DebugInfo
 
 

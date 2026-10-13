@@ -279,19 +279,45 @@ def _build_ir(
             op.args = (anchor,)
             op.kind = "const_choice"
             op.preferred = "load"
-    needed = {i for i, op in enumerate(ir.ops) if op.kind == "vstore"}
-    todo = list(needed)
-    while todo:
-        for value, _ in ir.ops[todo.pop()].args:
-            parent = ir.producer[value]
-            if parent not in needed:
-                needed.add(parent)
-                todo.append(parent)
+    needed = _ancestors(ir, {i for i, op in enumerate(ir.ops) if op.kind == "vstore"})
     ir.ops = [op for i, op in enumerate(ir.ops) if i in needed]
     for i, op in enumerate(ir.ops):
         if op.dst is not None:
             ir.producer[op.dst] = i
     return ir
+
+
+def _ancestors(ir: _IR, roots: set[int]) -> set[int]:
+    """Operation indices in `roots` plus every operation they transitively read."""
+    found = set(roots)
+    todo = list(roots)
+    while todo:
+        for value, _ in ir.ops[todo.pop()].args:
+            parent = ir.producer[value]
+            if parent not in found:
+                found.add(parent)
+                todo.append(parent)
+    return found
+
+
+def _graph_metrics(ir: _IR):
+    """Successor lists, critical-path lengths and distances to the next load."""
+    ops = ir.ops
+    successors = [[] for _ in ops]
+    for i, op in enumerate(ops):
+        for value in {v for v, _ in op.args}:
+            successors[ir.producer[value]].append(i)
+    critical, distance = [0] * len(ops), [4] * len(ops)
+    for i in range(len(ops) - 1, -1, -1):
+        critical[i] = (4 if ops[i].kind == "gather" else 1) + max(
+            (critical[j] for j in successors[i]), default=0
+        )
+        distance[i] = (
+            0
+            if _engine_cost(ops[i], ir.widths)[0] == "load"
+            else min((distance[j] + 1 for j in successors[i]), default=4)
+        )
+    return successors, critical, distance
 
 
 def _engine_cost(op, widths, selected=None):
@@ -320,15 +346,7 @@ def _startup_ancestry(ir: _IR):
     targets = {
         ir.producer[value] for block, value in ir.first_gathers.items() if block < 4
     }
-    ancestors = set(targets)
-    todo = list(targets)
-    while todo:
-        for value, _ in ir.ops[todo.pop()].args:
-            parent = ir.producer[value]
-            if parent not in ancestors:
-                ancestors.add(parent)
-                todo.append(parent)
-    return targets, ancestors
+    return targets, _ancestors(ir, targets)
 
 
 def _schedule(ir: _IR, lookahead=False, startup=False):
@@ -338,26 +356,16 @@ def _schedule(ir: _IR, lookahead=False, startup=False):
     expansion can issue some lanes while others await operands or issue slots.
     """
     ops = ir.ops
-    successors = [[] for _ in ops]
+    successors, critical, distance = _graph_metrics(ir)
     remaining = [0] * len(ir.widths)
-    for i, op in enumerate(ops):
+    for op in ops:
         for value in {v for v, _ in op.args}:
-            successors[ir.producer[value]].append(i)
             remaining[value] += 1
-    critical, distance, position = [0] * len(ops), [4] * len(ops), []
+    position = []
     count = 0
     for op in ops:
         position.append(count)
         count += _engine_cost(op, ir.widths)[1]
-    for i in range(len(ops) - 1, -1, -1):
-        critical[i] = (4 if ops[i].kind == "gather" else 1) + max(
-            (critical[j] for j in successors[i]), default=0
-        )
-        distance[i] = (
-            0
-            if _engine_cost(ops[i], ir.widths)[0] == "load"
-            else min((distance[j] + 1 for j in successors[i]), default=4)
-        )
     priority = [
         position[i] - 50 * critical[i] - 600 * max(0, 4 - distance[i])
         for i in range(len(ops))
@@ -600,15 +608,56 @@ def _lower(ir, logical, addresses) -> list[Bundle]:
     return result
 
 
+@dataclass(frozen=True, order=True)
+class Plan:
+    """Compiler choices for one candidate graph; no runtime data."""
+
+    sites: tuple[Site, ...]
+    pairs: tuple = (2, 2)
+    final_blocks: tuple = ()
+    selector_sites: tuple = ()
+
+
+@dataclass(frozen=True)
+class Cost:
+    cycles: int
+    scratch: int
+    plan: Plan
+
+    @property
+    def feasible(self):
+        return self.scratch <= SCRATCH_SIZE
+
+    @property
+    def rank(self):
+        return (not self.feasible, self.cycles, self.scratch, self.plan)
+
+
+def analyze(plan: Plan, *, advanced=True, startup=True):
+    """Schedule and allocate one plan; the final pause counts as a cycle."""
+    ir = _build_ir(
+        plan.sites,
+        advanced=advanced,
+        pairs=plan.pairs,
+        final_blocks=plan.final_blocks,
+        selector_sites=plan.selector_sites,
+    )
+    logical, starts, ends = _schedule(
+        ir, lookahead=advanced, startup=advanced and startup
+    )
+    addresses, scratch = _allocate(ir, starts, ends)
+    cycles = len(logical) + bool(any(e == "flow" for _, e, _, _ in logical[-1]))
+    return Cost(cycles, scratch, plan), (ir, logical, addresses)
+
+
 @dataclass(frozen=True)
 class CompiledKernel:
     """Immutable cached compilation; callers receive fresh mutable bundles."""
 
     bundles: tuple
     scratch_size: int
-    cache_sites: tuple[Site, ...]
+    plan: Plan
     evaluations: int = 0
-    parameters: tuple = ()
     logical: tuple = ()
     addresses: tuple = ()
     solver_queries: int = 0
@@ -617,49 +666,29 @@ class CompiledKernel:
     def cycles(self):
         return len(self.bundles)
 
+    @property
+    def cache_sites(self) -> tuple[Site, ...]:
+        return self.plan.sites
+
     def materialize(self) -> list[Bundle]:
         return [
             {engine: list(slots) for engine, slots in bundle} for bundle in self.bundles
         ]
 
 
-def _analyze_sites(sites: tuple[Site, ...], advanced=True, startup=True):
-    ir = _build_ir(sites, advanced=advanced)
-    logical, starts, ends = _schedule(
-        ir, lookahead=advanced, startup=advanced and startup
-    )
-    addresses, scratch = _allocate(ir, starts, ends)
-    return ir, logical, addresses, scratch
-
-
 def _compile_sites(
     sites: tuple[Site, ...], advanced=True, startup=True
 ) -> CompiledKernel:
-    ir, logical, addresses, scratch = _analyze_sites(
-        sites, advanced=advanced, startup=startup
+    cost, (ir, logical, addresses) = analyze(
+        Plan(sites), advanced=advanced, startup=startup
     )
-    if scratch > SCRATCH_SIZE:
-        raise ValueError(("Scratch limit exceeded", scratch, SCRATCH_SIZE))
+    if not cost.feasible:
+        raise ValueError(("Scratch limit exceeded", cost.scratch, SCRATCH_SIZE))
     program = _lower(ir, logical, addresses)
     return CompiledKernel(
         tuple(tuple((e, tuple(slots)) for e, slots in b.items()) for b in program),
-        scratch,
-        sites,
-    )
-
-
-@dataclass(frozen=True)
-class _Cost:
-    cycles: int
-    scratch_size: int
-    cache_sites: tuple[Site, ...]
-
-
-def _rank(candidate):
-    return (
-        candidate.cycles if candidate.scratch_size <= SCRATCH_SIZE else float("inf"),
-        candidate.scratch_size,
-        candidate.cache_sites,
+        cost.scratch,
+        cost.plan,
     )
 
 
@@ -684,9 +713,7 @@ def _compile_baseline() -> CompiledKernel:
     def evaluate(selected):
         selected = tuple(sorted(selected))
         if selected not in seen:
-            _, logical, _, scratch = _analyze_sites(selected, advanced=False)
-            cycles = len(logical) + any(e == "flow" for _, e, _, _ in logical[-1])
-            seen[selected] = _Cost(cycles, scratch, selected)
+            seen[selected] = analyze(Plan(selected), advanced=False)[0]
         return seen[selected]
 
     best = evaluate(())
@@ -694,22 +721,19 @@ def _compile_baseline() -> CompiledKernel:
     for _ in range(16):
         candidate = best
         for site in sites:
-            if site in best.cache_sites:
+            if site in best.plan.sites:
                 continue
-            row = evaluate(best.cache_sites + (site,))
-            candidate = min(candidate, row, key=_rank)
-            if (
-                row.scratch_size <= SCRATCH_SIZE
-                and row.cycles <= best.cycles - gather_budget
-            ):
+            row = evaluate(best.plan.sites + (site,))
+            candidate = min(candidate, row, key=lambda cost: cost.rank)
+            if row.feasible and row.cycles <= best.cycles - gather_budget:
                 break
-        if _rank(candidate) >= _rank(best):
+        if candidate.rank >= best.rank:
             break
         best = candidate
         if best.cycles <= _TARGET_CYCLES:
             break
     if best.cycles > _TARGET_CYCLES:
-        current = best.cache_sites
+        current = best.plan.sites
         rows = []
         for old in current:
             for site in sites:
@@ -717,13 +741,11 @@ def _compile_baseline() -> CompiledKernel:
                     rows.append(
                         evaluate(tuple(s for s in current if s != old) + (site,))
                     )
-        best = min([best, *rows], key=_rank)
-    assert best.scratch_size <= SCRATCH_SIZE, "No scratch-feasible compilation"
-    program = _compile_sites(best.cache_sites, advanced=False)
-    assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch_size)
-    return CompiledKernel(
-        program.bundles, program.scratch_size, program.cache_sites, len(seen)
-    )
+        best = min([best, *rows], key=lambda cost: cost.rank)
+    assert best.feasible, "No scratch-feasible compilation"
+    program = _compile_sites(best.plan.sites, advanced=False)
+    assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch)
+    return CompiledKernel(program.bundles, program.scratch_size, program.plan, len(seen))
 
 
 @lru_cache(maxsize=2)
@@ -744,27 +766,25 @@ def _compile_seed(*, startup=True) -> CompiledKernel:
     def evaluate(sites):
         selected = tuple(sorted(sites))
         if selected not in seen:
-            _, logical, _, scratch = _analyze_sites(selected, startup=startup)
-            cycles = len(logical) + any(e == "flow" for _, e, _, _ in logical[-1])
-            seen[selected] = _Cost(cycles, scratch, selected)
+            seen[selected] = analyze(Plan(selected), startup=startup)[0]
         return seen[selected]
 
     universe = tuple((b, r) for b in range(_BATCH // VLEN) for r in (4, 15))
     best = evaluate(baseline.cache_sites)
     for _ in range(2):
-        neighbors = [evaluate(set(best.cache_sites) ^ {site}) for site in universe]
-        candidate = min([best, *neighbors], key=_rank)
+        neighbors = [evaluate(set(best.plan.sites) ^ {site}) for site in universe]
+        candidate = min([best, *neighbors], key=lambda cost: cost.rank)
         if candidate == best:
             break
         best = candidate
-    if best.scratch_size > SCRATCH_SIZE:
+    if not best.feasible:
         raise ValueError("No scratch-feasible advanced compilation")
-    program = _compile_sites(best.cache_sites, startup=startup)
-    assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch_size)
+    program = _compile_sites(best.plan.sites, startup=startup)
+    assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch)
     return CompiledKernel(
         program.bundles,
         program.scratch_size,
-        program.cache_sites,
+        program.plan,
         baseline.evaluations + len(seen),
     )
 
@@ -797,15 +817,13 @@ def compile_benchmark(*, startup=True) -> CompiledKernel:
 
     discovery = Discovery()
     result = finish(discovery, discovery.cache_plan())
-    plan = result.cost.plan
     return CompiledKernel(
         tuple(
             tuple((e, tuple(slots)) for e, slots in b.items()) for b in result.program
         ),
         result.cost.scratch,
-        plan.sites,
+        result.cost.plan,
         result.evaluations,
-        (plan.pairs, plan.final_blocks, plan.selector_sites),
         tuple(tuple(bundle) for bundle in result.logical),
         tuple(sorted(result.addresses.items())),
         result.solver_queries,
@@ -814,15 +832,15 @@ def compile_benchmark(*, startup=True) -> CompiledKernel:
 
 def _analyze_compiled(compiled):
     """Rebuild SSA independently for checking the generated in-memory trace."""
-    if not compiled.parameters:
+    if not compiled.logical:
         raise ValueError("Only discovered compilations carry a repair trace")
-    pairs, final_blocks, selector_sites = compiled.parameters
+    plan = compiled.plan
     ir = _build_ir(
-        compiled.cache_sites,
+        plan.sites,
         advanced=True,
-        pairs=pairs,
-        final_blocks=final_blocks,
-        selector_sites=selector_sites,
+        pairs=plan.pairs,
+        final_blocks=plan.final_blocks,
+        selector_sites=plan.selector_sites,
     )
     return (
         ir,

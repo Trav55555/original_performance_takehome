@@ -4,48 +4,12 @@ Only instruction scheduling and allocation determine scores. Neither the runtime
 machine nor tree/input values are available to this module.
 """
 
-from dataclasses import dataclass, replace
+from dataclasses import replace
 import kernel_compiler as compiler
+from kernel_compiler import Plan, analyze
 from problem import SCRATCH_SIZE, VLEN
 
 MAX_EVALUATIONS = 4096
-
-
-@dataclass(frozen=True, order=True)
-class Plan:
-    sites: tuple
-    pairs: tuple = (2, 2)
-    final_blocks: tuple = ()
-    selector_sites: tuple = ()
-
-
-@dataclass(frozen=True)
-class Cost:
-    cycles: int
-    scratch: int
-    plan: Plan
-
-    @property
-    def feasible(self):
-        return self.scratch <= SCRATCH_SIZE
-
-    @property
-    def rank(self):
-        return (not self.feasible, self.cycles, self.scratch, self.plan)
-
-
-def analyze(plan):
-    ir = compiler._build_ir(
-        plan.sites,
-        advanced=True,
-        pairs=plan.pairs,
-        final_blocks=plan.final_blocks,
-        selector_sites=plan.selector_sites,
-    )
-    logical, starts, ends = compiler._schedule(ir, lookahead=True, startup=True)
-    addresses, scratch = compiler._allocate(ir, starts, ends)
-    cycles = len(logical) + bool(any(e == "flow" for _, e, _, _ in logical[-1]))
-    return Cost(cycles, scratch, plan), (ir, logical, addresses)
 
 
 class Discovery:

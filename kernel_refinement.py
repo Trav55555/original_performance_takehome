@@ -3,7 +3,7 @@
 from dataclasses import dataclass, replace
 from itertools import combinations
 import kernel_compiler as compiler
-from kernel_optimizer import Cost, analyze
+from kernel_compiler import Cost, analyze
 import kernel_retime as retime
 from kernel_justify import schedule
 from kernel_checks import lane_identity
@@ -40,20 +40,7 @@ def candidates(discovery, best):
         stores = {
             op.block: issue[i] for i, op in enumerate(ir.ops) if op.kind == "vstore"
         }
-        successors = [[] for _ in ir.ops]
-        for i, op in enumerate(ir.ops):
-            for value in {v for v, _ in op.args}:
-                successors[ir.producer[value]].append(i)
-        critical, distance = [0] * len(ir.ops), [4] * len(ir.ops)
-        for i in reversed(range(len(ir.ops))):
-            critical[i] = (4 if ir.ops[i].kind == "gather" else 1) + max(
-                (critical[j] for j in successors[i]), default=0
-            )
-            distance[i] = (
-                0
-                if compiler._engine_cost(ir.ops[i], ir.widths)[0] == "load"
-                else min((distance[j] + 1 for j in successors[i]), default=4)
-            )
+        _, critical, distance = compiler._graph_metrics(ir)
         leaves = [
             i
             for i, op in enumerate(ir.ops)

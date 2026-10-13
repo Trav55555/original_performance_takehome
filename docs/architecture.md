@@ -33,8 +33,8 @@ The legacy generator remains necessary for fallback behavior and historical cont
 | File | Responsibility and useful symbols |
 |---|---|
 | [`perf_takehome.py`](../perf_takehome.py) | Public builder, dispatch, legacy generator and its physical-register scheduler |
-| [`kernel_compiler.py`](../kernel_compiler.py) | `_IR`, `_build_ir`, native `_schedule`, lifetime `_allocate`, instruction `_lower`, `CompiledKernel`, `compile_benchmark` |
-| [`kernel_optimizer.py`](../kernel_optimizer.py) | Immutable `Plan`, schedule/allocation `Cost`, memoized `Discovery`, cache/profile neighborhoods and score budget |
+| [`kernel_compiler.py`](../kernel_compiler.py) | `_IR`, `_build_ir`, native `_schedule`, lifetime `_allocate`, instruction `_lower`, immutable `Plan`, schedule/allocation `Cost` and `analyze`, `CompiledKernel`, `compile_benchmark` |
+| [`kernel_optimizer.py`](../kernel_optimizer.py) | Memoized `Discovery`, cache/profile neighborhoods and score budget |
 | [`kernel_refinement.py`](../kernel_refinement.py) | `candidates`, `finish`, `justify_finals`; late selector/final-hash choices and orchestration |
 | [`kernel_justify.py`](../kernel_justify.py) | One fixed-engine backward/forward `schedule`, under native, dependence-tail or startup-ancestry order |
 | [`kernel_retime.py`](../kernel_retime.py) | Lane-job graph capture/validation, necessary-window preflight and fresh retiming allocation; also retained exact-solver tools |
