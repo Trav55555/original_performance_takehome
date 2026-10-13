@@ -745,7 +745,9 @@ def _compile_baseline() -> CompiledKernel:
     assert best.feasible, "No scratch-feasible compilation"
     program = _compile_sites(best.plan.sites, advanced=False)
     assert (program.cycles, program.scratch_size) == (best.cycles, best.scratch)
-    return CompiledKernel(program.bundles, program.scratch_size, program.plan, len(seen))
+    return CompiledKernel(
+        program.bundles, program.scratch_size, program.plan, len(seen)
+    )
 
 
 @lru_cache(maxsize=2)
