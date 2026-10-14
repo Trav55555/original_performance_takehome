@@ -74,6 +74,6 @@ Production still calls `kernel_retime.capture`, `preflight`, `validate` and `low
 
 Production does not read `experiments/`, receipts, saved site lists or saved timings. Some verifiers deliberately construct historical controls; that is separate from production discovery.
 
-Historical notes are in [docs/history](history/README.md), prototype code in [experiments/archive](../experiments/archive/README.md), and the viewer in [tools/trace](../tools/trace/README.md). The root intentionally retains the submission API, simulator and production compiler modules.
+Historical notes are in [docs/history](history/README.md), prototype code in [experiments/archive](../experiments/archive/README.md), the viewer in [tools/trace](../tools/trace/README.md) and the summary-page generator in `tools/site/`. The root intentionally retains the submission API, simulator and production compiler modules.
 
 Keep those root module paths stable during documentation work. The [source-only verifier](../scripts/verify_compiler.py) copies an explicit source-file list into an isolated directory. Moving code requires updating that contract and rerunning the affected verification, not just fixing Markdown links.

@@ -21,6 +21,8 @@ The submission suite's historical speed thresholds are looser than 975. Passing 
 
 Cold discovery took 14.5 to 15.7 minutes per process in the full compiler verifier. Its complete run, including three discoveries and the other checks, took about 45 minutes 49 seconds. These are planning estimates from recorded measurements, not portable runtime guarantees. Other verifiers also spend time constructing controls.
 
+The `Checks` workflow runs the integrity `git diff`, `verify_justify.py` and `verify_random_graphs.py` on every push and pull request. It also proves the saved 975-cycle program in [`program.json`](../experiments/promotion_975_evidence/program.json) and requires its digest to be `861864c8`. CI does not run a cold build, so it does not show that the current compiler still emits that program.
+
 Every command starts a separate Python process and therefore a separate compiler cache. Running all commands in succession repeats discovery. The inexpensive scheduling check does not replace the full-kernel gates.
 
 ## Match verification to the change
@@ -50,6 +52,7 @@ The supported contract is root-starting traversal and final values, with non-out
 | [`experiments/archive/scripts/`](../experiments/archive/README.md#january-analysis-scripts) | January analysis tools and experimental drivers. They assume the old layout and source revision. Some construct a kernel. |
 | `experiments/baseline.py`, `batch_sweep.py`, `medium_tree_opt.py` | Early prototypes. See the [experiment index](../experiments/README.md#historical-prototypes-and-guides) for their original status. |
 | [`experiments/archive/`](../experiments/archive/README.md) | Historical root-level prototypes and sweep output, relocated without repairing or rerunning their algorithms. Not production entry points. |
+| `tools/site/` | Generator for the GitHub Pages summary. `python tools/site/build.py --program experiments/promotion_975_evidence/program.json` rewrites `site/index.html`; it refuses a program whose digest differs from the one the page describes. |
 | [`tools/trace/`](../tools/trace/README.md) | Trace viewer and HTML asset. Run `python tools/trace/watch_trace.py` from the root to view an existing `trace.json`. Debug behavior must not change the measured kernel or oracle. |
 
 No historical driver was rerun to prepare this guide. Old `/tmp` commands may depend on missing artifacts or source hashes from a different compiler version. Do not adjust old receipts to make those guards pass. New searches need a new scope and budget.

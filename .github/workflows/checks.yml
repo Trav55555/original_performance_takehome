@@ -1,0 +1,33 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - name: Frozen tests and simulator unchanged
+        run: git diff --exit-code 5452f74 -- tests/ problem.py
+      - run: python scripts/verify_justify.py
+      - run: python scripts/verify_random_graphs.py
+      - name: Prove the saved 975-cycle program
+        run: |
+          python scripts/verify_equivalence.py \
+            --program experiments/promotion_975_evidence/program.json > proof.json
+          cat proof.json
+          python -c "import json; r = json.load(open('proof.json')); assert r['digest'] == '861864c85979d75993f9e07187b6bde2035b9d4085b9f6d2acb81622ad67138b', r['digest']"

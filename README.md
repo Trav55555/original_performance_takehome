@@ -39,8 +39,9 @@ Table 2 points each reader goal to the relevant document.
 | Follow the project from 147,734 to 975 cycles | [Performance history and milestone ledger](docs/performance-progression.md) |
 | Look up a technique or research result | [Technique and research wiki](docs/reference/README.md) |
 | Inspect reports and raw evidence | [Experiment index](experiments/README.md) |
+| See open work | [To do](TODO.md) |
 
-Historical notes are in [`docs/history/`](docs/history/README.md). Archived prototype code and old analysis scripts are in [`experiments/archive/`](experiments/archive/README.md). The trace viewer is in [`tools/trace/`](tools/trace/README.md). None of these are current compiler or verification guidance.
+Historical notes are in [`docs/history/`](docs/history/README.md). Archived prototype code and old analysis scripts are in [`experiments/archive/`](experiments/archive/README.md). The trace viewer is in [`tools/trace/`](tools/trace/README.md), and the generator for the summary page is in `tools/site/`. None of these are current compiler or verification guidance.
 
 The repository root holds the submission entry point, the simulator, the production `kernel_*.py` modules and the environment files. The submission and the source-only rebuild import these modules by their flat names, so they stay at the root.
 
@@ -83,7 +84,7 @@ If the search finds no legal program at 975 cycles or fewer, compilation fails r
 
 ## 5. Results
 
-The verified build scored 1,963 candidates out of a budget of 4,096 and emitted a 975-cycle program that uses 1,469 scratch words. A cold build took 15 to 16 minutes, because the compiler keeps no disk cache and every new Python process searches again. A second build in the same process took about 4 ms. The emitted kernel does not use Z3.
+The verified build scored 1,963 candidates out of a budget of 4,096 and emitted a 975-cycle program that uses 1,469 scratch words. A cold build took 15 to 18 minutes, because the compiler keeps no disk cache and every new Python process searches again. A second build in the same process took about 4 ms. The emitted kernel does not use Z3.
 
 The current instruction stream has 5,800 VALU operations. On six VALU slots these need at least 967 cycles. That bound ignores dependencies, so 967 cycles may be out of reach. An exact search for 979 cycles on an older graph ran out of its 2 GiB memory cap after 16 hours 52 minutes without an answer.
 
@@ -159,7 +160,7 @@ To run the supplementary checks, run each command in Table A1.
 | `python scripts/verify_equivalence.py` | One cold build, then about a minute of proof; `--program` checks a saved program without building |
 | `git diff --exit-code 5452f74 -- tests/ problem.py` | Seconds |
 
-The [verification guide](docs/verification.md) lists what each command covers.
+The [verification guide](docs/verification.md) lists what each command covers. Continuous integration runs the commands that take seconds and proves the saved 975-cycle program on every push.
 
 Before you report a score, run both of the following commands and state that you ran them. The `git diff` must print nothing.
 

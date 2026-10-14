@@ -79,7 +79,7 @@
 <p>Removing instructions from one engine often adds contention on another. Caching trades gathers for selection work, and arithmetic selectors move work from flow to vector arithmetic. Only the complete schedule shows whether a change helps.</p>
 
 <h2><span class="num">3</span>Results</h2>
-<p>The verified build scored 1,963 candidates out of a budget of 4,096. A cold build took 15 to 16 minutes, because every new process searches again; a second build in the same process took about 4&nbsp;ms. The emitted kernel does not use Z3.</p>
+<p>The verified build scored 1,963 candidates out of a budget of 4,096. A cold build took 15 to 18 minutes, because every new process searches again; a second build in the same process took about 4&nbsp;ms. The emitted kernel does not use Z3.</p>
 <figure>
 {{utilization}}
 <figcaption><b>Figure 5.</b> Slot use per engine in 25-cycle windows of the emitted program (digest <code>861864c8</code>). Darker is busier. Loads dip once near the start; all 32 stores fall in the last 75 cycles.</figcaption>
