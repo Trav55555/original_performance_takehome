@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A 975-Cycle Kernel for Anthropic's Original Performance Take-Home</title>
+<meta name="description" content="A search-based compiler that runs Anthropic's original performance take-home in 975 cycles, with a Z3 equivalence proof.">
+<style>
+  :root { --ink: #1b1f24; --muted: #5b6470; --rule: #d8dde3; --accent: #0b3d91; --red: #fc3d21; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: var(--ink); background: #fff; font: 17px/1.6 Georgia, "Times New Roman", serif; }
+  header { background: var(--accent); color: #fff; padding: 48px 24px 40px; }
+  header .inner, main { max-width: 900px; margin: 0 auto; }
+  header p.kicker { font: 600 13px/1 Helvetica, Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; opacity: .8; margin: 0 0 14px; }
+  h1 { font-size: 34px; line-height: 1.2; margin: 0 0 18px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 28px; font-family: Helvetica, Arial, sans-serif; }
+  .stats div { min-width: 140px; }
+  .stats b { display: block; font-size: 30px; }
+  .stats span { font-size: 13px; opacity: .85; }
+  main { padding: 8px 24px 64px; }
+  h2 { font: 700 21px/1.3 Helvetica, Arial, sans-serif; margin: 44px 0 10px; padding-top: 12px; border-top: 2px solid var(--ink); }
+  h2 .num { color: var(--accent); margin-right: .4em; }
+  figure { margin: 26px 0; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font: 14px/1.5 Helvetica, Arial, sans-serif; color: var(--muted); margin-top: 8px; }
+  figcaption b { color: var(--ink); }
+  table { border-collapse: collapse; width: 100%; font: 14px/1.45 Helvetica, Arial, sans-serif; margin: 12px 0; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { border-bottom: 2px solid var(--ink); }
+  td.n { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  code { font: 14px Menlo, Consolas, monospace; background: #f3f5f7; padding: 1px 4px; border-radius: 3px; }
+  .caution { border-left: 4px solid var(--red); background: #fff4f2; padding: 10px 14px; font-family: Helvetica, Arial, sans-serif; font-size: 15px; }
+  a { color: var(--accent); }
+  footer { max-width: 900px; margin: 0 auto; padding: 0 24px 48px; font: 13px Helvetica, Arial, sans-serif; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <p class="kicker">Technical summary</p>
+    <h1>A 975-Cycle Kernel for Anthropic's Original Performance Take-Home</h1>
+    <div class="stats">
+      <div><b>975</b><span>cycles on the benchmark</span></div>
+      <div><b>152&times;</b><span>faster than the 147,734-cycle baseline</span></div>
+      <div><b>1,469</b><span>of 1,536 scratch words</span></div>
+      <div><b>Proved</b><span>equal to the reference by Z3</span></div>
+    </div>
+  </div>
+</header>
+<main>
+
+<h2>Summary</h2>
+<p>A search-based compiler produces a kernel that runs the benchmark in 975 cycles. The recorded scalar baseline takes 147,734 cycles. The compiler calls no solver. Two isolated rebuilds from source alone reproduced the same program digest, and a proof with the Z3 satisfiability-modulo-theories (SMT) solver shows the emitted program matches the reference for every tree and input value on the benchmark shape, with traversals starting at the root.</p>
+<p>Nobody has shown that 975 cycles is optimal. The program's 5,800 vector operations need at least 967 cycles on six vector slots, but that bound ignores dependencies.</p>
+
+<figure>
+{{history}}
+<figcaption><b>Figure 1.</b> Cycle count by development stage, log scale. The September compiler phase cut the count from 1,303 to 975, a reduction of 25.2%. January counts come from commit and session measurements and were not rerun under the current gates.</figcaption>
+</figure>
+
+<h2><span class="num">1</span>Problem</h2>
+<p>The benchmark walks a height-10 tree of 2,047 nodes. A batch of 256 inputs takes 16 rounds. In each round, every input hashes its value with the current node's value, then moves to a child chosen by the hash. After a leaf it returns to the root.</p>
+<figure>
+{{round}}
+<figcaption><b>Figure 2.</b> Work for one input in one round. The kernel performs this 4,096 times.</figcaption>
+</figure>
+<p>The kernel runs on one core of a simulated very long instruction word (VLIW) machine with eight-lane single-instruction, multiple-data (SIMD) vector units. Each cycle issues one bundle. Every instruction in a bundle reads the state from the start of the cycle, and writes land at the end.</p>
+<figure>
+{{machine}}
+<figcaption><b>Figure 3.</b> Engine slots per cycle (left) and the share of those slots the 975-cycle program fills (right). Four of the five engines are at least 96.8% busy. The program issues 11,524 scalar, 5,800 vector, 1,888 load, 945 flow and 32 store operations.</figcaption>
+</figure>
+
+<h2><span class="num">2</span>Method</h2>
+<p>The compiler searches over two choices: cache sites, which serve tree lookups from scratch instead of gathering them from memory, and selectors to move from the flow engine to vector arithmetic. For each candidate it builds a graph, schedules it backward and then forward, and allocates scratch afresh. The forward pass tries three priority orders; one promotes the ancestors of the first 26 gathers. On the best schedule, the compiler tries final-hash rewrites on the two blocks that finish last.</p>
+<figure>
+{{compiler}}
+<figcaption><b>Figure 4.</b> Compiler pipeline. Every choice is scored by the length of a complete schedule. The compiler reads no saved configuration, timing table or physical program, and never sees runtime input values. If no legal program reaches 975 cycles, compilation fails instead of returning a slower kernel.</figcaption>
+</figure>
+<p>Removing instructions from one engine often adds contention on another. Caching trades gathers for selection work, and arithmetic selectors move work from flow to vector arithmetic. Only the complete schedule shows whether a change helps.</p>
+
+<h2><span class="num">3</span>Results</h2>
+<p>The verified build scored 1,963 candidates out of a budget of 4,096. A cold build took 15 to 16 minutes, because every new process searches again; a second build in the same process took about 4&nbsp;ms. The emitted kernel does not use Z3.</p>
+<figure>
+{{utilization}}
+<figcaption><b>Figure 5.</b> Slot use per engine in 25-cycle windows of the emitted program (digest <code>861864c8</code>). Darker is busier. Loads dip once near the start; all 32 stores fall in the last 75 cycles.</figcaption>
+</figure>
+
+<h2><span class="num">4</span>Verification</h2>
+<p>The verifiers built the kernel through the public <code>KernelBuilder</code> and ran the nine frozen submission tests, 100 generated inputs, 100 full-width inputs, five asymmetric patterns and nine other root-starting shapes. They checked lane ownership, dependencies, scratch limits and fallbacks, and rejected executed controls at 980, 1,041, 1,042, 1,052, 1,076 and 1,082 cycles. Two source-only rebuilds at hash seeds 0 and 17 reproduced the program digest.</p>
+<figure>
+{{proof}}
+<figcaption><b>Figure 6.</b> Stages of the equivalence proof. Random runs only propose cut points; Z3 proves each one before it is used, so a coincidence cannot make a wrong program pass. A mutant that is wrong for a single input value passes every random run and still fails the proof.</figcaption>
+</figure>
+
+<h2><span class="num">5</span>Limitations</h2>
+<ul>
+  <li>The kernel assumes traversals start at the root.</li>
+  <li>It writes final values and leaves every other memory word unchanged, but it does not write final indices.</li>
+  <li>The checks, including the proof, do not cover non-root starts or arbitrary dimensions.</li>
+  <li>Optimality is unproven. An exact search for 979 cycles on an older graph ran out of its 2&nbsp;GiB memory cap after 16 hours 52 minutes.</li>
+</ul>
+
+<h2><span class="num">6</span>Context</h2>
+<p>Anthropic's original take-home allowed four hours. After Claude Opus 4 beat most human results, Anthropic switched to a two-hour version that started at 18,532 cycles. This repository uses that version's tools, with the starter code reset to the slow baseline. Table 1 lists the results Anthropic reported from the 18,532-cycle start. The runs had different lengths, and the 975-cycle result is not a two-hour attempt.</p>
+<table>
+  <caption style="caption-side: top; text-align: left; font-weight: 600; padding-bottom: 6px;">Table 1. Model results reported by Anthropic.</caption>
+  <tr><th style="text-align: right">Cycles</th><th>Reported run</th></tr>
+  <tr><td class="n">2,164</td><td>Claude Opus 4 after many hours</td></tr>
+  <tr><td class="n">1,790</td><td>Opus 4.5 casual run, about the best human result in two hours</td></tr>
+  <tr><td class="n">1,579</td><td>Opus 4.5 after two hours</td></tr>
+  <tr><td class="n">1,548</td><td>Sonnet 4.5 after many hours</td></tr>
+  <tr><td class="n">1,487</td><td>Opus 4.5 after 11.5 hours</td></tr>
+  <tr><td class="n">1,363</td><td>Opus 4.5 with an improved test setup</td></tr>
+</table>
+
+<h2><span class="num">7</span>Reproduce</h2>
+<p class="caution"><b>Caution:</b> do not modify <code>tests/</code> or <code>problem.py</code>. Anthropic reported that every first-day submission below 1,300 cycles was invalid because the agents had edited the tests.</p>
+<p>Clone the <a href="https://github.com/Trav55555/original_performance_takehome">repository</a>, install <code>requirements.txt</code> in a virtual environment and run <code>python tests/submission_tests.py</code> with assertions enabled. Run <code>git diff 5452f74 -- tests/ problem.py</code> and confirm it prints nothing. The <a href="https://github.com/Trav55555/original_performance_takehome#appendix-a-build-and-verification-procedure">build and verification procedure</a> lists the supplementary checks, including <code>python scripts/verify_equivalence.py</code>.</p>
+</main>
+<footer>Figures 3 and 5 are computed from the emitted 975-cycle program. Source: <a href="https://github.com/Trav55555/original_performance_takehome">Trav55555/original_performance_takehome</a>.</footer>
+</body>
+</html>
