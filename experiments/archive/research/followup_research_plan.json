@@ -1,0 +1,179 @@
+{
+  "status": "proposed-not-started",
+  "execution_requires_approval": true,
+  "objective": {
+    "incumbent_cycles": 981,
+    "incumbent_scratch_words": 1449,
+    "success_max_executed_cycles": 980,
+    "scratch_limit_words": 1536,
+    "memory_only_counts_as_speed_success": false,
+    "metric": "complete legally executed frozen-verified cycles"
+  },
+  "baseline_workspace": "/tmp/perf-breakthrough.nxDOHi",
+  "baselines": {
+    "H": {
+      "config_file": "baselines.json",
+      "config_key": "H",
+      "cycles": 981,
+      "scratch_words": 1449,
+      "instruction_digest": "bb9d4d571efe957980370c8ec758ff3b914b6309d146d80e9ab8dfc4ea73e6b5"
+    },
+    "A": {
+      "config_file": "verified_best.json",
+      "config_key": "config",
+      "cycles": 981,
+      "scratch_words": 1449,
+      "instruction_digest": "504932cb0e5bb31fff4e4fbc57af8d61d7c90c2aaea9d7cd7601b8d4b7162024"
+    }
+  },
+  "budget": {
+    "benchmark_control_compilations": 12,
+    "diagnostic_preflights": 6,
+    "solver_validation_queries_including_symbolic_proofs": 12,
+    "benchmark_target_980_optimization_queries": 1,
+    "conditional_arms_selected": 1,
+    "conditional_candidate_evaluations": 64,
+    "maximum_ordinary_screening_and_control_compilations": 76,
+    "full_verification_replays": "separately logged; no new proposal search",
+    "single_solver_witness_reconstruction": "separately logged; no allocator search",
+    "unused_budget_reallocation": false
+  },
+  "diagnostics": {
+    "graphs": ["H", "A"],
+    "all_output_stores": 32,
+    "target_last_cycle": 979,
+    "focus_flow_gaps": [957, 958],
+    "record": [
+      "input lane completion times",
+      "recorded readiness",
+      "dependency-relaxed latest issue times",
+      "decision-point and end-of-cycle engine occupancy",
+      "resource competitors",
+      "dependent outputs and their completion times"
+    ],
+    "recorded_resource_order_is_mandatory": false,
+    "live_word_heuristic_equals_physical_allocation_stall": false,
+    "independent_capacity_pass_implies_coupled_feasibility": false
+  },
+  "preflights": [
+    {"graph": "H", "width": 32, "start": 949},
+    {"graph": "A", "width": 32, "start": 949},
+    {"graph": "H", "width": 64, "start": 917},
+    {"graph": "A", "width": 64, "start": 917},
+    {"graph": "H", "width": 128, "start": 853},
+    {"graph": "A", "width": 128, "start": 853}
+  ],
+  "exact": {
+    "eligible_graph": "A",
+    "scope_selection": "smallest suffix passing preflight and structural admission caps",
+    "target_cycles": 980,
+    "native_cycles": 981,
+    "prefix_before_start_fixed": true,
+    "native_engine_modes_fixed": true,
+    "movement_radius_cycles": 8,
+    "movable_jobs_cannot_cross_suffix_start": true,
+    "pause_cycle": 979,
+    "pin_load_order": false,
+    "added_lane_order_constraints": false,
+    "physical_scratch_reuse_order_constraints": false,
+    "project_fixed_jobs": true,
+    "fixed_resource_occupancy_and_boundary_edges_required": true,
+    "maximum_non_singleton_issue_variables": 2048,
+    "maximum_potential_membership_terms": 32768,
+    "membership_count_definition": "sum of domain sizes over non-singleton jobs",
+    "structural_caps_are_memory_guarantees": false,
+    "address_space_bytes": 2147483648,
+    "solver_timeout_seconds": null,
+    "cpu_timeout_seconds": null,
+    "wall_timeout_seconds": null,
+    "persistent_supervision": true,
+    "source_copy_isolated_from_conditional_arm": true,
+    "persist_witness_before_allocation": true,
+    "fresh_allocation_required": true,
+    "automatic_retry": false,
+    "automatic_scope_growth": false,
+    "automatic_memory_increase": false,
+    "retarget_live_query": false,
+    "cancel_live_query_without_explicit_authorization": false
+  },
+  "conditional_selection": {
+    "requires_phase_1_diagnostics": true,
+    "requires_frozen_selection_note_and_manifest": true,
+    "may_run_in_parallel_with_exact": true,
+    "maximum_selected": 1,
+    "supported_overlap_preference": ["O", "S", "Q"],
+    "ambiguous_or_unsupported_evidence": "stop and report; do not run all arms",
+    "run_second_arm_after_first_fails": false
+  },
+  "conditional_arms": {
+    "O": {
+      "name": "arrival-aware-per-lookup-bit-order",
+      "gate": "late predicate enters early in a relevant depth-4 lookup with remaining selector depth",
+      "graphs": ["H", "A"],
+      "maximum_lookups_per_graph": 4,
+      "orders": ["native", "move-latest-ready-last", "readiness-ascending", "swap-latest-ready-with-last"],
+      "scoped_arithmetic_policies": ["all-flow-leaves", "existing-mixed-leaf-policy"],
+      "maximum_evaluations": 64,
+      "native_order_control_per_arithmetic_policy": true,
+      "consistent_leaf_permutation_required": true,
+      "charge_new_coefficients": true,
+      "reject_unrepresentable_existing_conversions": true,
+      "multi_lookup_combinations": false
+    },
+    "S": {
+      "name": "deadline-driven-producer-scheduling",
+      "gate": "ready late-output producer loses useful slots to movable work with more finish-time slack",
+      "graphs": ["H", "A"],
+      "native_engine_modes_fixed": true,
+      "directions": ["forward-least-slack", "backward-latest-placement"],
+      "tie_policies": ["native-order", "load-enabling-first", "downstream-fanout", "estimated-live-word-pressure"],
+      "maximum_evaluations": 16,
+      "packing_failure_means_unsat": false
+    },
+    "Q": {
+      "name": "four-way-arithmetic-selection",
+      "gate": "two-level cached selector group contributes serial flow work and coefficients plausibly precede predicate demand",
+      "graphs": ["H", "A"],
+      "maximum_groups_per_graph": 4,
+      "initial_group_inputs": "four runtime-loaded cache leaves",
+      "predicate_orientations_for_singles": 2,
+      "coefficient_policies": ["shared-scalar", "per-use-vector"],
+      "single_group_evaluations": 32,
+      "pair_group_evaluations": 24,
+      "maximum_evaluations": 56,
+      "pair_orientation": "earlier-ready predicate first from diagnostics",
+      "pair_requires_single_speed_win": false,
+      "reject_overlapping_groups": true,
+      "proof_predicate_domain": [0, 1],
+      "arithmetic_modulus": 4294967296,
+      "charge_all_coefficient_work": true
+    }
+  },
+  "resources_and_safety": {
+    "maximum_compiler_workers": 2,
+    "maximum_optimization_workers": 1,
+    "cpu_library_threads": 1,
+    "lower_over_scratch": false,
+    "execute_over_scratch": false,
+    "runtime_input_oracle_use_during_generation": false,
+    "production_or_frozen_source_changes": false,
+    "installations_cloud_gpu_training_submissions": false,
+    "commits_pushes_deployments": false,
+    "stop_queuing_heuristics_after_verified_speed_success": true
+  },
+  "verification": {
+    "full_width_seeds": 100,
+    "asymmetric_patterns": 5,
+    "frozen_submission_tests": 9,
+    "deterministic_compiles_or_reconstructions": 3,
+    "source_only_hash_seeds": [0, 17],
+    "independent_logical_lane_dependency_capacity_checks": true,
+    "non_output_memory_preservation": true,
+    "supplementary_other_shapes_legacy_fallback_pause_store": true,
+    "dependency_constant_selector_corruption_controls": true,
+    "executed_H_and_A_comparisons": true,
+    "saved_timing_witness_equals_automatic_compiler_discovery": false,
+    "production_integration_is_separate": true
+  },
+  "enforcement_status": "Proposed contract. Execution driver, guards and validation catalogue must be implemented and verified before launch."
+}

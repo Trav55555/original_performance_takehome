@@ -6,7 +6,7 @@ Keep the published **980-cycle / 1,465-word** compiler. This program tested 74 f
 
 The useful negative result is specific. Broad recursive lookup factorization reduces flow work and sometimes scratch, but adds too much arithmetic. Small tensor tiles remain a representation hypothesis worth revising, not a demonstrated kernel improvement.
 
-The [program](mathematical_models_program.md) declares the arms, budgets and gates. The [receipt](mathematical_models_receipt.json) includes all candidate rows, source hashes, selected configurations and the post-run audit. Full working artifacts remain in `/tmp/perf-math-program.Z3q77s/`.
+The [program](protocol.md) declares the arms, budgets and gates. The [receipt](receipt.json) includes all candidate rows, source hashes, selected configurations and the post-run audit. Full working artifacts remain in `/tmp/perf-math-program.Z3q77s/`.
 
 ## Results
 

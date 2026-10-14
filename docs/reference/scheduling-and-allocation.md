@@ -62,7 +62,7 @@ Wavefront, Morton, Gray-code and bit-reversed priorities provided coarse structu
 
 Observed saturation is also limited evidence. A busy window can explain why an operation would have to displace other work, but does not show that those same jobs must occupy that window in every legal schedule.
 
-Sources: [resource-order report](../../experiments/resource_order_results.md), local mathematical-model records in the [research catalog](search-and-research.md#local-only-records).
+Sources: [resource-order report](../../experiments/resource_order_results.md), mathematical-model records in the [research catalog](search-and-research.md#research-records).
 
 ## Bounds and their scope
 

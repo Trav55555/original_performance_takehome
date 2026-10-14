@@ -610,7 +610,7 @@ The production compiler retained automatic cache and selector discovery. It used
 
 The build used 1959 scores under a 4096 limit and made zero solver queries. It reproduced the experimental program through the public builder and two isolated source-only cold builds, then passed the full promotion gates. Each cold build took about 16 minutes; a warm call took about 6.5 ms. Those host costs are separate from the 979 emitted execution cycles.
 
-Sources: [resource-order pilot](../experiments/resource_order_results.md), [979 promotion](../experiments/promotion_979_results.md), [receipt](../experiments/promotion_979_receipt.json) and [automatic discovery trace](../experiments/promotion_979_evidence/discovery_progress.jsonl). The earlier selected final-hash pilot is cataloged as local-only evidence in the wiki; it is not a fresh-clone dependency.
+Sources: [resource-order pilot](../experiments/resource_order_results.md), [979 promotion](../experiments/promotion_979_results.md), [receipt](../experiments/promotion_979_receipt.json) and [automatic discovery trace](../experiments/promotion_979_evidence/discovery_progress.jsonl). The earlier selected final-hash pilot is archived with the [final-hash campaign records](../experiments/archive/campaigns/finalhash-order/records/report.md).
 
 ## 979 → 975: advance the gather startup
 

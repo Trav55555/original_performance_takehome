@@ -1,0 +1,65 @@
+{
+  "status": "verified",
+  "cycles": 980,
+  "scratch": 1449,
+  "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+  "full_width_seeds": 100,
+  "asymmetric_patterns": 5,
+  "deterministic_reconstructions": 3,
+  "native_timing_controls": [
+    "H",
+    "A"
+  ],
+  "independent_lanes_dependencies_capacity": true,
+  "non_output_memory_preserved": true,
+  "mutations_rejected": [
+    "dependency timing",
+    "duplicate lane",
+    "constant",
+    "selector"
+  ],
+  "source_plus_selected_timing_assignment": [
+    {
+      "cycles": 980,
+      "scratch": 1449,
+      "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+      "seconds": 0.4167706319130957,
+      "hash_seed": "0"
+    },
+    {
+      "cycles": 980,
+      "scratch": 1449,
+      "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+      "seconds": 0.4137107259593904,
+      "hash_seed": "17"
+    }
+  ],
+  "saved_physical_instructions_or_addresses_used_for_generation": false,
+  "automatic_production_discovery": false,
+  "frozen_submission_tests": 9,
+  "supplementary_standard_seeds": 100,
+  "supplementary_patterns": 5,
+  "other_shapes": 9,
+  "legacy_performance_ceilings": 3,
+  "fallback_pause_store": true,
+  "executed_incumbent_controls": {
+    "H": {
+      "cycles": 981,
+      "scratch": 1449,
+      "rejected_by_980_ceiling": true
+    },
+    "A": {
+      "cycles": 981,
+      "scratch": 1449,
+      "rejected_by_980_ceiling": true
+    }
+  },
+  "executed_production_recipe_cycles": 1041,
+  "scratch_guard": {
+    "injected": 1537,
+    "real_failure": 1545,
+    "lower_calls": 0,
+    "executed": false
+  },
+  "remaining": "production integration and deterministic schedule discovery; global optimality unproven"
+}

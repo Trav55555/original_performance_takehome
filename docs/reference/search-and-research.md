@@ -59,13 +59,13 @@ Published sources cover the [980 promotion](../../experiments/promotion_980_resu
 
 These screens did not authorize broad materialization sweeps, every tensor site, unrestricted cache reselection or indefinite solver retries. Unused conditional slots expired when their gates failed or the protocol closed.
 
-## Local-only records
+## Research records
 
 The [campaign code collection](../../experiments/archive/campaigns/README.md) keeps final-hash, mathematical-model and slope/select Python sources, reports and protocols. Workspace bundles and generated artifacts are excluded. The original paths below remain local provenance labels.
 
-The following paths existed in the local checkout at the 2026-09-15 documentation review but were untracked. They are plain-text provenance labels, deliberately not broken fresh-clone links. This wiki preserves a summary, not their full evidence or runnable archive. Published corroborating reports are linked above where available.
+The following records were untracked during the 2026-09-15 documentation review. They are now tracked in [`experiments/archive/research/`](../../experiments/archive/research/); the four campaign receipts are in each campaign's `records/receipt.json`, next to its report and protocol.
 
-| Local record under `experiments/` | Subject and closure |
+| Record under `experiments/archive/research/` | Subject and closure |
 |---|---|
 | `plateau_selector_results.md`, `leaf_placement_results.md` | Cache/selector plateau escape to 981; alternative leaf placement did not improve it |
 | `math_bounds_results.md`, `math_bounds_certificate.json` | Retained-work bounds, dependency windows, modular algebra and restricted exact suffixes |
@@ -75,11 +75,11 @@ The following paths existed in the local checkout at the 2026-09-15 documentatio
 | `breakthrough_research_*` | Four-arm program, equal-cost alternatives and no faster incumbent |
 | `followup_research_*`, `followup_980/` | Small exact-repair experiment and selected-timing reconstruction; not automatic source-only production |
 | `below_980_exploration*`, `final_gather_tail_*` | Early-address screening and later target-979 query; launch snapshots are not terminal results |
-| `mathematical_models_*`, `mathematical_models_mix_*` | Five-arm and combination screens, protocols, receipts and scoped negative results |
-| `slope_select_*` | Sixteen-case coefficient/select experiment |
-| `finalhash_order_*` | Selected 979 pilot before production promotion |
+| [Mathematical models](../../experiments/archive/campaigns/mathematical-models/records/report.md), [combinations](../../experiments/archive/campaigns/mathematical-models-mix/records/report.md) (campaign records) | Five-arm and combination screens, protocols, receipts and scoped negative results |
+| [Slope/select](../../experiments/archive/campaigns/slope-select/records/report.md) (campaign records) | Sixteen-case coefficient/select experiment |
+| [Final-hash ordering](../../experiments/archive/campaigns/finalhash-order/records/report.md) (campaign records) | Selected 979 pilot before production promotion |
 
-Some drivers, symbolic probes, scheduling-literature audits and physical programs survive only in temporary workspaces named by those records. Reconstructing the exact experiment may be impossible after those files disappear. The code collection does not include temporary data dependencies. Further archival selection remains separate work; this documentation does not add, delete or alter those original untracked files.
+Some drivers, symbolic probes, scheduling-literature audits and physical programs survive only in temporary workspaces named by those records. Reconstructing the exact experiment may be impossible after those files disappear. The code collection does not include temporary data dependencies. The archived records keep their original text.
 
 ## Sources that informed the work
 

@@ -50,7 +50,7 @@ These are records of tests performed, not guarantees that an old script still ru
 | Cache neighborhoods | [First neighborhood](cache_neighborhood_results.md), [continued descent](cache_descent_results.md) | Experimental 1037 then 993; later plateau/selector work appears in the [published discovery trace](promotion_980_evidence/progress.jsonl) |
 | Resource-order scheduling | [Protocol](resource_order_program.md), [results](resource_order_results.md), [receipt](resource_order_receipt.json), [scheduler](resource_order_scheduler.py) | Solver-free 980 tie. Deadline variants exceeded scratch. Later combined with final-hash rewriting in the 979 promotion. |
 
-For algebraic models, neural scheduling, larger exact searches and the final-hash pilot, see the wiki's [research catalog](../docs/reference/search-and-research.md). It distinguishes published sources from local-only records.
+For algebraic models, neural scheduling, larger exact searches and the final-hash pilot, see the wiki's [research catalog](../docs/reference/search-and-research.md). It distinguishes published sources from archived research records.
 
 ## Historical prototypes and guides
 
@@ -70,11 +70,4 @@ The [campaign code collection](archive/campaigns/README.md) includes final-hash 
 
 The promotion source and maintained verifiers reproduce production without `/tmp` research workspaces. Other reports may preserve only decisions and provenance while referring to temporary drivers, graphs or timing files. A receipt is not necessarily a complete executable archive.
 
-At the documentation review on 2026-09-15, the local checkout also contained 58 untracked research files under this directory. They were left untouched and are not part of a fresh clone. To inspect local availability without starting an experiment:
-
-```sh
-git ls-files experiments/
-git ls-files --others --exclude-standard experiments/
-```
-
-The selected campaign collection copies a subset of those records without changing or removing the originals. Remaining records still require a separate selection and provenance check. Do not bulk-add them, hide them with a broad ignore rule, or delete them as part of navigation cleanup.
+At the documentation review on 2026-09-15, the local checkout also held 58 untracked research files under this directory. In October 2026 they were archived in [`archive/research/`](archive/README.md#research-records-below-980-cycles), with the four campaign receipts in [`archive/campaigns/`](archive/campaigns/README.md). Eight campaign files that duplicated tracked protocols and reports were not kept.

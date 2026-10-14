@@ -11,7 +11,7 @@ Use this wiki to look up a method, its assumptions and what happened when we tes
 | [Representation and algebra](representation-and-algebra.md) | SIMD, mirrored indices, XOR encoding, root folding, hash fusion, final-XOR reassociation, parity, modular inverses and invalid bit shortcuts |
 | [Memory and lookups](memory-and-lookups.md) | Retained state, independent temporaries, shallow caches, arithmetic selectors, branch history, tensor/Mobius forms, slope-select, coefficient sharing and rematerialization |
 | [Scheduling and allocation](scheduling-and-allocation.md) | Manual packing, list scheduling, SSA, lane readiness, startup priorities, engine selection, backward/forward justification, event graphs, deadlines and scoped bounds |
-| [Search and research catalog](search-and-research.md) | Cache neighborhoods, plateau escape, interaction tests, exact-model progression, neural/GPU work, external sources and local-only research records |
+| [Search and research catalog](search-and-research.md) | Cache neighborhoods, plateau escape, interaction tests, exact-model progression, neural/GPU work, external sources and archived research records |
 | [Evidence and experiment method](evidence-and-experiments.md) | Proof versus execution, full-cost accounting, scratch-before-lower, reproducibility, finite budgets, negative controls and artifact provenance |
 
 ## Status vocabulary

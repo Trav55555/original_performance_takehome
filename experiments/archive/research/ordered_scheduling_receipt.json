@@ -1,0 +1,437 @@
+{
+  "retained_cycles": 981,
+  "production_commit": "5691617",
+  "scope": "Ordered normalization of fixed-engine RAW models, prefix before469 fixed, +/-8 retiming; pinned loads further restrict order",
+  "cases": [
+    {
+      "start": 469,
+      "target": 980,
+      "radius": 8,
+      "pin_loads": false,
+      "jobs": 20180,
+      "edges": 54157,
+      "order_edges": 11634,
+      "cuts": [
+        {
+          "engine": "alu",
+          "from": 469,
+          "through": 969,
+          "work": 5964,
+          "capacity": 12,
+          "overload": -48,
+          "job_count": 5964,
+          "membership_sha256": "df90d167323c978eab06629c1cfb1565759414c2f936df26a89be1e2e9b386d1"
+        },
+        {
+          "engine": "valu",
+          "from": 469,
+          "through": 975,
+          "work": 3018,
+          "capacity": 6,
+          "overload": -24,
+          "job_count": 3018,
+          "membership_sha256": "e32ebe149b14ac5eb3e54f7c20bc8d21aa3f7d2b2daab44c5eb7028adbf7ee93"
+        },
+        {
+          "engine": "load",
+          "from": 469,
+          "through": 968,
+          "work": 1000,
+          "capacity": 2,
+          "overload": 0,
+          "job_count": 1000,
+          "membership_sha256": "8b7e08991c51d4a7ea5a7d502485735bb7474465d707f9d71912607da66c5d91"
+        },
+        {
+          "engine": "store",
+          "from": 972,
+          "through": 979,
+          "work": 2,
+          "capacity": 2,
+          "overload": -14,
+          "job_count": 2,
+          "membership_sha256": "e89fbb6d30c9dde9c281d0c09419e6fb0a17ab01a701a368ca78330a4303a727"
+        },
+        {
+          "engine": "flow",
+          "from": 979,
+          "through": 979,
+          "work": 1,
+          "capacity": 1,
+          "overload": 0,
+          "job_count": 1,
+          "membership_sha256": "34dfdf6e85304a42f728a99cb2be64bca4cab7ba2517ad06b7403da709489290"
+        }
+      ],
+      "construction_seconds": 7.581320941913873,
+      "capacity_literals": 177294,
+      "free_times": 10576,
+      "largest_domain": 17,
+      "status": "unknown",
+      "solver_seconds": 60.62162325065583,
+      "reason": "timeout",
+      "graph": "original",
+      "variant": "free",
+      "wall_seconds": 68.62548425607383,
+      "peak_rss_kib": 1376000
+    },
+    {
+      "start": 469,
+      "target": 980,
+      "radius": 8,
+      "pin_loads": true,
+      "jobs": 20180,
+      "edges": 54157,
+      "order_edges": 11634,
+      "cuts": [
+        {
+          "engine": "alu",
+          "from": 978,
+          "through": 978,
+          "work": 8,
+          "capacity": 12,
+          "overload": -4,
+          "job_count": 8,
+          "membership_sha256": "289adaa01293c2c413bba8cda504b1c2155dee73deecca6c0ffb479177bf2967"
+        },
+        {
+          "engine": "valu",
+          "from": 887,
+          "through": 887,
+          "work": 3,
+          "capacity": 6,
+          "overload": -3,
+          "job_count": 3,
+          "membership_sha256": "74f6cb37b01e752ffaab23f4d313633c4a1bd2911c9c89a342b98be1ce6cb226"
+        },
+        {
+          "engine": "load",
+          "from": 968,
+          "through": 968,
+          "work": 2,
+          "capacity": 2,
+          "overload": 0,
+          "job_count": 2,
+          "membership_sha256": "cde375bb77ad92e29128ebfbc70cfe1b0b95cbab1486add6dc5f5778e62c3a30"
+        },
+        {
+          "engine": "store",
+          "from": 979,
+          "through": 979,
+          "work": 1,
+          "capacity": 2,
+          "overload": -1,
+          "job_count": 1,
+          "membership_sha256": "8a8f2f9a276331c3c30939b44557e0a71713fd6ac0322fb9371350584e84795b"
+        },
+        {
+          "engine": "flow",
+          "from": 979,
+          "through": 979,
+          "work": 1,
+          "capacity": 1,
+          "overload": 0,
+          "job_count": 1,
+          "membership_sha256": "34dfdf6e85304a42f728a99cb2be64bca4cab7ba2517ad06b7403da709489290"
+        }
+      ],
+      "construction_seconds": 5.659600222948939,
+      "capacity_literals": 118496,
+      "free_times": 9471,
+      "largest_domain": 17,
+      "status": "unknown",
+      "solver_seconds": 60.24202529527247,
+      "reason": "timeout",
+      "graph": "original",
+      "variant": "loads",
+      "wall_seconds": 66.21601131465286,
+      "peak_rss_kib": 880696
+    },
+    {
+      "start": 469,
+      "target": 980,
+      "radius": 8,
+      "pin_loads": false,
+      "jobs": 20173,
+      "edges": 54150,
+      "order_edges": 11627,
+      "cuts": [
+        {
+          "engine": "alu",
+          "from": 974,
+          "through": 977,
+          "work": 8,
+          "capacity": 12,
+          "overload": -40,
+          "job_count": 8,
+          "membership_sha256": "c43e09a0135bd72f9f9113b6b88887ab052f111a543414b0aad82675780fb1cf"
+        },
+        {
+          "engine": "valu",
+          "from": 971,
+          "through": 974,
+          "work": 2,
+          "capacity": 6,
+          "overload": -22,
+          "job_count": 2,
+          "membership_sha256": "47b73e503e8f0c531442a85b0afe182b198f996662e7fb95d098d351c201d087"
+        },
+        {
+          "engine": "load",
+          "from": 469,
+          "through": 969,
+          "work": 1000,
+          "capacity": 2,
+          "overload": -2,
+          "job_count": 1000,
+          "membership_sha256": "b775a6e3317b73149275dc1fccaad1de6604ab6d729e5d6b64c8ae78a85c0328"
+        },
+        {
+          "engine": "store",
+          "from": 976,
+          "through": 979,
+          "work": 1,
+          "capacity": 2,
+          "overload": -7,
+          "job_count": 1,
+          "membership_sha256": "647573638ff2f2fbbf435a96b73705bc43d9ebe6a9891fdeddc29c24eee76cae"
+        },
+        {
+          "engine": "flow",
+          "from": 979,
+          "through": 979,
+          "work": 1,
+          "capacity": 1,
+          "overload": 0,
+          "job_count": 1,
+          "membership_sha256": "9755f8b5d19590426a3e6fc662cc40d095c84461f9ee2215a5d4d15ebbdeeff3"
+        }
+      ],
+      "construction_seconds": 7.54233466507867,
+      "capacity_literals": 176747,
+      "free_times": 10569,
+      "largest_domain": 17,
+      "status": "unknown",
+      "solver_seconds": 60.602084544021636,
+      "reason": "timeout",
+      "graph": "rewrite",
+      "variant": "free",
+      "wall_seconds": 68.5808662106283,
+      "peak_rss_kib": 1372872
+    },
+    {
+      "start": 469,
+      "target": 980,
+      "radius": 8,
+      "pin_loads": true,
+      "jobs": 20173,
+      "edges": 54150,
+      "order_edges": 11627,
+      "cuts": [
+        {
+          "engine": "alu",
+          "from": 886,
+          "through": 886,
+          "work": 8,
+          "capacity": 12,
+          "overload": -4,
+          "job_count": 8,
+          "membership_sha256": "e6ce537cd1687d27739563d04f9121173dcec437ab84eaf9ceaa52cf4f7b62d6"
+        },
+        {
+          "engine": "valu",
+          "from": 887,
+          "through": 887,
+          "work": 3,
+          "capacity": 6,
+          "overload": -3,
+          "job_count": 3,
+          "membership_sha256": "d41a4fdcf5e7d6ae51d7743fb62cb81bc9f18796479a945a6d44b021d9b8a82c"
+        },
+        {
+          "engine": "load",
+          "from": 968,
+          "through": 968,
+          "work": 2,
+          "capacity": 2,
+          "overload": 0,
+          "job_count": 2,
+          "membership_sha256": "de9e13343dd81833af28054110ea5610cabb2f8769c2d69c2a13ebb257a289bd"
+        },
+        {
+          "engine": "store",
+          "from": 978,
+          "through": 979,
+          "work": 1,
+          "capacity": 2,
+          "overload": -3,
+          "job_count": 1,
+          "membership_sha256": "eada41844edc1be10086d5f3520ce875bc7d46e2537ac7ddbb5f3ec496dd87fc"
+        },
+        {
+          "engine": "flow",
+          "from": 979,
+          "through": 979,
+          "work": 1,
+          "capacity": 1,
+          "overload": 0,
+          "job_count": 1,
+          "membership_sha256": "9755f8b5d19590426a3e6fc662cc40d095c84461f9ee2215a5d4d15ebbdeeff3"
+        }
+      ],
+      "construction_seconds": 5.553561320994049,
+      "capacity_literals": 117097,
+      "free_times": 9485,
+      "largest_domain": 17,
+      "status": "unknown",
+      "solver_seconds": 60.24210947705433,
+      "reason": "timeout",
+      "graph": "rewrite",
+      "variant": "loads",
+      "wall_seconds": 66.1074930629693,
+      "peak_rss_kib": 874100
+    }
+  ],
+  "controls": {
+    "original": {
+      "native_cycles": 981,
+      "native_digest": "8801c539f3a3f66babc875f7b082c4395406fc98ffe732d492f535833049c13e",
+      "native_scratch": 1465,
+      "atom_count": 41761,
+      "jobs": 20180,
+      "edges": 54157,
+      "native_same_encoding": "sat",
+      "native_reconstruction_exact": true,
+      "frozen_execution": true,
+      "lane_identity": true,
+      "positive_store_pause": true,
+      "negative_shorter_target": true,
+      "corrupt_dependencies_rejected": true,
+      "order_only_violation_rejected": true,
+      "ordered_unordered_bounds_identical": true,
+      "order_edges": 11634
+    },
+    "rewrite": {
+      "native_cycles": 985,
+      "native_digest": "56afa80a7932cd886a5552fecaecb24391d4915037ad8b43666de7a346eb9df0",
+      "native_scratch": 1465,
+      "atom_count": 41761,
+      "jobs": 20173,
+      "edges": 54150,
+      "native_same_encoding": "sat",
+      "native_reconstruction_exact": true,
+      "frozen_execution": true,
+      "lane_identity": true,
+      "positive_store_pause": true,
+      "negative_shorter_target": true,
+      "corrupt_dependencies_rejected": true,
+      "order_only_violation_rejected": true,
+      "ordered_unordered_bounds_identical": true,
+      "order_edges": 11627
+    }
+  },
+  "ordering_checks": {
+    "same_witness_without_ordering": "sat",
+    "same_witness_with_ordering": "unsat",
+    "rows": [
+      {
+        "graph": "original",
+        "variant": "free",
+        "only_order_edges_added": true,
+        "active_order_constraints": 6155,
+        "bounds_and_capacity_cuts_unchanged": true
+      },
+      {
+        "graph": "original",
+        "variant": "loads",
+        "only_order_edges_added": true,
+        "active_order_constraints": 5236,
+        "bounds_and_capacity_cuts_unchanged": true
+      },
+      {
+        "graph": "rewrite",
+        "variant": "free",
+        "only_order_edges_added": true,
+        "active_order_constraints": 6150,
+        "bounds_and_capacity_cuts_unchanged": true
+      },
+      {
+        "graph": "rewrite",
+        "variant": "loads",
+        "only_order_edges_added": true,
+        "active_order_constraints": 5240,
+        "bounds_and_capacity_cuts_unchanged": true
+      }
+    ]
+  },
+  "structural_rechecks": {
+    "original": {
+      "nonuniform_edge_counterexample": {
+        "a": [
+          0,
+          10
+        ],
+        "b": [
+          11,
+          1
+        ],
+        "edge": "a[1] -> b[0]"
+      },
+      "uniform_family_edges": true,
+      "permutable_eight_lane_families": 1662,
+      "family_edge_pairs": 20263,
+      "native_lane_order_monotone": true,
+      "prefix_and_displacement_and_load_pin_bounds_monotone": true,
+      "order_statistic_cases": 1000,
+      "new_optimization_solves": 0,
+      "scope": "Fixed engines, RAW dependencies, uniform diagonal/full family edges, monotone lane bounds. Sort times within each family; capacities retain the same per-engine multisets."
+    },
+    "rewrite": {
+      "nonuniform_edge_counterexample": {
+        "a": [
+          0,
+          10
+        ],
+        "b": [
+          11,
+          1
+        ],
+        "edge": "a[1] -> b[0]"
+      },
+      "uniform_family_edges": true,
+      "permutable_eight_lane_families": 1661,
+      "family_edge_pairs": 20263,
+      "native_lane_order_monotone": true,
+      "prefix_and_displacement_and_load_pin_bounds_monotone": true,
+      "order_statistic_cases": 1000,
+      "new_optimization_solves": 0,
+      "scope": "Fixed engines, RAW dependencies, uniform diagonal/full family edges, monotone lane bounds. Sort times within each family; capacities retain the same per-engine multisets."
+    }
+  },
+  "source_hashes": {
+    "verify_ordering.py": "bb600fcf946eb2dcc6039e03f9be1d817537e7cf114b052e8ac91a05fbd1f517",
+    "check_symmetry.py": "380cca74cc544093a6eb30c2f31f7eebe8adb7d4cd05f9691914925a3529ab1d",
+    "run_case.py": "6790fdf8b620f1a02a4083083ce91c4458e9cc6e57e29740107dd1ad53b5aa26",
+    "driver.py": "ccc48e0b3f5915c3f69683aaf60b7a566c83cde4afdc753d1935fd143d2b797e",
+    "prepare.py": "e967e418c4b78c251964568d33d0fbc97527d8048a5cddce5732e6d3cf53cdc5",
+    "reconstruct.py": "afc43446b268d5a8168d56af44a04d543542f6130d0c8eaa2f207fb03eda421b",
+    "coupled.py": "8d998eebc6d83e8120e9dfbd0c306f6a3f4d1b37119510ed5bbd2be56b4610dc",
+    "compact.py": "dd10a7b0d9185e80b179420c5744398bca0f5f928d33a3ff73801f824e34ccfa",
+    "rewrite/winner.json": "b350b084f112124cdbdb71dccbbad305d0a4259bb40754df1eb77a27a84d31d5",
+    "rewrite/kernel_lookahead.py": "755096ebea7a3917b1605df3d536718d5ba34a3293f2f4e35e326b177a263e95",
+    "rewrite/kernel_compiler.py": "d04dc1d27799a35731fab47f67255abd0eadea41acab99ee81b6942576ac9ac7",
+    "rewrite/common.py": "b3c5267efdd9e3c9de585ec6fba385c97cd7688c361c8a7fdf2bd196ce18f048",
+    "rewrite/lane_families.json": "0087ba3fdb68b20f2382067f456ca1cfd3361c71087009841f35fd5ab67df360",
+    "rewrite/compact_model.json": "306cef7f7597999acc43f6cf6a26b1c898d92a850f58347067c1338f0a82870c",
+    "rewrite/raw_model.json": "1d6be67be31b4e49c21e3893a00e8f58990e3122b5b1b70d38ea27742f3f4df8",
+    "original/winner.json": "c5122a53447b46baa74a171cebd17b57ef5fc4d021de05e776b55f0496f09435",
+    "original/kernel_lookahead.py": "755096ebea7a3917b1605df3d536718d5ba34a3293f2f4e35e326b177a263e95",
+    "original/kernel_compiler.py": "cfd87a3fada5de126b9959ee4f4fb85877cf79d2da07ba11092214e429de8bec",
+    "original/common.py": "aace16dbab99634ca63af70b4cafa01c6ebaf051952941f65bb60188f3d5adbe",
+    "original/lane_families.json": "2fc44d4e9f4149201222ef8b4614c6ada44d1ac4d482e6f94983d7a5501223eb",
+    "original/compact_model.json": "cc94b0058c6cf408e6e43f6baa4d85d87b08664a27e35cde874870b91761a20c",
+    "original/raw_model.json": "caba1e1659569e65fabd2f8457f7554fbbbcdea04c6d9af3a7a0762853295ae4"
+  },
+  "new_candidate": null,
+  "workspace": "/tmp/perf-ordered-scheduling.slYEcL"
+}

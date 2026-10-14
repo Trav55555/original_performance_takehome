@@ -55,7 +55,7 @@ The [975 evidence manifest](../../experiments/promotion_975_evidence/manifest.js
 
 The [campaign code collection](../../experiments/archive/campaigns/README.md) preserves final-hash, mathematical-model and slope/select sources, reports and protocols. It does not include generated graphs, saved programs or replay tooling. The source files match their historical capture bytes, but the collection is not a self-contained experiment reproduction.
 
-Other reports point to `/tmp` drivers and graphs that may not survive. The [research catalog](search-and-research.md#local-only-records) explicitly identifies untracked local records. A fresh clone does not contain them. Summarizing their findings in this wiki is not the same as archiving all their artifacts.
+Other reports point to `/tmp` drivers and graphs that may not survive. The [research catalog](search-and-research.md#research-records) lists the research records, now archived in `experiments/archive/research/`. Their temporary drivers and workspaces were not archived.
 
 Reports and receipts describe their creation-time state. A statement that no commit occurred may be followed by a later published promotion. An old status observation that a solver was running may be followed by an OOM closure. Preserve the original record; link its successor from the maintained index or history.
 

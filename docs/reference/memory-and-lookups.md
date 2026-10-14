@@ -56,7 +56,7 @@ Recursive Boolean Mobius conversion applies these finite differences across more
 
 In the 74-candidate mathematical screen, the best two-bit tile tied 981 cycles at 1497 words. Broad recursive conversion's best feasible result was 1003/1377. All ten feasible recursive variants had retained-arithmetic credit bounds of at least 988 cycles. Ordinary retiming or scalar/vector reassignment could not beat 980 without changing that retained work.
 
-The source records are local-only, identified in the [research catalog](search-and-research.md#local-only-records). These were screens, not new production promotions.
+The source records are archived and listed in the [research catalog](search-and-research.md#research-records). These were screens, not new production promotions.
 
 ## Slope-select and coefficient sharing
 

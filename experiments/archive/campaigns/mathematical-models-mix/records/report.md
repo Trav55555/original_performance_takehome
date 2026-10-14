@@ -6,7 +6,7 @@ Keep the published **980-cycle / 1465-word** compiler. Mixing the screened mathe
 
 Coefficient sharing did improve one experimental tensor variant from 983 / 1497 to 981 / 1481. That is a useful matched result, but it remains slower and larger than production. Do not integrate these variants on the strength of this screen.
 
-The [protocol](mathematical_models_mix_program.md) and [receipt](mathematical_models_mix_receipt.json) preserve the selected factors, budgets, results and audit. Full code and schedules are in `/tmp/perf-math-mix.X7KVbp/`. The [previous screen](mathematical_models_results.md) supplies the component history.
+The [protocol](protocol.md) and [receipt](receipt.json) preserve the selected factors, budgets, results and audit. Full code and schedules are in `/tmp/perf-math-mix.X7KVbp/`. The [previous screen](../../mathematical-models/records/report.md) supplies the component history.
 
 ## Why these combinations
 

@@ -6,7 +6,7 @@ The best candidate, F08, rewrites the final hash for blocks 29 and 31 and applie
 
 ## Fixed matrix
 
-The [protocol](finalhash_order_program.md) allowed eight candidates, four controls and two conditional reconstructions. Every candidate used the published discovered configuration as an experimental control. Only the final-hash block set and scheduling tie order varied. There were no cache changes, slope tiles, extra passes or solver calls.
+The [protocol](protocol.md) allowed eight candidates, four controls and two conditional reconstructions. Every candidate used the published discovered configuration as an experimental control. Only the final-hash block set and scheduling tie order varied. There were no cache changes, slope tiles, extra passes or solver calls.
 
 | ID | Final-hash blocks | Tie order | Native timing span | Actual cycles | Scratch words |
 |---|---|---|---:|---:|---:|
@@ -21,7 +21,7 @@ The [protocol](finalhash_order_program.md) allowed eight candidates, four contro
 
 Native timing spans describe the generated schedules before justification. The rewritten native schedules were not separately allocated or executed. F04 had a 979-cycle timing assignment but exceeded the 1536-word limit. It was rejected before lowering or execution and is not a legal 979-cycle result.
 
-F01 and F02 reproduced the preceding pilot's B01 and B03 programs exactly, including cycles, scratch, instruction counts and program digests. The scheduling implementation was byte-identical to the [published experimental scheduler](resource_order_scheduler.py).
+F01 and F02 reproduced the preceding pilot's B01 and B03 programs exactly, including cycles, scratch, instruction counts and program digests. The scheduling implementation was byte-identical to the [published experimental scheduler](../../../../resource_order_scheduler.py).
 
 ## Why the cycle disappeared
 
@@ -68,7 +68,7 @@ All fourteen reservations were consumed, and the manifest is closed.
 
 The 36.749-second run included controls and conditional verification. It excluded automatic production plan discovery. The process had a 2 GiB address-space cap and used no solver.
 
-The [receipt](finalhash_order_receipt.json) preserves the full matrix, reservations, control results, verification records and source/artifact hashes. F08's program digest is:
+The [receipt](receipt.json) preserves the full matrix, reservations, control results, verification records and source/artifact hashes. F08's program digest is:
 
 ```text
 d71b7cc458e45d9ae400faf7cbd525bafa531d5c23d6f10d84f3706d60143848

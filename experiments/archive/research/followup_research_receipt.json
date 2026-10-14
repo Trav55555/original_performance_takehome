@@ -1,0 +1,571 @@
+{
+  "status": "completed-verified-speed-improvement",
+  "workspace": "/tmp/perf-followup.k1MXNr",
+  "incumbent_before": {
+    "cycles": 981,
+    "scratch": 1449
+  },
+  "incumbent_after": {
+    "cycles": 980,
+    "scratch": 1449,
+    "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d"
+  },
+  "source_plus_timing_archive": "experiments/followup_980",
+  "source_manifest_sha256": "b561c5619829144017f0fb5e4c0d0d66d672b99d81f8df49bc6389fdecd7f5f6",
+  "budget": {
+    "control": 7,
+    "preflight": 6,
+    "validation": 6,
+    "optimization": 1
+  },
+  "candidate_evaluations": 0,
+  "optimization": {
+    "graph": "A",
+    "start": 949,
+    "target": 980,
+    "radius": 8,
+    "native_engines": true,
+    "pin_loads": false,
+    "added_lane_orders": false,
+    "physical_reuse_edges": false,
+    "free_variables": 533,
+    "potential_membership_terms": 5909,
+    "encoded_capacity_terms": 5902,
+    "fixed_jobs_projected": 19663,
+    "free_edges": 831,
+    "boundary_edges": 636,
+    "status": "sat",
+    "solver_seconds": 46.584483629092574,
+    "address_space_bytes": 2147483648,
+    "wall_deadline": null,
+    "cpu_deadline": null,
+    "solver_timeout_ms": 0,
+    "solver_checks": 1,
+    "worker_exit_code": 1,
+    "postprocess_recovery_without_solver_restart": true
+  },
+  "preflights": [
+    {
+      "start": 949,
+      "target": 980,
+      "radius": 8,
+      "conflict": null,
+      "jobs": 20180,
+      "edges": 54080,
+      "admitted": false,
+      "free_variables": 515,
+      "membership_terms": 5518,
+      "rejection": "mandatory capacity overload",
+      "graph": "H",
+      "width": 32
+    },
+    {
+      "start": 949,
+      "target": 980,
+      "radius": 8,
+      "conflict": null,
+      "jobs": 20196,
+      "edges": 54154,
+      "admitted": true,
+      "free_variables": 533,
+      "membership_terms": 5909,
+      "projected_edges": 831,
+      "boundary_edges": 636,
+      "fixed_jobs": 19663,
+      "graph": "A",
+      "width": 32
+    },
+    {
+      "start": 917,
+      "target": 980,
+      "radius": 8,
+      "conflict": null,
+      "jobs": 20180,
+      "edges": 54080,
+      "admitted": false,
+      "free_variables": 1189,
+      "membership_terms": 17540,
+      "rejection": "mandatory capacity overload",
+      "graph": "H",
+      "width": 64
+    },
+    {
+      "start": 917,
+      "target": 980,
+      "radius": 8,
+      "conflict": null,
+      "jobs": 20196,
+      "edges": 54154,
+      "admitted": true,
+      "free_variables": 1207,
+      "membership_terms": 18047,
+      "projected_edges": 2060,
+      "boundary_edges": 1281,
+      "fixed_jobs": 18989,
+      "graph": "A",
+      "width": 64
+    },
+    {
+      "start": 853,
+      "target": 980,
+      "radius": 8,
+      "conflict": null,
+      "jobs": 20180,
+      "edges": 54080,
+      "admitted": false,
+      "free_variables": 2535,
+      "membership_terms": 40222,
+      "rejection": "mandatory capacity overload",
+      "graph": "H",
+      "width": 128
+    },
+    {
+      "start": 853,
+      "target": 980,
+      "radius": 8,
+      "conflict": null,
+      "jobs": 20196,
+      "edges": 54154,
+      "admitted": false,
+      "free_variables": 2551,
+      "membership_terms": 40456,
+      "projected_edges": 4628,
+      "boundary_edges": 2386,
+      "fixed_jobs": 17645,
+      "rejection": "structural admission caps",
+      "graph": "A",
+      "width": 128
+    }
+  ],
+  "verification": {
+    "status": "verified",
+    "cycles": 980,
+    "scratch": 1449,
+    "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+    "full_width_seeds": 100,
+    "asymmetric_patterns": 5,
+    "deterministic_reconstructions": 3,
+    "native_timing_controls": [
+      "H",
+      "A"
+    ],
+    "independent_lanes_dependencies_capacity": true,
+    "non_output_memory_preserved": true,
+    "mutations_rejected": [
+      "dependency timing",
+      "duplicate lane",
+      "constant",
+      "selector"
+    ],
+    "source_plus_selected_timing_assignment": [
+      {
+        "cycles": 980,
+        "scratch": 1449,
+        "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+        "seconds": 0.4167706319130957,
+        "hash_seed": "0"
+      },
+      {
+        "cycles": 980,
+        "scratch": 1449,
+        "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d",
+        "seconds": 0.4137107259593904,
+        "hash_seed": "17"
+      }
+    ],
+    "saved_physical_instructions_or_addresses_used_for_generation": false,
+    "automatic_production_discovery": false,
+    "frozen_submission_tests": 9,
+    "supplementary_standard_seeds": 100,
+    "supplementary_patterns": 5,
+    "other_shapes": 9,
+    "legacy_performance_ceilings": 3,
+    "fallback_pause_store": true,
+    "executed_incumbent_controls": {
+      "H": {
+        "cycles": 981,
+        "scratch": 1449,
+        "rejected_by_980_ceiling": true
+      },
+      "A": {
+        "cycles": 981,
+        "scratch": 1449,
+        "rejected_by_980_ceiling": true
+      }
+    },
+    "executed_production_recipe_cycles": 1041,
+    "scratch_guard": {
+      "injected": 1537,
+      "real_failure": 1545,
+      "lower_calls": 0,
+      "executed": false
+    },
+    "remaining": "production integration and deterministic schedule discovery; global optimality unproven"
+  },
+  "audit": {
+    "budget_and_status_join": true,
+    "reservation_counts": {
+      "control": 7,
+      "preflight": 6,
+      "validation": 6,
+      "optimization": 1
+    },
+    "candidate_evaluations": 0,
+    "full_witness_revalidated": true,
+    "source_hashes_unchanged": true,
+    "protected_repository_paths_unchanged": 79,
+    "archived_reproduction_verified": true,
+    "worker_restart": false,
+    "solver_checks": 1
+  },
+  "mechanics": {
+    "changed_jobs_including_pause": 415,
+    "changed_by_engine": {
+      "load": 32,
+      "valu": 102,
+      "alu": 243,
+      "flow": 12,
+      "store": 26
+    },
+    "native_last_select": 969,
+    "retimed_last_select": 967,
+    "following_cycles_native": 11,
+    "following_cycles_retimed": 12,
+    "flow_at_old_gaps": {
+      "957": [
+        {
+          "job": 19878,
+          "scope": [
+            "selector",
+            29,
+            15,
+            0,
+            3
+          ],
+          "native_time": 959
+        }
+      ],
+      "958": [
+        {
+          "job": 19935,
+          "scope": [
+            "selector",
+            29,
+            15,
+            0,
+            6
+          ],
+          "native_time": 962
+        }
+      ]
+    },
+    "output_store_times": [
+      {
+        "block": 0,
+        "native": 944,
+        "retimed": 944
+      },
+      {
+        "block": 1,
+        "native": 962,
+        "retimed": 965
+      },
+      {
+        "block": 2,
+        "native": 962,
+        "retimed": 955
+      },
+      {
+        "block": 3,
+        "native": 963,
+        "retimed": 961
+      },
+      {
+        "block": 4,
+        "native": 967,
+        "retimed": 971
+      },
+      {
+        "block": 5,
+        "native": 964,
+        "retimed": 961
+      },
+      {
+        "block": 6,
+        "native": 965,
+        "retimed": 968
+      },
+      {
+        "block": 7,
+        "native": 965,
+        "retimed": 965
+      },
+      {
+        "block": 8,
+        "native": 966,
+        "retimed": 964
+      },
+      {
+        "block": 9,
+        "native": 966,
+        "retimed": 974
+      },
+      {
+        "block": 10,
+        "native": 967,
+        "retimed": 959
+      },
+      {
+        "block": 11,
+        "native": 968,
+        "retimed": 966
+      },
+      {
+        "block": 12,
+        "native": 968,
+        "retimed": 967
+      },
+      {
+        "block": 13,
+        "native": 969,
+        "retimed": 972
+      },
+      {
+        "block": 14,
+        "native": 926,
+        "retimed": 926
+      },
+      {
+        "block": 15,
+        "native": 969,
+        "retimed": 963
+      },
+      {
+        "block": 16,
+        "native": 970,
+        "retimed": 964
+      },
+      {
+        "block": 17,
+        "native": 970,
+        "retimed": 962
+      },
+      {
+        "block": 18,
+        "native": 971,
+        "retimed": 971
+      },
+      {
+        "block": 19,
+        "native": 971,
+        "retimed": 963
+      },
+      {
+        "block": 20,
+        "native": 972,
+        "retimed": 976
+      },
+      {
+        "block": 21,
+        "native": 972,
+        "retimed": 970
+      },
+      {
+        "block": 22,
+        "native": 973,
+        "retimed": 976
+      },
+      {
+        "block": 23,
+        "native": 973,
+        "retimed": 966
+      },
+      {
+        "block": 24,
+        "native": 974,
+        "retimed": 969
+      },
+      {
+        "block": 25,
+        "native": 974,
+        "retimed": 969
+      },
+      {
+        "block": 26,
+        "native": 975,
+        "retimed": 975
+      },
+      {
+        "block": 27,
+        "native": 975,
+        "retimed": 974
+      },
+      {
+        "block": 28,
+        "native": 976,
+        "retimed": 972
+      },
+      {
+        "block": 29,
+        "native": 980,
+        "retimed": 978
+      },
+      {
+        "block": 30,
+        "native": 976,
+        "retimed": 979
+      },
+      {
+        "block": 31,
+        "native": 979,
+        "retimed": 979
+      }
+    ],
+    "logical_prefix_fixed": true,
+    "physical_prefix_identical": true,
+    "instruction_counts_unchanged": {
+      "load": 1888,
+      "flow": 945,
+      "valu": 5799,
+      "alu": 11532,
+      "store": 32
+    },
+    "moved_predicate_lanes": [
+      [
+        19848,
+        0,
+        957,
+        956
+      ],
+      [
+        19849,
+        1,
+        957,
+        956
+      ],
+      [
+        19860,
+        2,
+        958,
+        956
+      ],
+      [
+        19861,
+        3,
+        958,
+        956
+      ],
+      [
+        19862,
+        4,
+        958,
+        956
+      ],
+      [
+        19863,
+        5,
+        958,
+        956
+      ],
+      [
+        19864,
+        6,
+        958,
+        956
+      ],
+      [
+        19865,
+        7,
+        958,
+        956
+      ]
+    ]
+  },
+  "deviations": [
+    {
+      "defect": "Exact worker persisted SAT witness but reconstruction import lacked the repository path for problem.py.",
+      "fix": "Separate reconstruction process imports the existing common module to establish its documented source path before invoking the unchanged reconstructor.",
+      "solver_restarted": false,
+      "additional_optimization_queries": 0,
+      "source_files_changed": false
+    },
+    {
+      "status": "passed",
+      "tests": [
+        {
+          "kind": "budget",
+          "workers_started": 0,
+          "failure": "optimization budget exhausted before worker start"
+        },
+        {
+          "kind": "source",
+          "workers_started": 0,
+          "failure": "('source changed', 'kernel_lookahead.py')"
+        }
+      ],
+      "deviation": "Original supervisor checked sources before spawn but reserved/checks optimization budget inside the worker before solver entry. The closing audit added an explicit pre-spawn budget check and tested the actual launcher.",
+      "original_supervisor_preserved": "supervisor_original.py",
+      "new_optimization_workers_started": 0,
+      "solver_restarted": false
+    }
+  ],
+  "conditional": {
+    "selected_arm": "O",
+    "candidate_evaluations": 0,
+    "status": "not-screened; budget expired after fully verified speed win",
+    "draft_source_changes": "arm_O only; not validated or used in winner",
+    "other_arms_executed": false
+  },
+  "artifact_hashes": {
+    "program.md": "331daae607ea90c2b0d459a84c52757c73b9440f21bd2b422fab3c3299df1835",
+    "protocol.json": "2e6ac47a6feed01ddb044ad76922063255354d93724559d81e4e19745349eb36",
+    "authorization.json": "b81fe73c90e9c68e446f31ceb6c2c981f266559140ad3085a2be5d141b167f6f",
+    "source_hashes.json": "14839b65d0129b5aa2c385f5e03ba9652d9f77cf15a858125469dc995852c293",
+    "protected_sources.json": "cb90d59e758b7db1897958f694fd5eb8b9233a93a9bf6cb90804fe8fbabb9d8e",
+    "copied_sources.json": "adc2a98ad4bb7892374f9653c8cff5b92f699ee5b88b1e9e60b324a4970862dd",
+    "attempts.jsonl": "aa67c90b5558a005721fddae2d833e2d4031ac6d5c409c32f091a051444f3c5c",
+    "results.jsonl": "6aa088babccc4b57b78be097a7c5e8425fb86b480a9e1d677f195ec97ecd23f1",
+    "validation_catalogue.json": "51a353d5015aabc4c1747ab5d52cd31ea13440eb5cf2b0460fadbaecb01e916e",
+    "guard_and_projection_controls.json": "1b7146915e716f5371019c2f2a7296a40d9a7717a5ebf4022ef5d83738c6bca5",
+    "launcher_guard_audit.json": "faa227920944f3e9a891b1fafb2634992ddecdfed4f1ac96eafb4254ee00c17c",
+    "solver_controls.json": "035cb14508ff75b3a176bc3d7b4412c169c9ab4abb3190583644a433e39e06d6",
+    "preflights.json": "64e9103dc94d16aebe925653658bc03cfb105d1a98acc1d44ffe3042714ab15b",
+    "preflight_independent_audit.json": "d5cebd62cb00d2d1b2f6df0c3af20794d0b404c6b942b661466adbcd2a3842d1",
+    "admission.json": "8fb9d455dbe50a1ddaa55bfbb38a2d5c88b833fbed5dd88b59825d1b596bc329",
+    "gap_blockers.json": "494186eb04ae488cad4f5f22dfbbcae729da7ce5c0ccd4cc512f39db2c714bb1",
+    "output_deadlines.json": "0eb9e704f72912e427fde6cb492e388f1f0c309e99afd62499acfe31edcd578b",
+    "diagnostic_summary.json": "7886dc786d169c233c38bd810d0cf762c9db63b2defa86af3474c215549ac9ed",
+    "exact_solver_result.json": "35a40c5f42147ef6b5b8542f4127f4c023a9a810896b7a2f7c5882dede050b0f",
+    "exact_result.json": "13a7ff8780eb3f204304c88fc8a746711183ebd15795b5645c53ef897d322027",
+    "exact_failure.json": "94774904e167f8c41e12617d911c694f028a65ef08778232a29fd3b76db2e3ce",
+    "exact.exit.json": "84a6528c6de34ca28bb3cedf8f89a3b68f6cfbedd72508138f24b0ec839e5aad",
+    "exact_launch.json": "0abac96b534caadd63582e4ecf9ecb75a2b2e83056898601c2c29ecc0d78200a",
+    "postprocess_recovery.json": "db820039a7d422a7a5da2ee77b92dd62430bb733a682597e503cb2bdcf21227d",
+    "timing_assignment.json": "e54c9b253a6ee696df92658ead5a7a594fb4cf26b6015a0d44c1b4963403558d",
+    "verification.json": "dfdbae3e650191abfb7772aebe3e57f7361872846c0d2ae245f652774ff90971",
+    "verified_best.json": "6f4d32a157837d69a088a5ac2525faffffd0a4a5aaeb4a21ffd0bf4db79c15d0",
+    "verified_program.json": "5b432ce1eb54d850966ebe6b8ff5e95cce0ffed6730aa0a60c02afac1d008607",
+    "mechanics.json": "31f5a5ece925c7c55849ca77b4e818625f1a2a20d2f83832aebf8261a6a3440f",
+    "conditional_stop.json": "fb65ed76bfbd71e254f4d87da0b8b67e4b2630f00fff4f7af6e31059e443a121",
+    "arm_selection.json": "9acf277f93c125d12a4d1429d786163fe1c214d75d140442c93135609255c154",
+    "decision.md": "f547d15883d4fb4c05fd56ee1f8c6c8a154b410c045c092c90a4666983c20f09",
+    "archived_reproduction.json": "281487664a3834b3581a715f832299f3b76031432b5022b01b411f5cd74bac76",
+    "timed.py": "bdeb19fa3492f5fb7bc0884a98b7537ca81b7db591be2a70b2276e6595a19db2",
+    "exact_probe.py": "9388337e696cc51be30f3cd836969be9ea753fe4c5537c9428992d8da35c45ce",
+    "verify_final.py": "436ebaf200fb0ed8814d1d1605cb32ea8ad6287e91950aa7862872f6e6f09bef",
+    "supervisor_original.py": "9facc0ad449700819827bacacc3b95212c7188540901c291b77d1a86f600d8cb",
+    "supervisor.py": "817d415bca3b9662603d520a0330fa2c2aaa47ca879081e9f25545d29116fba4",
+    "guard.py": "59bd6964c67c313b1c2c57c59db1617bb2403ff40e72e62ad7769bb8ac240f69",
+    "model.py": "a8b47e4231200ca7a83081830c27e32a72639e5779d8366bec6848d1000b1dcd",
+    "prepare.py": "e36e18ac266712ddaf5af4451956cdb85713cdad2ebd89b0fc4844bca096b445",
+    "exact_worker.py": "e9d75ddbeba5b62214ab6414aa9845ad635edfcf446878aa8b4134679688e926"
+  },
+  "optimization_workers_remaining": 0,
+  "production_modified": false,
+  "committed": false,
+  "pushed": false,
+  "installed": false,
+  "external_submission": false,
+  "global_optimality_claimed": false,
+  "automatic_production_discovery": false
+}

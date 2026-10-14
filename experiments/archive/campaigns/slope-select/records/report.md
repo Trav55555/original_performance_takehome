@@ -8,7 +8,7 @@ Slope-select improved one matched tensor configuration from 984 to 981 cycles. I
 
 The fixed matrix used blocks 30 and 31, round 14, tile 0. It crossed tensor/slope evaluation, natural/reversed bit order, and structural/algebraic coefficient reuse. All sixteen configurations were feasible and passed three full-width seeds plus five asymmetric patterns each.
 
-Both reuse policies produced the same cycles and scratch in every row below. The complete sixteen-row matrix and source hashes are in the [receipt](slope_select_receipt.json). The [protocol](slope_select_program.md) fixes the budget and gates.
+Both reuse policies produced the same cycles and scratch in every row below. The complete sixteen-row matrix and source hashes are in the [receipt](receipt.json). The [protocol](protocol.md) fixes the budget and gates.
 
 | Block | Bit order | Tensor cycles / words | Slope-select cycles / words | Slope cycle delta |
 |---|---|---|---|---:|

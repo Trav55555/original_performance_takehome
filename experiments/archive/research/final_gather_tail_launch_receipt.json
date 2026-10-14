@@ -1,0 +1,2564 @@
+{
+  "status": "launch-snapshot",
+  "observed_at": 1789333848.8387723,
+  "incumbent": {
+    "cycles": 980,
+    "scratch": 1449
+  },
+  "workspace": "/tmp/perf-finaltail.frSOx0",
+  "counts": {
+    "construction_attempts": 5,
+    "new_candidates": 3,
+    "static_preflights": 6,
+    "solver_validation_queries": 5,
+    "optimization_queries_reserved": 1
+  },
+  "candidate_rows": [
+    {
+      "label": "verified980_control",
+      "cycles": 980,
+      "scratch": 1449,
+      "digest": "759f3ecb37854396b68e7503101cc1a4158fa804693d70c41297a1b3fe30302d"
+    },
+    {
+      "stage": "control",
+      "config": {
+        "sites": [
+          [
+            0,
+            15
+          ],
+          [
+            2,
+            15
+          ],
+          [
+            3,
+            15
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            15
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            15
+          ],
+          [
+            8,
+            4
+          ],
+          [
+            8,
+            15
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            9,
+            15
+          ],
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            11,
+            15
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            12,
+            15
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            4
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            22,
+            4
+          ],
+          [
+            22,
+            15
+          ],
+          [
+            23,
+            4
+          ],
+          [
+            25,
+            4
+          ],
+          [
+            27,
+            4
+          ],
+          [
+            29,
+            15
+          ],
+          [
+            30,
+            4
+          ]
+        ],
+        "pairs": [
+          2,
+          3
+        ],
+        "final_blocks": [
+          14
+        ],
+        "final_engines": [
+          "alu",
+          "valu",
+          "valu"
+        ],
+        "edits": [
+          [
+            179,
+            2
+          ],
+          [
+            339,
+            2
+          ],
+          [
+            703,
+            2
+          ]
+        ],
+        "selector_sites": [
+          [
+            22,
+            15,
+            0,
+            6
+          ],
+          [
+            29,
+            15,
+            0,
+            7
+          ]
+        ],
+        "difference_policy": "per-use",
+        "restore_critical": false,
+        "restore_position": false
+      },
+      "key": "29d380b2aceaaecf2b29bf939b428d2917440f3ae84f0da40391a933a6a22f59",
+      "source_hash": "5ca73c46f536bdddd893fc7bc4fea078bf0a61cbeeadae00af1cf347cad850b8",
+      "scratch": 1449,
+      "feasible": true,
+      "abstract_cycles": 981,
+      "seconds": 0.5501978402025998,
+      "store_times": [
+        944,
+        962,
+        962,
+        963,
+        967,
+        964,
+        965,
+        965,
+        966,
+        966,
+        967,
+        968,
+        968,
+        969,
+        926,
+        969,
+        970,
+        970,
+        971,
+        971,
+        972,
+        972,
+        973,
+        973,
+        974,
+        974,
+        975,
+        975,
+        976,
+        980,
+        976,
+        979
+      ],
+      "last_select": 969,
+      "following_cycles": 11,
+      "flow_suffix_start": 959,
+      "peak_live_words_estimate": 1432,
+      "selector_ops": 922,
+      "converted_sites": 2,
+      "already_arithmetic_sites": 0,
+      "priority_stats": {
+        "matched": 0,
+        "changed_critical": 0,
+        "changed_position": 0,
+        "mapping_checked": false
+      },
+      "frontier_actions": [
+        {
+          "cycle": 179,
+          "action": 2,
+          "semantic_key": "2d5c5c4defd975ef210bf582de45f7f98d67945aaa6ea42b2cef0917cb9498ad",
+          "scope": [
+            "round",
+            5,
+            7,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 339,
+          "action": 2,
+          "semantic_key": "6e847cfcf84a854b7fe659ab3193694e2155de69690513a3694606ab22411fe3",
+          "scope": [
+            "round",
+            13,
+            6,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 703,
+          "action": 2,
+          "semantic_key": "0186b8a787898e7a69eb70e3f31547ec64ef70302c602c618083d3b307ae12bc",
+          "scope": [
+            "round",
+            25,
+            7,
+            "mix"
+          ]
+        }
+      ],
+      "executed": true,
+      "lowered": true,
+      "cycles": 981,
+      "digest": "504932cb0e5bb31fff4e4fbc57af8d61d7c90c2aaea9d7cd7601b8d4b7162024",
+      "frozen_smoke": true,
+      "lane_capacity": true,
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5799,
+        "alu": 11532,
+        "store": 32
+      },
+      "final_gather_issues": {
+        "30": [
+          961,
+          961,
+          962,
+          962,
+          963,
+          963,
+          964,
+          964
+        ],
+        "31": [
+          965,
+          965,
+          966,
+          966,
+          967,
+          967,
+          968,
+          968
+        ]
+      }
+    },
+    {
+      "stage": "tail30",
+      "config": {
+        "sites": [
+          [
+            0,
+            15
+          ],
+          [
+            2,
+            15
+          ],
+          [
+            3,
+            15
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            15
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            15
+          ],
+          [
+            8,
+            4
+          ],
+          [
+            8,
+            15
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            9,
+            15
+          ],
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            11,
+            15
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            12,
+            15
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            4
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            22,
+            4
+          ],
+          [
+            22,
+            15
+          ],
+          [
+            23,
+            4
+          ],
+          [
+            25,
+            4
+          ],
+          [
+            27,
+            4
+          ],
+          [
+            29,
+            15
+          ],
+          [
+            30,
+            4
+          ]
+        ],
+        "pairs": [
+          2,
+          3
+        ],
+        "final_blocks": [
+          14,
+          30
+        ],
+        "final_engines": [
+          "alu",
+          "valu",
+          "valu"
+        ],
+        "edits": [
+          [
+            179,
+            2
+          ],
+          [
+            339,
+            2
+          ],
+          [
+            703,
+            2
+          ]
+        ],
+        "selector_sites": [
+          [
+            22,
+            15,
+            0,
+            6
+          ],
+          [
+            29,
+            15,
+            0,
+            7
+          ]
+        ],
+        "difference_policy": "per-use",
+        "restore_critical": false,
+        "restore_position": false
+      },
+      "key": "ecde1c42914afe45bc8df4cbf6ff596d31637987a0e72e5f638cb065facc052e",
+      "source_hash": "5ca73c46f536bdddd893fc7bc4fea078bf0a61cbeeadae00af1cf347cad850b8",
+      "scratch": 1497,
+      "feasible": true,
+      "abstract_cycles": 986,
+      "seconds": 0.5874736560508609,
+      "store_times": [
+        954,
+        957,
+        959,
+        960,
+        961,
+        962,
+        963,
+        962,
+        963,
+        964,
+        965,
+        966,
+        965,
+        966,
+        928,
+        967,
+        967,
+        968,
+        969,
+        968,
+        969,
+        970,
+        970,
+        971,
+        971,
+        972,
+        972,
+        973,
+        973,
+        980,
+        980,
+        985
+      ],
+      "last_select": 968,
+      "following_cycles": 17,
+      "flow_suffix_start": 958,
+      "peak_live_words_estimate": 1480,
+      "selector_ops": 922,
+      "converted_sites": 2,
+      "already_arithmetic_sites": 0,
+      "priority_stats": {
+        "matched": 0,
+        "changed_critical": 0,
+        "changed_position": 0,
+        "mapping_checked": false
+      },
+      "frontier_actions": [
+        {
+          "cycle": 179,
+          "action": 2,
+          "semantic_key": "2d5c5c4defd975ef210bf582de45f7f98d67945aaa6ea42b2cef0917cb9498ad",
+          "scope": [
+            "round",
+            5,
+            7,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 339,
+          "action": 2,
+          "semantic_key": "6e847cfcf84a854b7fe659ab3193694e2155de69690513a3694606ab22411fe3",
+          "scope": [
+            "round",
+            13,
+            6,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 703,
+          "action": 2,
+          "semantic_key": "0186b8a787898e7a69eb70e3f31547ec64ef70302c602c618083d3b307ae12bc",
+          "scope": [
+            "round",
+            25,
+            7,
+            "mix"
+          ]
+        }
+      ],
+      "executed": true,
+      "lowered": true,
+      "cycles": 986,
+      "digest": "3f8bb7e4602c2e6cd17e3d2d6068430c21d6003ec249822007372c80753029d4",
+      "frozen_smoke": true,
+      "lane_capacity": true,
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5799,
+        "alu": 11532,
+        "store": 32
+      },
+      "final_gather_issues": {
+        "30": [
+          967,
+          967,
+          968,
+          968,
+          969,
+          969,
+          970,
+          970
+        ],
+        "31": [
+          971,
+          971,
+          972,
+          972,
+          973,
+          973,
+          974,
+          974
+        ]
+      },
+      "preflights": [
+        {
+          "start": 949,
+          "target": 979,
+          "radius": 8,
+          "conflict": null,
+          "jobs": 20196,
+          "edges": 54245,
+          "admitted": false,
+          "cuts": [
+            {
+              "engine": "alu",
+              "from": 976,
+              "through": 977,
+              "work": 8,
+              "capacity": 12,
+              "overload": -16,
+              "jobs": [
+                20186,
+                20187,
+                20188,
+                20189,
+                20190,
+                20191,
+                20192,
+                20193
+              ]
+            },
+            {
+              "engine": "valu",
+              "from": 971,
+              "through": 972,
+              "work": 2,
+              "capacity": 6,
+              "overload": -10,
+              "jobs": [
+                20173,
+                20174
+              ]
+            },
+            {
+              "engine": "load",
+              "from": 964,
+              "through": 968,
+              "work": 16,
+              "capacity": 2,
+              "overload": 6,
+              "jobs": [
+                20040,
+                20041,
+                20063,
+                20064,
+                20084,
+                20085,
+                20100,
+                20101,
+                20115,
+                20116,
+                20123,
+                20124,
+                20131,
+                20132,
+                20141,
+                20142
+              ]
+            },
+            {
+              "engine": "store",
+              "from": 977,
+              "through": 978,
+              "work": 1,
+              "capacity": 2,
+              "overload": -3,
+              "jobs": [
+                20194
+              ]
+            },
+            {
+              "engine": "flow",
+              "from": 949,
+              "through": 955,
+              "work": 8,
+              "capacity": 1,
+              "overload": 1,
+              "jobs": [
+                19677,
+                19685,
+                19716,
+                19726,
+                19748,
+                19768,
+                19790,
+                19811
+              ]
+            }
+          ],
+          "free_variables": 534,
+          "membership_terms": 5487,
+          "rejection": "mandatory capacity overload",
+          "independent_count_recheck": true
+        },
+        {
+          "start": 917,
+          "target": 979,
+          "radius": 8,
+          "conflict": null,
+          "jobs": 20196,
+          "edges": 54245,
+          "admitted": false,
+          "cuts": [
+            {
+              "engine": "alu",
+              "from": 976,
+              "through": 977,
+              "work": 8,
+              "capacity": 12,
+              "overload": -16,
+              "jobs": [
+                20186,
+                20187,
+                20188,
+                20189,
+                20190,
+                20191,
+                20192,
+                20193
+              ]
+            },
+            {
+              "engine": "valu",
+              "from": 971,
+              "through": 972,
+              "work": 2,
+              "capacity": 6,
+              "overload": -10,
+              "jobs": [
+                20173,
+                20174
+              ]
+            },
+            {
+              "engine": "load",
+              "from": 917,
+              "through": 968,
+              "work": 104,
+              "capacity": 2,
+              "overload": 0,
+              "jobs": [
+                18989,
+                18990,
+                19010,
+                19011,
+                19030,
+                19031,
+                19051,
+                19052,
+                19072,
+                19073,
+                19093,
+                19094,
+                19114,
+                19115,
+                19135,
+                19136,
+                19156,
+                19157,
+                19177,
+                19178,
+                19198,
+                19199,
+                19219,
+                19220,
+                19241,
+                19242,
+                19262,
+                19263,
+                19283,
+                19284,
+                19304,
+                19305,
+                19325,
+                19326,
+                19346,
+                19347,
+                19367,
+                19368,
+                19388,
+                19389,
+                19409,
+                19410,
+                19430,
+                19431,
+                19451,
+                19452,
+                19472,
+                19473,
+                19493,
+                19494,
+                19514,
+                19515,
+                19535,
+                19536,
+                19556,
+                19557,
+                19577,
+                19578,
+                19598,
+                19599,
+                19619,
+                19620,
+                19640,
+                19641,
+                19661,
+                19662,
+                19682,
+                19683,
+                19703,
+                19704,
+                19724,
+                19725,
+                19745,
+                19746,
+                19766,
+                19767,
+                19788,
+                19789,
+                19809,
+                19810,
+                19830,
+                19831,
+                19851,
+                19852,
+                19872,
+                19873,
+                19894,
+                19895,
+                20040,
+                20041,
+                20063,
+                20064,
+                20084,
+                20085,
+                20100,
+                20101,
+                20115,
+                20116,
+                20123,
+                20124,
+                20131,
+                20132,
+                20141,
+                20142
+              ]
+            },
+            {
+              "engine": "store",
+              "from": 977,
+              "through": 978,
+              "work": 1,
+              "capacity": 2,
+              "overload": -3,
+              "jobs": [
+                20194
+              ]
+            },
+            {
+              "engine": "flow",
+              "from": 917,
+              "through": 955,
+              "work": 40,
+              "capacity": 1,
+              "overload": 1,
+              "jobs": [
+                19008,
+                19027,
+                19048,
+                19056,
+                19085,
+                19113,
+                19119,
+                19148,
+                19162,
+                19179,
+                19202,
+                19237,
+                19259,
+                19267,
+                19303,
+                19308,
+                19330,
+                19353,
+                19371,
+                19392,
+                19419,
+                19436,
+                19456,
+                19487,
+                19506,
+                19516,
+                19537,
+                19558,
+                19582,
+                19601,
+                19633,
+                19646,
+                19677,
+                19685,
+                19716,
+                19726,
+                19748,
+                19768,
+                19790,
+                19811
+              ]
+            }
+          ],
+          "free_variables": 1207,
+          "membership_terms": 17068,
+          "rejection": "mandatory capacity overload",
+          "independent_count_recheck": true
+        }
+      ]
+    },
+    {
+      "stage": "tail31",
+      "config": {
+        "sites": [
+          [
+            0,
+            15
+          ],
+          [
+            2,
+            15
+          ],
+          [
+            3,
+            15
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            15
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            15
+          ],
+          [
+            8,
+            4
+          ],
+          [
+            8,
+            15
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            9,
+            15
+          ],
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            11,
+            15
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            12,
+            15
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            4
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            22,
+            4
+          ],
+          [
+            22,
+            15
+          ],
+          [
+            23,
+            4
+          ],
+          [
+            25,
+            4
+          ],
+          [
+            27,
+            4
+          ],
+          [
+            29,
+            15
+          ],
+          [
+            30,
+            4
+          ]
+        ],
+        "pairs": [
+          2,
+          3
+        ],
+        "final_blocks": [
+          14,
+          31
+        ],
+        "final_engines": [
+          "alu",
+          "valu",
+          "valu"
+        ],
+        "edits": [
+          [
+            179,
+            2
+          ],
+          [
+            339,
+            2
+          ],
+          [
+            703,
+            2
+          ]
+        ],
+        "selector_sites": [
+          [
+            22,
+            15,
+            0,
+            6
+          ],
+          [
+            29,
+            15,
+            0,
+            7
+          ]
+        ],
+        "difference_policy": "per-use",
+        "restore_critical": false,
+        "restore_position": false
+      },
+      "key": "fe971767d9960389f0d3b5d987e31febdc46c8acceec1fd86541877add27c16e",
+      "source_hash": "5ca73c46f536bdddd893fc7bc4fea078bf0a61cbeeadae00af1cf347cad850b8",
+      "scratch": 1505,
+      "feasible": true,
+      "abstract_cycles": 985,
+      "seconds": 0.6068413839675486,
+      "store_times": [
+        947,
+        959,
+        958,
+        962,
+        961,
+        963,
+        962,
+        963,
+        964,
+        965,
+        967,
+        965,
+        966,
+        966,
+        926,
+        967,
+        968,
+        968,
+        969,
+        969,
+        970,
+        970,
+        971,
+        971,
+        972,
+        972,
+        973,
+        973,
+        974,
+        979,
+        981,
+        984
+      ],
+      "last_select": 968,
+      "following_cycles": 16,
+      "flow_suffix_start": 958,
+      "peak_live_words_estimate": 1488,
+      "selector_ops": 922,
+      "converted_sites": 2,
+      "already_arithmetic_sites": 0,
+      "priority_stats": {
+        "matched": 0,
+        "changed_critical": 0,
+        "changed_position": 0,
+        "mapping_checked": false
+      },
+      "frontier_actions": [
+        {
+          "cycle": 179,
+          "action": 2,
+          "semantic_key": "2d5c5c4defd975ef210bf582de45f7f98d67945aaa6ea42b2cef0917cb9498ad",
+          "scope": [
+            "round",
+            5,
+            7,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 339,
+          "action": 2,
+          "semantic_key": "6e847cfcf84a854b7fe659ab3193694e2155de69690513a3694606ab22411fe3",
+          "scope": [
+            "round",
+            13,
+            6,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 703,
+          "action": 2,
+          "semantic_key": "0186b8a787898e7a69eb70e3f31547ec64ef70302c602c618083d3b307ae12bc",
+          "scope": [
+            "round",
+            25,
+            7,
+            "mix"
+          ]
+        }
+      ],
+      "executed": true,
+      "lowered": true,
+      "cycles": 985,
+      "digest": "cd208cfd75259694ac3f5177485f26f4d61890015086474299e3c5a59038a723",
+      "frozen_smoke": true,
+      "lane_capacity": true,
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5799,
+        "alu": 11532,
+        "store": 32
+      },
+      "final_gather_issues": {
+        "30": [
+          967,
+          967,
+          968,
+          968,
+          969,
+          969,
+          970,
+          970
+        ],
+        "31": [
+          971,
+          971,
+          972,
+          972,
+          973,
+          973,
+          974,
+          974
+        ]
+      },
+      "preflights": [
+        {
+          "start": 949,
+          "target": 979,
+          "radius": 8,
+          "conflict": null,
+          "jobs": 20196,
+          "edges": 54364,
+          "admitted": false,
+          "cuts": [
+            {
+              "engine": "alu",
+              "from": 974,
+              "through": 976,
+              "work": 8,
+              "capacity": 12,
+              "overload": -28,
+              "jobs": [
+                20184,
+                20185,
+                20186,
+                20187,
+                20188,
+                20189,
+                20190,
+                20191
+              ]
+            },
+            {
+              "engine": "valu",
+              "from": 971,
+              "through": 973,
+              "work": 2,
+              "capacity": 6,
+              "overload": -16,
+              "jobs": [
+                20169,
+                20170
+              ]
+            },
+            {
+              "engine": "load",
+              "from": 964,
+              "through": 968,
+              "work": 16,
+              "capacity": 2,
+              "overload": 6,
+              "jobs": [
+                20040,
+                20041,
+                20062,
+                20063,
+                20083,
+                20084,
+                20098,
+                20099,
+                20106,
+                20107,
+                20122,
+                20123,
+                20130,
+                20131,
+                20140,
+                20141
+              ]
+            },
+            {
+              "engine": "store",
+              "from": 976,
+              "through": 978,
+              "work": 1,
+              "capacity": 2,
+              "overload": -5,
+              "jobs": [
+                20194
+              ]
+            },
+            {
+              "engine": "flow",
+              "from": 978,
+              "through": 978,
+              "work": 1,
+              "capacity": 1,
+              "overload": 0,
+              "jobs": [
+                20195
+              ]
+            }
+          ],
+          "free_variables": 533,
+          "membership_terms": 5314,
+          "rejection": "mandatory capacity overload",
+          "independent_count_recheck": true
+        },
+        {
+          "start": 917,
+          "target": 979,
+          "radius": 8,
+          "conflict": null,
+          "jobs": 20196,
+          "edges": 54364,
+          "admitted": true,
+          "cuts": [
+            {
+              "engine": "alu",
+              "from": 974,
+              "through": 976,
+              "work": 8,
+              "capacity": 12,
+              "overload": -28,
+              "jobs": [
+                20184,
+                20185,
+                20186,
+                20187,
+                20188,
+                20189,
+                20190,
+                20191
+              ]
+            },
+            {
+              "engine": "valu",
+              "from": 971,
+              "through": 973,
+              "work": 2,
+              "capacity": 6,
+              "overload": -16,
+              "jobs": [
+                20169,
+                20170
+              ]
+            },
+            {
+              "engine": "load",
+              "from": 917,
+              "through": 968,
+              "work": 104,
+              "capacity": 2,
+              "overload": 0,
+              "jobs": [
+                18989,
+                18990,
+                19010,
+                19011,
+                19030,
+                19031,
+                19051,
+                19052,
+                19072,
+                19073,
+                19093,
+                19094,
+                19114,
+                19115,
+                19135,
+                19136,
+                19156,
+                19157,
+                19177,
+                19178,
+                19199,
+                19200,
+                19220,
+                19221,
+                19241,
+                19242,
+                19262,
+                19263,
+                19283,
+                19284,
+                19304,
+                19305,
+                19325,
+                19326,
+                19346,
+                19347,
+                19367,
+                19368,
+                19388,
+                19389,
+                19409,
+                19410,
+                19430,
+                19431,
+                19451,
+                19452,
+                19472,
+                19473,
+                19493,
+                19494,
+                19514,
+                19515,
+                19535,
+                19536,
+                19556,
+                19557,
+                19577,
+                19578,
+                19598,
+                19599,
+                19619,
+                19620,
+                19641,
+                19642,
+                19662,
+                19663,
+                19683,
+                19684,
+                19704,
+                19705,
+                19725,
+                19726,
+                19746,
+                19747,
+                19767,
+                19768,
+                19788,
+                19789,
+                19809,
+                19810,
+                19830,
+                19831,
+                19850,
+                19851,
+                19872,
+                19873,
+                19894,
+                19895,
+                20040,
+                20041,
+                20062,
+                20063,
+                20083,
+                20084,
+                20098,
+                20099,
+                20106,
+                20107,
+                20122,
+                20123,
+                20130,
+                20131,
+                20140,
+                20141
+              ]
+            },
+            {
+              "engine": "store",
+              "from": 976,
+              "through": 978,
+              "work": 1,
+              "capacity": 2,
+              "overload": -5,
+              "jobs": [
+                20194
+              ]
+            },
+            {
+              "engine": "flow",
+              "from": 978,
+              "through": 978,
+              "work": 1,
+              "capacity": 1,
+              "overload": 0,
+              "jobs": [
+                20195
+              ]
+            }
+          ],
+          "free_variables": 1207,
+          "membership_terms": 17141,
+          "projected_edges": 1955,
+          "boundary_edges": 1309,
+          "fixed_jobs": 18989,
+          "independent_count_recheck": true
+        }
+      ]
+    },
+    {
+      "stage": "tail_both",
+      "config": {
+        "sites": [
+          [
+            0,
+            15
+          ],
+          [
+            2,
+            15
+          ],
+          [
+            3,
+            15
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            15
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            15
+          ],
+          [
+            8,
+            4
+          ],
+          [
+            8,
+            15
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            9,
+            15
+          ],
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            11,
+            15
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            12,
+            15
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            4
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            22,
+            4
+          ],
+          [
+            22,
+            15
+          ],
+          [
+            23,
+            4
+          ],
+          [
+            25,
+            4
+          ],
+          [
+            27,
+            4
+          ],
+          [
+            29,
+            15
+          ],
+          [
+            30,
+            4
+          ]
+        ],
+        "pairs": [
+          2,
+          3
+        ],
+        "final_blocks": [
+          14,
+          30,
+          31
+        ],
+        "final_engines": [
+          "alu",
+          "valu",
+          "valu"
+        ],
+        "edits": [
+          [
+            179,
+            2
+          ],
+          [
+            339,
+            2
+          ],
+          [
+            703,
+            2
+          ]
+        ],
+        "selector_sites": [
+          [
+            22,
+            15,
+            0,
+            6
+          ],
+          [
+            29,
+            15,
+            0,
+            7
+          ]
+        ],
+        "difference_policy": "per-use",
+        "restore_critical": false,
+        "restore_position": false
+      },
+      "key": "a06bbc764d36848ba399c60b0b65422ac26d7717a3f1b2c86205672753ba5feb",
+      "source_hash": "5ca73c46f536bdddd893fc7bc4fea078bf0a61cbeeadae00af1cf347cad850b8",
+      "scratch": 1489,
+      "feasible": true,
+      "abstract_cycles": 985,
+      "seconds": 0.5799781512469053,
+      "store_times": [
+        954,
+        959,
+        958,
+        961,
+        962,
+        961,
+        963,
+        962,
+        963,
+        964,
+        965,
+        967,
+        965,
+        966,
+        928,
+        966,
+        967,
+        968,
+        968,
+        969,
+        969,
+        970,
+        970,
+        971,
+        971,
+        972,
+        972,
+        973,
+        973,
+        980,
+        980,
+        984
+      ],
+      "last_select": 968,
+      "following_cycles": 16,
+      "flow_suffix_start": 958,
+      "peak_live_words_estimate": 1472,
+      "selector_ops": 922,
+      "converted_sites": 2,
+      "already_arithmetic_sites": 0,
+      "priority_stats": {
+        "matched": 0,
+        "changed_critical": 0,
+        "changed_position": 0,
+        "mapping_checked": false
+      },
+      "frontier_actions": [
+        {
+          "cycle": 179,
+          "action": 2,
+          "semantic_key": "2d5c5c4defd975ef210bf582de45f7f98d67945aaa6ea42b2cef0917cb9498ad",
+          "scope": [
+            "round",
+            5,
+            7,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 339,
+          "action": 2,
+          "semantic_key": "6e847cfcf84a854b7fe659ab3193694e2155de69690513a3694606ab22411fe3",
+          "scope": [
+            "round",
+            13,
+            6,
+            "mix"
+          ]
+        },
+        {
+          "cycle": 703,
+          "action": 2,
+          "semantic_key": "0186b8a787898e7a69eb70e3f31547ec64ef70302c602c618083d3b307ae12bc",
+          "scope": [
+            "round",
+            25,
+            7,
+            "mix"
+          ]
+        }
+      ],
+      "executed": true,
+      "lowered": true,
+      "cycles": 985,
+      "digest": "c55d1d86c3c74e4fbb87d7a58f71c530f814f9fe3603f7ae196361966dd7fbbf",
+      "frozen_smoke": true,
+      "lane_capacity": true,
+      "counts": {
+        "load": 1888,
+        "flow": 945,
+        "valu": 5799,
+        "alu": 11532,
+        "store": 32
+      },
+      "final_gather_issues": {
+        "30": [
+          967,
+          967,
+          968,
+          968,
+          969,
+          969,
+          970,
+          970
+        ],
+        "31": [
+          971,
+          971,
+          972,
+          972,
+          973,
+          973,
+          974,
+          974
+        ]
+      },
+      "preflights": [
+        {
+          "start": 949,
+          "target": 979,
+          "radius": 8,
+          "conflict": null,
+          "jobs": 20196,
+          "edges": 54567,
+          "admitted": false,
+          "cuts": [
+            {
+              "engine": "alu",
+              "from": 974,
+              "through": 976,
+              "work": 8,
+              "capacity": 12,
+              "overload": -28,
+              "jobs": [
+                20184,
+                20185,
+                20186,
+                20187,
+                20188,
+                20189,
+                20190,
+                20191
+              ]
+            },
+            {
+              "engine": "valu",
+              "from": 971,
+              "through": 973,
+              "work": 2,
+              "capacity": 6,
+              "overload": -16,
+              "jobs": [
+                20173,
+                20174
+              ]
+            },
+            {
+              "engine": "load",
+              "from": 964,
+              "through": 968,
+              "work": 16,
+              "capacity": 2,
+              "overload": 6,
+              "jobs": [
+                20041,
+                20042,
+                20063,
+                20064,
+                20085,
+                20086,
+                20100,
+                20101,
+                20115,
+                20116,
+                20123,
+                20124,
+                20131,
+                20132,
+                20141,
+                20142
+              ]
+            },
+            {
+              "engine": "store",
+              "from": 976,
+              "through": 978,
+              "work": 1,
+              "capacity": 2,
+              "overload": -5,
+              "jobs": [
+                20194
+              ]
+            },
+            {
+              "engine": "flow",
+              "from": 949,
+              "through": 955,
+              "work": 8,
+              "capacity": 1,
+              "overload": 1,
+              "jobs": [
+                19675,
+                19689,
+                19716,
+                19726,
+                19748,
+                19768,
+                19790,
+                19811
+              ]
+            }
+          ],
+          "free_variables": 534,
+          "membership_terms": 5476,
+          "rejection": "mandatory capacity overload",
+          "independent_count_recheck": true
+        },
+        {
+          "start": 917,
+          "target": 979,
+          "radius": 8,
+          "conflict": null,
+          "jobs": 20196,
+          "edges": 54567,
+          "admitted": false,
+          "cuts": [
+            {
+              "engine": "alu",
+              "from": 974,
+              "through": 976,
+              "work": 8,
+              "capacity": 12,
+              "overload": -28,
+              "jobs": [
+                20184,
+                20185,
+                20186,
+                20187,
+                20188,
+                20189,
+                20190,
+                20191
+              ]
+            },
+            {
+              "engine": "valu",
+              "from": 971,
+              "through": 973,
+              "work": 2,
+              "capacity": 6,
+              "overload": -16,
+              "jobs": [
+                20173,
+                20174
+              ]
+            },
+            {
+              "engine": "load",
+              "from": 917,
+              "through": 968,
+              "work": 104,
+              "capacity": 2,
+              "overload": 0,
+              "jobs": [
+                18989,
+                18990,
+                19010,
+                19011,
+                19030,
+                19031,
+                19051,
+                19052,
+                19072,
+                19073,
+                19093,
+                19094,
+                19114,
+                19115,
+                19135,
+                19136,
+                19156,
+                19157,
+                19177,
+                19178,
+                19198,
+                19199,
+                19219,
+                19220,
+                19241,
+                19242,
+                19262,
+                19263,
+                19283,
+                19284,
+                19304,
+                19305,
+                19325,
+                19326,
+                19346,
+                19347,
+                19367,
+                19368,
+                19388,
+                19389,
+                19409,
+                19410,
+                19430,
+                19431,
+                19451,
+                19452,
+                19472,
+                19473,
+                19493,
+                19494,
+                19514,
+                19515,
+                19535,
+                19536,
+                19556,
+                19557,
+                19577,
+                19578,
+                19598,
+                19599,
+                19619,
+                19620,
+                19640,
+                19641,
+                19661,
+                19662,
+                19682,
+                19683,
+                19703,
+                19704,
+                19724,
+                19725,
+                19745,
+                19746,
+                19766,
+                19767,
+                19788,
+                19789,
+                19809,
+                19810,
+                19830,
+                19831,
+                19850,
+                19851,
+                19872,
+                19873,
+                19894,
+                19895,
+                20041,
+                20042,
+                20063,
+                20064,
+                20085,
+                20086,
+                20100,
+                20101,
+                20115,
+                20116,
+                20123,
+                20124,
+                20131,
+                20132,
+                20141,
+                20142
+              ]
+            },
+            {
+              "engine": "store",
+              "from": 976,
+              "through": 978,
+              "work": 1,
+              "capacity": 2,
+              "overload": -5,
+              "jobs": [
+                20194
+              ]
+            },
+            {
+              "engine": "flow",
+              "from": 917,
+              "through": 955,
+              "work": 40,
+              "capacity": 1,
+              "overload": 1,
+              "jobs": [
+                19008,
+                19027,
+                19048,
+                19056,
+                19085,
+                19113,
+                19119,
+                19148,
+                19162,
+                19179,
+                19202,
+                19237,
+                19259,
+                19267,
+                19303,
+                19308,
+                19330,
+                19353,
+                19371,
+                19392,
+                19419,
+                19436,
+                19460,
+                19484,
+                19507,
+                19516,
+                19537,
+                19558,
+                19583,
+                19605,
+                19623,
+                19649,
+                19675,
+                19689,
+                19716,
+                19726,
+                19748,
+                19768,
+                19790,
+                19811
+              ]
+            }
+          ],
+          "free_variables": 1207,
+          "membership_terms": 17183,
+          "rejection": "mandatory capacity overload",
+          "independent_count_recheck": true
+        }
+      ]
+    }
+  ],
+  "selection": {
+    "chosen": {
+      "label": "tail31",
+      "config": {
+        "sites": [
+          [
+            0,
+            15
+          ],
+          [
+            2,
+            15
+          ],
+          [
+            3,
+            15
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            15
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            15
+          ],
+          [
+            8,
+            4
+          ],
+          [
+            8,
+            15
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            9,
+            15
+          ],
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            11,
+            15
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            12,
+            15
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            17,
+            4
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            22,
+            4
+          ],
+          [
+            22,
+            15
+          ],
+          [
+            23,
+            4
+          ],
+          [
+            25,
+            4
+          ],
+          [
+            27,
+            4
+          ],
+          [
+            29,
+            15
+          ],
+          [
+            30,
+            4
+          ]
+        ],
+        "pairs": [
+          2,
+          3
+        ],
+        "final_blocks": [
+          14,
+          31
+        ],
+        "final_engines": [
+          "alu",
+          "valu",
+          "valu"
+        ],
+        "edits": [
+          [
+            179,
+            2
+          ],
+          [
+            339,
+            2
+          ],
+          [
+            703,
+            2
+          ]
+        ],
+        "selector_sites": [
+          [
+            22,
+            15,
+            0,
+            6
+          ],
+          [
+            29,
+            15,
+            0,
+            7
+          ]
+        ],
+        "difference_policy": "per-use",
+        "restore_critical": false,
+        "restore_position": false
+      },
+      "cycles": 985,
+      "scratch": 1505,
+      "digest": "cd208cfd75259694ac3f5177485f26f4d61890015086474299e3c5a59038a723",
+      "scope": {
+        "start": 917,
+        "target": 979,
+        "radius": 8,
+        "conflict": null,
+        "jobs": 20196,
+        "edges": 54364,
+        "admitted": true,
+        "cuts": [
+          {
+            "engine": "alu",
+            "from": 974,
+            "through": 976,
+            "work": 8,
+            "capacity": 12,
+            "overload": -28,
+            "jobs": [
+              20184,
+              20185,
+              20186,
+              20187,
+              20188,
+              20189,
+              20190,
+              20191
+            ]
+          },
+          {
+            "engine": "valu",
+            "from": 971,
+            "through": 973,
+            "work": 2,
+            "capacity": 6,
+            "overload": -16,
+            "jobs": [
+              20169,
+              20170
+            ]
+          },
+          {
+            "engine": "load",
+            "from": 917,
+            "through": 968,
+            "work": 104,
+            "capacity": 2,
+            "overload": 0,
+            "jobs": [
+              18989,
+              18990,
+              19010,
+              19011,
+              19030,
+              19031,
+              19051,
+              19052,
+              19072,
+              19073,
+              19093,
+              19094,
+              19114,
+              19115,
+              19135,
+              19136,
+              19156,
+              19157,
+              19177,
+              19178,
+              19199,
+              19200,
+              19220,
+              19221,
+              19241,
+              19242,
+              19262,
+              19263,
+              19283,
+              19284,
+              19304,
+              19305,
+              19325,
+              19326,
+              19346,
+              19347,
+              19367,
+              19368,
+              19388,
+              19389,
+              19409,
+              19410,
+              19430,
+              19431,
+              19451,
+              19452,
+              19472,
+              19473,
+              19493,
+              19494,
+              19514,
+              19515,
+              19535,
+              19536,
+              19556,
+              19557,
+              19577,
+              19578,
+              19598,
+              19599,
+              19619,
+              19620,
+              19641,
+              19642,
+              19662,
+              19663,
+              19683,
+              19684,
+              19704,
+              19705,
+              19725,
+              19726,
+              19746,
+              19747,
+              19767,
+              19768,
+              19788,
+              19789,
+              19809,
+              19810,
+              19830,
+              19831,
+              19850,
+              19851,
+              19872,
+              19873,
+              19894,
+              19895,
+              20040,
+              20041,
+              20062,
+              20063,
+              20083,
+              20084,
+              20098,
+              20099,
+              20106,
+              20107,
+              20122,
+              20123,
+              20130,
+              20131,
+              20140,
+              20141
+            ]
+          },
+          {
+            "engine": "store",
+            "from": 976,
+            "through": 978,
+            "work": 1,
+            "capacity": 2,
+            "overload": -5,
+            "jobs": [
+              20194
+            ]
+          },
+          {
+            "engine": "flow",
+            "from": 978,
+            "through": 978,
+            "work": 1,
+            "capacity": 1,
+            "overload": 0,
+            "jobs": [
+              20195
+            ]
+          }
+        ],
+        "free_variables": 1207,
+        "membership_terms": 17141,
+        "projected_edges": 1955,
+        "boundary_edges": 1309,
+        "fixed_jobs": 18989,
+        "independent_count_recheck": true
+      }
+    },
+    "eligible_count": 1,
+    "rule": "smallest scope; membership terms; native cycles; scratch; label",
+    "solver_launched": false
+  },
+  "controls": {
+    "status": "passed",
+    "native_reconstruction": {
+      "status": "allocated",
+      "cycles": 985,
+      "scratch": 1505,
+      "digest": "cd208cfd75259694ac3f5177485f26f4d61890015086474299e3c5a59038a723",
+      "lane_identity": true
+    },
+    "source_timing_native_identity": true,
+    "mutations": [
+      "missing-edge",
+      "wrong-lane"
+    ],
+    "scratch_guard": {
+      "words": 1537,
+      "lower_calls": 0
+    },
+    "validation_queries": 5,
+    "executed_store_pause": [
+      3,
+      2
+    ],
+    "fixed_capacity_rejection": true
+  },
+  "launch_controls": {
+    "status": "passed",
+    "tests": [
+      {
+        "kind": "budget",
+        "workers_started": 0
+      },
+      {
+        "kind": "source",
+        "workers_started": 0
+      }
+    ],
+    "actual_launch_function_tested": true
+  },
+  "launch": {
+    "worker_pid": 1607760,
+    "supervisor_pid": 1607752,
+    "start": 1789333304.1284578,
+    "timeout": null,
+    "memory_cap": 2147483648
+  },
+  "process_observation": "    PID     ELAPSED %CPU   RSS STAT COMMAND\n1607760       09:04 99.8 266944 R   /tmp/perf-five-arms/solver-env/bin/python /tmp/perf-finaltail.frSOx0/exact_worker.py optimize\n",
+  "observed_limits": [
+    "Max cpu time              unlimited            unlimited            seconds   ",
+    "Max address space         2147483648           2147483648           bytes     "
+  ],
+  "exact_status": {
+    "stage": "solving",
+    "pid": 1607760,
+    "scope": {
+      "label": "tail31",
+      "start": 917,
+      "target": 979,
+      "radius": 8
+    },
+    "encoding": {
+      "free_variables": 1207,
+      "potential_membership_terms": 17141,
+      "encoded_capacity_terms": 17117,
+      "fixed_jobs_removed": 18989,
+      "free_edges": 1955,
+      "boundary_edges_checked": 1309,
+      "timeout_ms": 0
+    },
+    "address_space_bytes": 2147483648,
+    "timeout": null
+  },
+  "completion_status": {
+    "stage": "waiting-for-exact",
+    "pid": 1630317
+  },
+  "source_artifact_hashes": {
+    "program.md": "139a60e5a045ef88af12e41730aeb399524e009b33487a910311baee1dc70feb",
+    "authorization.json": "000b3e179b5b5ffb0af67e716e7b7886cc80d4ce545bd710d069d8117d41620c",
+    "manifest.json": "0d83e4ca584c5eb397cb468a2155a7c90340c0588909de0673e45f5f7aca27d0",
+    "source_hashes.json": "c8fa712e101ebd80a2f445364fb9465469a207cd53bfc71a65586d54b3d76d8b",
+    "runtime_hashes.json": "1367be61057f576db21c858d4d1c03a1127443996746c65fe6f538af01e67acf",
+    "verification_hashes.json": "4b73394f8b9022ce78d234bd4ee75d3b4d5d5c0cb752c6c2339fbab7771e4cdd",
+    "rows.json": "6627a1920ba411009fa91731108ec5b64fdedd8fb46761288c5f5d2a797b7556",
+    "selection.json": "9015473f29c6417c3f3bceb21b7d6b3a3b7d237fa5d458d20d147dae061be1ed",
+    "screen_complete.json": "22caa73712dc90ef782fa7eb6856960415fe5d1db7e92b7b544c926cb657315a",
+    "attempts.jsonl": "907a85419cb8f8f7f0069e22c1f6246c67105be9833c01dab325e59d508432b1",
+    "exact_attempts.jsonl": "93e2c65053d10bec5c1850c35db4559b91795c5741f3e5eca6ff16782c1142d2",
+    "solver_controls.json": "084a066991c360dbbe5afe5cc44a34e879c83fffa2a1fd1e39799a86adbab97a",
+    "launch_guard_controls.json": "a724259d0c19521b0a13e83fca373ae365a3f50f227538304fe88140d2d1230c",
+    "exact_launch.json": "991078661efb88dd9a39217dfa592ea53b98bf97316792e70da003cc81269175"
+  },
+  "verification_automatically_queued_on_sat": true,
+  "full_candidate_verification_completed_at_snapshot": false,
+  "production_changed": false,
+  "committed": false,
+  "pushed": false,
+  "installed": false,
+  "submitted": false,
+  "global_optimality_claimed": false
+}

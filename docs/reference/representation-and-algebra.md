@@ -61,7 +61,7 @@ For the encoded final XOR-shift result:
 
 Ignoring the upper contribution fails at `u = 65536`. Computing only branch parity can expose an earlier path, but the full hash value is still needed for subsequent work and final output. Projection and carry-aware radix variants did not improve complete execution in the declared mathematical-model screen.
 
-Source: [predicate reuse](../../experiments/cross_domain_results.md). Projection evidence is cataloged under local mathematical research in [search and research](search-and-research.md#local-only-records).
+Source: [predicate reuse](../../experiments/cross_domain_results.md). Projection evidence is cataloged under the mathematical research records in [search and research](search-and-research.md#research-records).
 
 ## Fuse two middle hash stages
 
@@ -94,7 +94,7 @@ The constant XOR and shift can run on independent branches. The implemented vari
 
 The final-hash pilot checked zero and the 32 basis words for two affine GF(2) expressions, and rejected a wrong shifted-input mutation. That argument is specific to affine bit expressions. It does not prove equivalence of arbitrary arithmetic with carries. Full-kernel execution checked emitter wiring, dependencies and memory behavior.
 
-Sources: [979 promotion](../../experiments/promotion_979_results.md), [local pilot provenance](search-and-research.md#local-only-records).
+Sources: [979 promotion](../../experiments/promotion_979_results.md), [pilot records](search-and-research.md#research-records).
 
 ## Other exact algebra that did not establish a faster kernel
 

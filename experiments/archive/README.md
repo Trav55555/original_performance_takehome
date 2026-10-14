@@ -4,6 +4,12 @@
 
 The [campaign code collection](campaigns/README.md) contains readable Python sources, reports and protocols for final-hash, mathematical-model and slope/select research. It excludes workspace bundles and generated artifacts. Historical drivers are not supported standalone runners.
 
+## Research records below 980 cycles
+
+[`research/`](research/) holds the plans, results, receipts and certificates from the September research below 980 cycles. They sat untracked in `experiments/` until October 2026 and moved here unchanged, except one link and one path noted below. The [research wiki](../../docs/reference/search-and-research.md#research-records) summarizes each record's subject and closure. The four campaign receipts moved to their campaign's `records/receipt.json`; the campaigns' `*_program.md` and `*_results.md` files were byte-identical to the tracked `protocol.md` and `report.md` and were not kept.
+
+[`research/followup_980/`](research/followup_980/README.md) rebuilds the experimental 980-cycle witness from source and a selected timing assignment. Its root path was updated for the new depth, and a rerun reproduced the recorded digest `759f3ecb`. It is not automatic production discovery. `plateau_selector_results.md` links to `cache_descent_results.md` at its new relative path.
+
 ## Root-level prototypes
 
 The following files were relocated from the repository root without changing their contents. They are historical artifacts, not supported runners or current verification commands. Relocation did not repeat any sweep, compiler experiment or performance measurement.
