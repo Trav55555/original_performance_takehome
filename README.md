@@ -39,10 +39,11 @@ python scripts/verify_compiler.py
 python scripts/verify_optimizer.py
 python scripts/verify_justify.py
 python scripts/verify_random_graphs.py
+python scripts/verify_equivalence.py
 git diff --exit-code 5452f74 -- tests/ problem.py
 ```
 
-Each command starts a cold build except `verify_justify.py`, `verify_random_graphs.py` and the `git diff`, which take seconds. `verify_compiler.py` runs two more isolated cold builds and takes about 46 minutes. The [verification guide](docs/verification.md) lists what each command covers.
+Each command starts a cold build except `verify_justify.py`, `verify_random_graphs.py` and the `git diff`, which take seconds. `verify_compiler.py` runs two more isolated cold builds and takes about 46 minutes. `verify_equivalence.py` spends about a minute on its proof after the build; `--program` checks a saved program without building. The [verification guide](docs/verification.md) lists what each command covers.
 
 ## How the compiler reaches 975
 
@@ -65,10 +66,11 @@ The verifiers built the kernel through the public `KernelBuilder` and checked:
 - Scratch limits. The compiler rejects an over-limit allocation before lowering, including a natural 1,537-word retimed allocation.
 - Fallback for explicit overrides, isolation between cached program copies, scheduler hazards and a pause co-issued with the final stores.
 - Three performance ceilings on non-benchmark shapes, and two source-only rebuilds at hash seeds 0 and 17.
+- A Z3 proof over the emitted 975-cycle bundles. For every tree and every input value on the benchmark shape, each final value equals the reference, every other memory word stays unchanged, and every scratch and memory access stays in range. The proof uses none of the compiler's code.
 
 The 975-cycle gate rejected executed controls at 980, 1,041, 1,042, 1,052, 1,076 and 1,082 cycles.
 
-The checks have limits. The kernel assumes traversals start at the root. It writes final values and leaves every other memory word unchanged, but it does not write final indices. The checks do not cover non-root starts or arbitrary dimensions.
+The checks have limits. The kernel assumes traversals start at the root. It writes final values and leaves every other memory word unchanged, but it does not write final indices. The checks, including the proof, do not cover non-root starts or arbitrary dimensions.
 
 Nobody has proven 975 optimal either. The current instruction stream has 5,800 vector-arithmetic operations, which need at least 967 cycles on six slots. That bound ignores dependencies, so 967 may be out of reach. An exact search for 979 on an older graph ran out of its 2 GiB memory cap after 16 hours 52 minutes without an answer.
 

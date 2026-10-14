@@ -11,6 +11,7 @@ This guide describes the verified `1df789d` release. Run commands from the repos
 | `git diff --exit-code 5452f74 -- tests/ problem.py` | Test/simulator integrity against the frozen upstream checkpoint | None |
 | `python scripts/verify_justify.py` | Small executable scheduling examples, missing dependencies, budget and reservation failures | None |
 | `python scripts/verify_random_graphs.py` | 300 random IR graphs through native and lookahead scheduling, allocation, lowering and all three justification orders, checked on the frozen simulator against an independent interpreter | None |
+| `python scripts/verify_equivalence.py` | Z3 proof that the emitted bundles produce the reference's final values for every tree and input on the benchmark shape, leave other memory unchanged and stay in range. Independent of the compiler. `--program FILE` checks a saved program; `--legacy --shape H N B R` checks the legacy generator | One cold build, then about a minute of proof |
 | `python tests/submission_tests.py` | The nine unchanged official correctness/speed tests | One cold build in a fresh process |
 | `python scripts/verify_retry.py --max-cycles 975` | 100 generated inputs, five patterns, nine other shapes, three other-shape ceilings, pause/store hazards and a corruption control | One cold build, plus fallback cases |
 | `python scripts/verify_optimizer.py` | Retiming round trips, fresh allocation, dependency/lane mutations, scratch rejection, budget guards and slower controls | One cold build, plus control construction |
@@ -38,7 +39,7 @@ The [raw compiler result](../experiments/promotion_975_evidence/compiler-verific
 
 The earlier [979 campaign](../experiments/promotion_979_results.md) used a combined driver and different cache reuse. Its 2941.31-second timing and warm `cold_seconds` field describe that historical run, not the current standalone verifier.
 
-The supported contract is root-starting traversal and final values, with non-output memory preserved. Neither these checks nor the reports establish general non-root/final-index equivalence or global optimality. An attempted independent subagent review failed before work; the execution evidence is not a claim of independent code review.
+The supported contract is root-starting traversal and final values, with non-output memory preserved. `verify_equivalence.py` proves equivalence for all input values on the benchmark shape with root starts. Neither it, the other checks nor the reports establish non-root or final-index equivalence, other shapes, or global optimality. An attempted independent subagent review failed before work; the execution evidence is not a claim of independent code review.
 
 ## Research and diagnostic scripts
 
