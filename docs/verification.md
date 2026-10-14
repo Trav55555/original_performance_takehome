@@ -1,6 +1,6 @@
 # Verification and tool guide
 
-[Home and setup](../README.md#build-and-run) · [Architecture](architecture.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
+[Home and setup](../README.md#appendix-a-build-and-verification-procedure) · [Architecture](architecture.md) · [Full history](performance-progression.md) · [Technique wiki](reference/README.md)
 
 This guide describes the verified `1df789d` release. Run commands from the repository root, in the environment installed from `requirements.txt`, with Python assertions enabled. The release must execute in at most **975 cycles** and use at most **1536 scratch words**. The verified result uses 1469 words.
 
